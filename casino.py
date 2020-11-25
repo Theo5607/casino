@@ -16,18 +16,27 @@ def go():
         while var!='1' and var!='0':
             var = input('Voulez vous vous connecter (0) ou vous inscrire (1)? ')
             print(var)
+        if var=='0':
+            id_entre=''
+            sing=(id_entre,)
+            mdp_entre=''
+
+            while len(id_entre)<4 or len(id_entre)>20 or check_identifiant_existe(sing)==False:
+                id_entre=input("Veuillez entrer un identifiant valide et qui existe ")
+                sing=(id_entre,)
+                
         if var=='1':
             compte=creation_compte()
             print('Bienvenue, '+compte[0])
 
 def creation_compte():
     identifiant=''
+    sing=(identifiant,)
     mdp=''
     
-    while len(identifiant)<4 or len(identifiant)>20:
-        #cur.execute("SELECT pseudo FROM membres")
-        #liste_identifiants=cur.fetchall()
-        identifiant=input('Veuillez choisir un identifiant entre 4 et 20 caractères. ')
+    while len(identifiant)<4 or len(identifiant)>20 or check_identifiant_existe(sing)==True:
+        identifiant=input("Veuillez choisir un identifiant entre 4 et 20 caractères qui n'existe pas. ")
+        sing=(identifiant,)
 
     while len(mdp)<4 or len(mdp)>20:
         mdp=input('Veuillez choisir un mot de passe entre 4 et 20 caractères. ')
@@ -40,6 +49,16 @@ def creation_compte():
     compte=[identifiant,mdp,10000]
 
     return compte
+
+def check_identifiant_existe(sing):
+    cur.execute("SELECT identifiant FROM membres")
+    liste_identifiants=cur.fetchall()
+
+    id_existe_deja=False
+    for el in liste_identifiants:
+        if el[0]==sing[0]:
+            id_exitse_deja=True
+            return id_exitse_deja
 
 go()
 
