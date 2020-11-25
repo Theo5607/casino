@@ -1,7 +1,6 @@
-from tkinter import *
-from sqlite3 import *
+import sqlite3
 
-conn = connect("data.txt")
+conn = sqlite3.connect("data.txt")
 cur = conn.cursor()
 cur.execute("CREATE TABLE IF NOT EXISTS membres (identifiant TEXT, mdp TEXT, argent INTEGER)")
 
