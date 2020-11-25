@@ -7,35 +7,43 @@ cur.execute("CREATE TABLE IF NOT EXISTS membres (identifiant TEXT, mdp TEXT, arg
 
 def go():
     print('Bienvenue au Casino ! Veuillez commencer par créer un compte ou vous connecter.')
-    
-    connexion = False
 
-    if connexion==False:
-        var=''
-        compte=[]
-        while var!='1' and var!='0':
-            var = input('Voulez vous vous connecter (0) ou vous inscrire (1)? ')
-            print(var)
-        if var=='0':
-            id_entre=''
+    var=''
+    jeu=4
+    compte=[]
+    while var!='1' and var!='0':
+        var = input('Voulez vous vous connecter (0) ou vous inscrire (1)? ')
+        print(var)
+    if var=='0':
+        id_entre=''
+        sing=(id_entre,)
+        mdp_entre=''
+
+        while len(id_entre)<4 or len(id_entre)>20 or check_identifiant_existe(sing)==False:
+            id_entre=input("Veuillez entrer un identifiant valide et qui existe ")
             sing=(id_entre,)
-            mdp_entre=''
+                
+        mdp_entre=input("Entrez votre mot de passe ")
+        while len(mdp_entre)<4 or len(mdp_entre)>20 or check_mdp(id_entre)!=mdp_entre:
+            mdp_entre=input("Mot de passe invalide ")
 
-            id_entre=input("Quel est votre identifiant ? ")
-            while len(id_entre)<4 or len(id_entre)>20 or check_identifiant_existe(sing)==False:
-                id_entre=input("Veuillez entrer un identifiant valide et qui existe ")
-                sing=(id_entre,)
-                
-            mdp_entre=input("Entrez votre mot de passe ")
-            while len(mdp_entre)<4 or len(mdp_entre)>20 or check_mdp(id_entre)!=mdp_entre:
-                mdp_entre=input("Mot de passe invalide ")
+        cur.execute("SELECT argent FROM membres WHERE identifiant = ?",(id_entre,))
+        argent_sing=cur.fetchone()
 
-            print('Bienvenue, '+id_entre)
+        compte=[id_entre, mdp_entre, argent_sing[0]]
+            
+        print('Bienvenue, '+id_entre)
                 
                 
-        if var=='1':
-            compte=creation_compte()
-            print('Bienvenue, '+compte[0])
+    if var=='1':
+        compte=creation_compte()
+        print('Bienvenue, '+compte[0])
+
+    jeu=hall(compte)
+
+    if jeu==0:
+        return
+
 
 def creation_compte():
     identifiant=''
@@ -77,5 +85,12 @@ def check_mdp(identifiant):
 
     return mdp_sing[0]
 
-go()
+def hall(compte):
+    jeu='4'
 
+    while jeu!='0' and jeu!='1' and jeu!='2' and jeu!='3':
+        jeu=input('A quel jeu voulez-vous jouer ? Vous avez '+str(compte[2])+' dollars. Pour le blackjack, entrez 1. Pour la machine à sous, entrez 2. Pour la roulette, entrez 3. Si vous voulez sortir du Casino et vous déconnecter, entrez 0. ')
+
+    return int(jeu)
+
+go()
