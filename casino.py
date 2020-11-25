@@ -21,6 +21,7 @@ def go():
             sing=(id_entre,)
             mdp_entre=''
 
+            id_entre=input("Quel est votre identifiant ? ")
             while len(id_entre)<4 or len(id_entre)>20 or check_identifiant_existe(sing)==False:
                 id_entre=input("Veuillez entrer un identifiant valide et qui existe ")
                 sing=(id_entre,)
@@ -40,11 +41,13 @@ def creation_compte():
     identifiant=''
     sing=(identifiant,)
     mdp=''
-    
+
+    identifiant=input("Choisissez un identifiant. ")
     while len(identifiant)<4 or len(identifiant)>20 or check_identifiant_existe(sing)==True:
         identifiant=input("Veuillez choisir un identifiant entre 4 et 20 caractères qui n'existe pas. ")
         sing=(identifiant,)
 
+    mdp=input('Choisissez un mot de passe. ')
     while len(mdp)<4 or len(mdp)>20:
         mdp=input('Veuillez choisir un mot de passe entre 4 et 20 caractères. ')
 
