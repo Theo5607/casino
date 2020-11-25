@@ -25,6 +25,13 @@ def go():
                 id_entre=input("Veuillez entrer un identifiant valide et qui existe ")
                 sing=(id_entre,)
                 
+            mdp_entre=input("Entrez votre mot de passe ")
+            while len(mdp_entre)<4 or len(mdp_entre)>20 or check_mdp(id_entre)!=mdp_entre:
+                mdp_entre=input("Mot de passe invalide ")
+
+            print('Bienvenue, '+id_entre)
+                
+                
         if var=='1':
             compte=creation_compte()
             print('Bienvenue, '+compte[0])
@@ -57,8 +64,15 @@ def check_identifiant_existe(sing):
     id_existe_deja=False
     for el in liste_identifiants:
         if el[0]==sing[0]:
-            id_exitse_deja=True
-            return id_exitse_deja
+            id_existe_deja=True
+
+    return id_existe_deja
+
+def check_mdp(identifiant):
+    cur.execute("SELECT mdp FROM membres WHERE identifiant = ?",(identifiant,))
+    mdp_sing=cur.fetchone()
+
+    return mdp_sing[0]
 
 go()
 
