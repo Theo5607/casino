@@ -7,7 +7,7 @@ cur = conn.cursor()
 cur.execute("CREATE TABLE IF NOT EXISTS membres (identifiant TEXT, mdp TEXT, argent INTEGER)")
 
 
-def ret_spec(nb):
+def ret_spec(nb): #Retourne le nom de la carte
     if nb==11:
         return 'valet'
     elif nb==12:
@@ -19,7 +19,7 @@ def ret_spec(nb):
     else:
         return str(nb)
 
-def crea_liste_cartes():
+def crea_liste_cartes(): #Renvoie un dictionnaire qui renvoie pour une clé qui va de 1 à 52 pour le numéro cartes une liste qui contient la valeur de la carte, son nom et sa couleur
     liste_cartes={}
 
     for i in range(1,53):
@@ -45,7 +45,7 @@ liste_cartes=crea_liste_cartes()
 print(liste_cartes)
 
 
-def go():
+def go(): #Pour se connecter au casino et lancer le programme
     print('Bienvenue au Casino ! Veuillez commencer par créer un compte ou vous connecter.')
 
     var=''
@@ -82,7 +82,7 @@ def go():
     hall(compte)
 
 
-def creation_compte():
+def creation_compte(): #Fonction pour créer un compte
     identifiant=''
     sing=(identifiant,)
     mdp=''
@@ -105,7 +105,7 @@ def creation_compte():
 
     return compte
 
-def check_identifiant_existe(sing):
+def check_identifiant_existe(sing): #Cherche dans la base de donnée si l'identifiant pris en paramètre (qui doit être un singulet) existe
     cur.execute("SELECT identifiant FROM membres")
     liste_identifiants=cur.fetchall()
 
@@ -114,15 +114,15 @@ def check_identifiant_existe(sing):
         if el[0]==sing[0]:
             id_existe_deja=True
 
-    return id_existe_deja
+    return id_existe_deja #Renvoie une valeur true ou false
 
-def check_mdp(identifiant):
+def check_mdp(identifiant): #Renvoie le mot de passe attaché à un identifiant
     cur.execute("SELECT mdp FROM membres WHERE identifiant = ?",(identifiant,))
     mdp_sing=cur.fetchone()
 
     return mdp_sing[0]
 
-def creer_copie_jdc(jeu_de_base):
+def creer_copie_jdc(jeu_de_base): #Renvoie une copie du jeu de carte pris en paramètre
     nouveau_jeu = []
     nouveau_jeu = nouveau_jeu+jeu_de_base
 
@@ -130,7 +130,7 @@ def creer_copie_jdc(jeu_de_base):
 
 
 
-def hall(compte):
+def hall(compte): #(SERA PROBABLEMENT BIENTOT OBSOLETE) Fonction "menu" qui permet de choisir son jeu et de sortir du casino
     jeu='4'
 
     while jeu!='0' and jeu!='1' and jeu!='2' and jeu!='3':
