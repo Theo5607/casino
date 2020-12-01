@@ -1,9 +1,49 @@
 from tkinter import *
 from sqlite3 import *
+from pygame import *
 
 conn = connect("data.txt")
 cur = conn.cursor()
 cur.execute("CREATE TABLE IF NOT EXISTS membres (identifiant TEXT, mdp TEXT, argent INTEGER)")
+
+
+def ret_spec(nb):
+    if nb==11:
+        return 'valet'
+    elif nb==12:
+        return 'dame'
+    elif nb==13:
+        return 'roi'
+    elif nb==1:
+        return 'as'
+    else:
+        return str(nb)
+
+def crea_liste_cartes():
+    liste_cartes={}
+
+    for i in range(1,53):
+        nb=i
+        famille_nb=0
+
+        while nb > 13:
+            nb=nb-13
+            famille_nb=famille_nb+1
+
+        if famille_nb==0:
+            liste_cartes[i]=[nb,ret_spec(nb),'coeur']
+        elif famille_nb==1:
+            liste_cartes[i]=[nb,ret_spec(nb),'carreau']
+        elif famille_nb==2:
+            liste_cartes[i]=[nb,ret_spec(nb),'pique']
+        elif famille_nb==3:
+            liste_cartes[i]=[nb,ret_spec(nb),'trèfle']
+    
+    return liste_cartes
+
+liste_cartes=crea_liste_cartes()
+print(liste_cartes)
+
 
 def go():
     print('Bienvenue au Casino ! Veuillez commencer par créer un compte ou vous connecter.')
@@ -39,10 +79,7 @@ def go():
         compte=creation_compte()
         print('Bienvenue, '+compte[0])
 
-    jeu=hall(compte)
-
-    if jeu==0:
-        return
+    hall(compte)
 
 
 def creation_compte():
@@ -85,12 +122,21 @@ def check_mdp(identifiant):
 
     return mdp_sing[0]
 
+def creer_copie_jdc(jeu_de_base):
+    nouveau_jeu = []
+    nouveau_jeu = nouveau_jeu+jeu_de_base
+
+    return nouveau_jeu
+
+
+
 def hall(compte):
     jeu='4'
 
     while jeu!='0' and jeu!='1' and jeu!='2' and jeu!='3':
         jeu=input('A quel jeu voulez-vous jouer ? Vous avez '+str(compte[2])+' dollars. Pour le blackjack, entrez 1. Pour la machine à sous, entrez 2. Pour la roulette, entrez 3. Si vous voulez sortir du Casino et vous déconnecter, entrez 0. ')
 
-    return int(jeu)
+    if jeu==0:
+        return
 
 go()
