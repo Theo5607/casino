@@ -1,10 +1,17 @@
 from tkinter import *
 from sqlite3 import *
-from pygame import *
+import sys, time, pygame
 
 conn = connect("data.txt")
 cur = conn.cursor()
 cur.execute("CREATE TABLE IF NOT EXISTS membres (identifiant TEXT, mdp TEXT, argent INTEGER)")
+
+size = width, height = 626, 417
+black = 0, 0, 0
+
+screen = pygame.display.set_mode(size)
+entreecasino = pygame.image.load("entree_casino.jpg")
+entreecasino_rect = entreecasino.get_rect()
 
 
 def ret_spec(nb): #Retourne le nom de la carte
@@ -42,7 +49,6 @@ def crea_liste_cartes(): #Renvoie un dictionnaire qui renvoie pour une clé qui 
     return liste_cartes
 
 liste_cartes=crea_liste_cartes()
-print(liste_cartes)
 
 
 def go(): #Pour se connecter au casino et lancer le programme
@@ -53,7 +59,6 @@ def go(): #Pour se connecter au casino et lancer le programme
     compte=[]
     while var!='1' and var!='0':
         var = input('Voulez vous vous connecter (0) ou vous inscrire (1)? ')
-        print(var)
     if var=='0':
         id_entre=''
         sing=(id_entre,)
@@ -79,7 +84,11 @@ def go(): #Pour se connecter au casino et lancer le programme
         compte=creation_compte()
         print('Bienvenue, '+compte[0])
 
-    hall(compte)
+    #hall(compte)
+
+    screen.fill(black)
+    screen.blit(entreecasino, entreecasino_rect)
+    pygame.display.flip()
 
 
 def creation_compte(): #Fonction pour créer un compte
