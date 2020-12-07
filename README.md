@@ -1,5 +1,5 @@
 # Projet: Casino
-Dans le groupe il y a Matvei, Teis, Leonardo et moi
+Dans le groupe il y a Matvei, Teis, Leonardo et Theo
 Nous allons partir sur un projet de casino qui comporterai plusieurs jeux qui serais une machine à sous, une roulette et un blackjack.
 Pour la machine à sous:<br/>
 -système de multiplicateurs<br/>
@@ -10,3 +10,5 @@ Pour le blackjack:<br/>
 Pour la roulette:<br/>
 -différents systèmes de pari : par nombre (fois 36), par douzaine (fois 3), de 1 à 18 et de 19 à 36 (fois 2), le rouge et le noir (fois 2), par colonne (fois 3)<br/>
 -système de gain par multiplicateur(voir au dessus)
+
+<br/>Matvei s'occupera de la machine à sous, Leonardo de la roulette, Teis du blackjack et Theo de l'interface graphique/coordination entre les jeux
