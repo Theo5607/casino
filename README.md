@@ -1,7 +1,7 @@
 # Projet: Casino
 Dans le groupe il y a Matvei, Teis, Leonardo et moi
 Nous allons partir sur un projet de casino qui comporterai plusieurs jeux qui serais une machine à sous, une roulette et un blackjack.
-Pour la machine à sous:
+Pour la machine à sous:<br/>
 -système de multiplicateurs
 -système de mise de somme et de calcul de gains
 Pour le blackjack:
