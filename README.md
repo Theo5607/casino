@@ -15,4 +15,4 @@ De plus il y aura un système de connexion géré avec une base de donnée qui c
 
 Il y aura un menu général qui permettra de choisir son jeu, et d'aller dans son profil pour voir son argent, se déconnecter et cahnger son mot de passe.
 
-<br/>Matvei s'occupera de la machine à sous, Leonardo de la roulette, Teis du blackjack et Theo de l'interface graphique/coordination entre les jeux
+<br/>Matvei s'occupera de la machine à sous, Leonardinho de la roulette, Teïs du blackjack et Theo de l'interface graphique/coordination entre les jeux
