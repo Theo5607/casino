@@ -11,6 +11,8 @@ Pour la roulette:<br/>
 -différents systèmes de pari : par nombre (fois 36), par douzaine (fois 3), de 1 à 18 et de 19 à 36 (fois 2), le rouge et le noir (fois 2), par colonne (fois 3)<br/>
 -système de gain par multiplicateur(voir au dessus)<br/>
 
-De plus il y aura un système de connexion géré avec une base de donnée qui comportera pour chaque membre un identifiant, un mot de passe et son argent.
+De plus il y aura un système de connexion géré avec une base de donnée qui comportera pour chaque membre un identifiant, un mot de passe et son argent.<br/>
+
+Il y aura un menu général qui permettra de choisir son jeu, et d'aller dans son profil pour voir son argent, se déconnecter et cahnger son mot de passe.
 
 <br/>Matvei s'occupera de la machine à sous, Leonardo de la roulette, Teis du blackjack et Theo de l'interface graphique/coordination entre les jeux
