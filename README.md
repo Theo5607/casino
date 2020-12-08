@@ -1,5 +1,5 @@
 # Projet: Casino
-Dans le groupe il y a Matvei, Teis, Leonardo et Theo
+Dans le groupe il y a Matvei, Teïs, Leonardo et Theo
 Nous allons partir sur un projet de casino qui comporterai plusieurs jeux qui serais une machine à sous, une roulette et un blackjack.<br/>
 Pour la machine à sous:<br/>
 -système de multiplicateurs<br/>
