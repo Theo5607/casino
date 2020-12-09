@@ -6,13 +6,21 @@ conn = connect("data.txt")
 cur = conn.cursor()
 cur.execute("CREATE TABLE IF NOT EXISTS membres (identifiant TEXT, mdp TEXT, argent INTEGER)")
 
-size = width, height = 626, 417
 black = 0, 0, 0
 
-screen = pygame.display.set_mode(size)
-entreecasino = pygame.image.load("Images/Menu/entree_casino.jpg")
-entreecasino_rect = entreecasino.get_rect()
+pygame.init()
 
+screen = pygame.display.set_mode((1600, 900))
+
+entreecasino = pygame.image.load("Images/Menu/entree_casino.png")
+
+connexion = pygame.image.load("Images/connexion.png")
+
+btn_entrer = pygame.image.load("Images/Menu/btn_entrer.png")
+btn_entrer_pos = (650, 700)
+
+screen.blit(connexion, (0, 0))
+pygame.display.flip()
 
 def ret_spec(nb): #Retourne le nom de la carte
     if nb==11:
@@ -76,20 +84,24 @@ def go(): #Pour se connecter au casino et lancer le programme
         argent_sing=cur.fetchone()
 
         compte=[id_entre, mdp_entre, argent_sing[0]]
+
+        screen.fill(black)
+        screen.blit(entreecasino, (0, 0))
+        screen.blit(btn_entrer, btn_entrer_pos)
+        pygame.display.flip()
             
         print('Bienvenue, '+id_entre)
                 
-                
     if var=='1':
+        screen.fill(black)
+        screen.blit(entreecasino, (0, 0))
+        screen.blit(btn_entrer, btn_entrer_pos)
+        pygame.display.flip()
+        
         compte=creation_compte()
         print('Bienvenue, '+compte[0])
 
     #hall(compte)
-
-    screen.fill(black)
-    screen.blit(entreecasino, entreecasino_rect)
-    pygame.display.flip()
-
 
 def creation_compte(): #Fonction pour créer un compte
     identifiant=''
