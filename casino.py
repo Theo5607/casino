@@ -10,7 +10,7 @@ size = width, height = 626, 417
 black = 0, 0, 0
 
 screen = pygame.display.set_mode(size)
-entreecasino = pygame.image.load("entree_casino.jpg")
+entreecasino = pygame.image.load("Images/Menu/entree_casino.jpg")
 entreecasino_rect = entreecasino.get_rect()
 
 
@@ -132,8 +132,7 @@ def check_mdp(identifiant): #Renvoie le mot de passe attaché à un identifiant
     return mdp_sing[0]
 
 def creer_copie_jdc(jeu_de_base): #Renvoie une copie du jeu de carte pris en paramètre
-    nouveau_jeu = []
-    nouveau_jeu = nouveau_jeu+jeu_de_base
+    nouveau_jeu = jeu_de_base.copy()
 
     return nouveau_jeu
 
