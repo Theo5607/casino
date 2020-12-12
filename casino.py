@@ -1,11 +1,26 @@
 from tkinter import *
 from sqlite3 import *
-from pygame import *
+import sys, time, pygame
 
 conn = connect("data.txt")
 cur = conn.cursor()
 cur.execute("CREATE TABLE IF NOT EXISTS membres (identifiant TEXT, mdp TEXT, argent INTEGER)")
 
+black = 0, 0, 0
+
+pygame.init()
+
+screen = pygame.display.set_mode((1600, 900))
+
+entreecasino = pygame.image.load("Images/Menu/entree_casino.png")
+
+connexion = pygame.image.load("Images/connexion.png")
+
+btn_entrer = pygame.image.load("Images/Menu/btn_entrer.png")
+btn_entrer_pos = (650, 700)
+
+screen.blit(connexion, (0, 0))
+pygame.display.flip()
 
 def ret_spec(nb): #Retourne le nom de la carte
     if nb==11:
@@ -42,7 +57,6 @@ def crea_liste_cartes(): #Renvoie un dictionnaire qui renvoie pour une clé qui 
     return liste_cartes
 
 liste_cartes=crea_liste_cartes()
-print(liste_cartes)
 
 
 def go(): #Pour se connecter au casino et lancer le programme
@@ -53,7 +67,6 @@ def go(): #Pour se connecter au casino et lancer le programme
     compte=[]
     while var!='1' and var!='0':
         var = input('Voulez vous vous connecter (0) ou vous inscrire (1)? ')
-        print(var)
     if var=='0':
         id_entre=''
         sing=(id_entre,)
@@ -71,16 +84,24 @@ def go(): #Pour se connecter au casino et lancer le programme
         argent_sing=cur.fetchone()
 
         compte=[id_entre, mdp_entre, argent_sing[0]]
+
+        screen.fill(black)
+        screen.blit(entreecasino, (0, 0))
+        screen.blit(btn_entrer, btn_entrer_pos)
+        pygame.display.flip()
             
         print('Bienvenue, '+id_entre)
                 
-                
     if var=='1':
+        screen.fill(black)
+        screen.blit(entreecasino, (0, 0))
+        screen.blit(btn_entrer, btn_entrer_pos)
+        pygame.display.flip()
+        
         compte=creation_compte()
         print('Bienvenue, '+compte[0])
 
-    hall(compte)
-
+    #hall(compte)
 
 def creation_compte(): #Fonction pour créer un compte
     identifiant=''
@@ -123,8 +144,7 @@ def check_mdp(identifiant): #Renvoie le mot de passe attaché à un identifiant
     return mdp_sing[0]
 
 def creer_copie_jdc(jeu_de_base): #Renvoie une copie du jeu de carte pris en paramètre
-    nouveau_jeu = []
-    nouveau_jeu = nouveau_jeu+jeu_de_base
+    nouveau_jeu = jeu_de_base.copy()
 
     return nouveau_jeu
 
