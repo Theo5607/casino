@@ -7,6 +7,7 @@ cur = conn.cursor()
 cur.execute("CREATE TABLE IF NOT EXISTS membres (identifiant TEXT, mdp TEXT, argent INTEGER)")
 
 black = 0, 0, 0
+jouer=1
 
 pygame.init()
 
@@ -84,20 +85,10 @@ def go(): #Pour se connecter au casino et lancer le programme
         argent_sing=cur.fetchone()
 
         compte=[id_entre, mdp_entre, argent_sing[0]]
-
-        screen.fill(black)
-        screen.blit(entreecasino, (0, 0))
-        screen.blit(btn_entrer, btn_entrer_pos)
-        pygame.display.flip()
             
         print('Bienvenue, '+id_entre)
                 
     if var=='1':
-        screen.fill(black)
-        screen.blit(entreecasino, (0, 0))
-        screen.blit(btn_entrer, btn_entrer_pos)
-        pygame.display.flip()
-        
         compte=creation_compte()
         print('Bienvenue, '+compte[0])
 
@@ -160,3 +151,9 @@ def hall(compte): #(SERA PROBABLEMENT BIENTOT OBSOLETE) Fonction "menu" qui perm
         return
 
 go()
+
+while jouer==1:
+    screen.fill(black)
+    screen.blit(entreecasino, (0, 0))
+    screen.blit(btn_entrer, btn_entrer_pos)
+    pygame.display.flip()
