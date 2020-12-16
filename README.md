@@ -19,6 +19,6 @@ Il y aura un menu général qui permettra de choisir son jeu, et d'aller dans so
 
 <br/>____________________
 
-<br/><br/>
+<br/>
 
 Pour les contributions de Leonardo et Teis, c'est moi qui apparait comme auteur du commit. C'est normal, j'ai juste ajouté des dossiers et renommé les fichiers pour plus de clarté
