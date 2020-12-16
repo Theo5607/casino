@@ -16,3 +16,9 @@ De plus il y aura un système de connexion géré avec une base de donnée qui c
 Il y aura un menu général qui permettra de choisir son jeu, et d'aller dans son profil pour voir son argent, se déconnecter et cahnger son mot de passe.
 
 <br/>Matvei s'occupera de la machine à sous, Leonardinho de la roulette, Teïs du blackjack et Theo de l'interface graphique/coordination entre les jeux
+
+<br/>____________________
+
+<br/><br/>
+
+Pour les contributions de Leonardo et Teis, c'est moi qui apparait comme auteur du commit. C'est normal, j'ai juste ajouté des dossiers et renommé les fichiers pour plus de clarté
