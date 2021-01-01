@@ -34,6 +34,20 @@ slot_icone = pygame.image.load("Images/Menu_jeu/slot_icone.png")
 slot_icone_pos = (900, 170)
 roulette_icone = pygame.image.load("Images/Menu_jeu/roulette_icone.png")
 roulette_icone_pos = (500, 550)
+quitter = pygame.image.load("Images/Menu_jeu/quitter.png")
+quitter_pos = (1300, 770)
+
+profil = pygame.image.load("Images/Menu_jeu/profil.png")
+profil_pos = (1450, 20)
+icone_profil = pygame.image.load("Images/Menu_jeu/Profil/icone_profil.png")
+icone_profil_pos = (200, 200)
+retour_profil = pygame.image.load("Images/Menu_jeu/Profil/retour_profil.png")
+retour_profil_pos = (1300, 770)
+oeil = pygame.image.load("Images/Menu_jeu/Profil/oeil.png")
+
+rect_blanc = pygame.image.load("Images/Menu_jeu/Profil/rect_blanc.png")
+rect_blanc_pos = (550, 370)
+
 
 #-----------
 
@@ -212,11 +226,27 @@ def hall(compte): #(SERA PROBABLEMENT BIENTOT OBSOLETE) Fonction "menu" qui perm
 
 compte=go()
 
+#variables profil
+font_profil = pygame.font.Font("Polices/coolvetica.ttf", 70)
+font_argent = font2 = pygame.font.Font("Polices/dejavu_sansbold.ttf", 30)
+mdp_cache_verif=True
+pos_oeil_gauche=0
+
 #variables machine à sous
 font = pygame.font.Font("Polices/dejavu_sansbold.ttf", 100)
 font2 = pygame.font.Font("Polices/dejavu_sansbold.ttf", 50)
 somme=''
 gains=0
+
+#fonction qui dessine le menu
+def dessine_menu():
+    screen.fill(white)
+    screen.blit(banderole, (0, 0))
+    screen.blit(profil, profil_pos)
+    screen.blit(blackjack_icone, blackjack_icone_pos)
+    screen.blit(slot_icone, slot_icone_pos)
+    screen.blit(roulette_icone, roulette_icone_pos)
+    screen.blit(quitter, quitter_pos)
         
 while jouer==1:
     for event in pygame.event.get():
@@ -228,20 +258,70 @@ while jouer==1:
             if(event.pos[0]>=650 and event.pos[0]<=950) and (event.pos[1]>=700 and event.pos[1]<=800) and tableau=='entree':
                 tableau='menu'
 
-                screen.fill(white)
-                screen.blit(banderole, (0, 0))
-                screen.blit(blackjack_icone, blackjack_icone_pos)
-                screen.blit(slot_icone, slot_icone_pos)
-                screen.blit(roulette_icone, roulette_icone_pos)
+                dessine_menu()
                 pygame.display.flip()
 
             #boutons menu jeu
+            if(event.pos[0]>=1450 and event.pos[0]<=1550) and (event.pos[1]>=20 and event.pos[1]<=70) and tableau=='menu':
+                tableau='profil'
+
+                mdp_cache_str=''
+                for car in compte[1]:
+                    mdp_cache_str=mdp_cache_str+'*'
+
+                screen.fill(white)
+                screen.blit(retour_profil, retour_profil_pos)
+                screen.blit(icone_profil, icone_profil_pos)
+                pseudo = font_profil.render(compte[0].upper(), 1, (0, 0, 0))
+                longueur_pseudo = pseudo.get_rect().width
+                screen.blit(pseudo, (200+((200-longueur_pseudo)/2), 420))
+                argent = font_argent.render('Vous avez actuellement '+str(compte[2])+' dollars sur votre compte', 1, (0, 0, 0))
+                screen.blit(argent, (550, 300))
+                mdp_cache = font_argent.render('Votre mot de passe : '+mdp_cache_str, 1, (0, 0, 0))
+                mdp_long = mdp_cache.get_rect().width
+                screen.blit(mdp_cache, (550, 370))
+                pos_oeil_gauche=mdp_long+30+550
+                screen.blit(oeil, (pos_oeil_gauche, 360))
+                pygame.display.flip()
+                    
             if(event.pos[0]>=900 and event.pos[0]<=1350) and (event.pos[1]>=170 and event.pos[1]<=420) and tableau=='menu':
                 tableau='mas_menu'
                 
                 screen.fill(white)
                 screen.blit(mas_jouer, mas_jouer_pos)
                 screen.blit(mas_retour, mas_retour_pos)
+                pygame.display.flip()
+
+            if(event.pos[0]>=1300 and event.pos[0]<=1550) and (event.pos[1]>=770 and event.pos[1]<=850) and tableau=='menu':
+                jouer = 0
+
+            #boutons profil
+            if(event.pos[0]>=1300 and event.pos[0]<=1550) and (event.pos[1]>=770 and event.pos[1]<=850) and tableau=='profil':
+                tableau='menu'
+
+                dessine_menu()
+                pygame.display.flip()
+
+            if(event.pos[0]>=pos_oeil_gauche and event.pos[0]<=pos_oeil_gauche+100) and (event.pos[1]>=360 and event.pos[1]<=410) and tableau=='profil':
+                screen.blit(rect_blanc, rect_blanc_pos)
+
+                if mdp_cache_verif==True:
+                    mdp_cache_verif=False
+                    
+                    mdp = font_argent.render('Votre mot de passe : '+compte[1], 1, (0, 0, 0))
+                    mdp_long = mdp.get_rect().width
+                    screen.blit(mdp, (550, 370))
+                    pos_oeil_gauche=mdp_long+30+550
+                    screen.blit(oeil, (pos_oeil_gauche, 360))
+                else:
+                    mdp_cache_verif=True
+                    
+                    mdp_cache = font_argent.render('Votre mot de passe : '+mdp_cache_str, 1, (0, 0, 0))
+                    mdp_long = mdp_cache.get_rect().width
+                    screen.blit(mdp_cache, (550, 370))
+                    pos_oeil_gauche=mdp_long+30+550
+                    screen.blit(oeil, (pos_oeil_gauche, 360))
+
                 pygame.display.flip()
 
             #------------
@@ -258,11 +338,7 @@ while jouer==1:
             if(event.pos[0]>=900 and event.pos[0]<=1300) and (event.pos[1]>=300 and event.pos[1]<=500) and tableau=='mas_menu':
                 tableau='menu'
 
-                screen.fill(white)
-                screen.blit(banderole, (0, 0))
-                screen.blit(blackjack_icone, blackjack_icone_pos)
-                screen.blit(slot_icone, slot_icone_pos)
-                screen.blit(roulette_icone, roulette_icone_pos)
+                dessine_menu()
                 pygame.display.flip()
 
             #boutons rectangle somme machine à sous
@@ -286,11 +362,7 @@ while jouer==1:
             if(event.pos[0]>=1050 and event.pos[0]<=1350) and (event.pos[1]>=700 and event.pos[1]<=800) and tableau=='mas_gains':
                 tableau='menu'
 
-                screen.fill(white)
-                screen.blit(banderole, (0, 0))
-                screen.blit(blackjack_icone, blackjack_icone_pos)
-                screen.blit(slot_icone, slot_icone_pos)
-                screen.blit(roulette_icone, roulette_icone_pos)
+                dessine_menu()
                 pygame.display.flip()
 
         #jouer à la machine à sous
