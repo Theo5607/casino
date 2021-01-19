@@ -23,7 +23,7 @@ Il y aura un menu général qui permettra de choisir son jeu, et d'aller dans so
 
 Pour les contributions de Leonardo et Teis, c'est moi qui apparait comme auteur du commit. C'est normal, j'ai juste ajouté des dossiers et renommé les fichiers pour plus de clarté
 
-<br/><br/>Installation du casino.
+<br/><br/>*Installation du casino.*
 <br/><br/>Pour lancer le casino, executer le fichier 'casino.py', puis créer un compte ou se connecter. Dans l'interface graphique, la navigation est assez simpliste (cliquer sur les icones). Pour choisir sa mise, d'abord cliquer sur le rectangle et entrer un nombre (pas sur le clvier numérique). Pour effacer un chiffre, cliquer sur 'BACKSPACE'. Lorsque le nombre est choisi, cliquer sur 'RETURN'.
 
-<br/><br/>PS: il peut arriver que le programme passe certains écrans lorsque deux éléments cliquables sont aux mêmes endroits sur différents écrans.
+<br/>PS: il peut arriver que le programme passe certains écrans lorsque deux éléments cliquables sont aux mêmes endroits sur différents écrans.
