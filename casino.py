@@ -51,6 +51,21 @@ rect_blanc_pos = (550, 370)
 
 #-----------
 
+#Images roulette
+
+roulette_tapis = pygame.image.load("Images/Jeux/Roulette/tapis.png")
+roulette_tapis_bleu = pygame.image.load("Images/Jeux/Roulette/tapis_bleu.png")
+
+fond_nb_vert = pygame.image.load("Images/Jeux/Roulette/fond_nb_vert.png")
+fond_nb_bleu = pygame.image.load("Images/Jeux/Roulette/fond_nb_bleu.png")
+
+zero_vert = pygame.image.load("Images/Jeux/Roulette/zero_vert.png")
+zero_bleu = pygame.image.load("Images/Jeux/Roulette/zero_bleu.png")
+zero_pos = (21, 83)
+
+ligne_vert = pygame.image.load("Images/Jeux/Roulette/ligne_vert.png")
+ligne_bleu = pygame.image.load("Images/Jeux/Roulette/ligne_bleu.png")
+
 #Images machine à sous
 
 mas_jouer = pygame.image.load("Images/Jeux/Machine_a_sous/jouer.png")
@@ -232,6 +247,9 @@ font_argent = font2 = pygame.font.Font("Polices/dejavu_sansbold.ttf", 30)
 mdp_cache_verif=True
 pos_oeil_gauche=0
 
+#variables roulette
+paris=[]
+
 #variables machine à sous
 font = pygame.font.Font("Polices/dejavu_sansbold.ttf", 100)
 font2 = pygame.font.Font("Polices/dejavu_sansbold.ttf", 50)
@@ -247,6 +265,51 @@ def dessine_menu():
     screen.blit(slot_icone, slot_icone_pos)
     screen.blit(roulette_icone, roulette_icone_pos)
     screen.blit(quitter, quitter_pos)
+
+#fonction qui vérifie un clic dans le tapis de la roulette
+def check_tapis(clic):
+    liste_nb_roulette=[3,2,1]
+    nombre=0
+    ligne=1
+    colonne=1
+    coordonnees=[187, 84]
+    coordonnees_zero=[18, 82]
+    for ligne in range(0,3):
+        for colonne in range(0,12):
+            nombre=liste_nb_roulette[ligne]+3*(colonne)
+            if(clic[0]>=coordonnees[0] and clic[0]<=coordonnees[0]+103) and (clic[1]>=coordonnees[1] and clic[1]<=coordonnees[1]+103) and tableau=='roulette_tapis':
+                screen.blit(fond_nb_bleu, (coordonnees[0], coordonnees[1]))
+                pygame.display.flip()
+                return nombre
+            else:
+                if nombre==36:
+                    coordonnees[0]=187
+                    coordonnees[1]=84+110
+                elif nombre==35:
+                    coordonnees[0]=187
+                    coordonnees[1]=84+110*2
+                elif nombre==34:
+                    coordonnees[0]=187
+                elif nombre==16:
+                    coordonnees[0]=coordonnees[0]+109
+                elif nombre==17:
+                    coordonnees[0]=coordonnees[0]+109
+                elif nombre==18:
+                    coordonnees[0]=coordonnees[0]+109
+                else:
+                    coordonnees[0]=coordonnees[0]+106
+
+    coordonnees_ligne=[1465, 84]
+    for i in range(0,3):
+        if(clic[0]>=coordonnees_ligne[0] and clic[0]<=coordonnees_ligne[0]+102) and (clic[1]>=coordonnees_ligne[1]+i*111 and clic[1]<=coordonnees_ligne[1]+i*(111)+105):
+            screen.blit(ligne_bleu, (coordonnees_ligne[0], coordonnees_ligne[1]+i*111))
+            pygame.display.flip()
+            return 'ligne_'+str(i+1)
+
+    if(clic[0]>=coordonnees_zero[0] and clic[0]<=coordonnees_zero[0]+165) and (clic[1]>=coordonnees_zero[1] and clic[1]<=coordonnees_zero[1]+330) and tableau=='roulette_tapis':
+        screen.blit(zero_bleu, zero_pos)
+        pygame.display.flip()
+        return 0
         
 while jouer==1:
     for event in pygame.event.get():
@@ -292,6 +355,14 @@ while jouer==1:
                 screen.blit(mas_retour, mas_retour_pos)
                 pygame.display.flip()
 
+            if(event.pos[0]>=500 and event.pos[0]<=1100) and (event.pos[1]>=550 and event.pos[1]<=800) and tableau=='menu':
+                tableau='roulette_menu'
+
+                screen.fill(white)
+                screen.blit(mas_jouer, mas_jouer_pos)
+                screen.blit(mas_retour, mas_retour_pos)
+                pygame.display.flip()
+
             if(event.pos[0]>=1300 and event.pos[0]<=1550) and (event.pos[1]>=770 and event.pos[1]<=850) and tableau=='menu':
                 jouer = 0
 
@@ -325,6 +396,56 @@ while jouer==1:
                 pygame.display.flip()
 
             #------------
+
+            #boutons roulette
+            if(event.pos[0]>=900 and event.pos[0]<=1300) and (event.pos[1]>=300 and event.pos[1]<=500) and tableau=='roulette_menu':
+                tableau='menu'
+
+                dessine_menu()
+                pygame.display.flip()
+
+            if(event.pos[0]>=300 and event.pos[0]<=700) and (event.pos[1]>=300 and event.pos[1]<=500) and tableau=='roulette_menu':
+                tableau='roulette_tapis'
+
+                screen.fill(white)
+                screen.blit(roulette_tapis, (0, 0))
+                liste_nb_roulette=[3,2,1]
+                nombre=0
+                ligne=1
+                colonne=1
+                coordonnees=[187, 84]
+                for ligne in range(0,3):
+                    for colonne in range(0,12):
+                        nombre=liste_nb_roulette[ligne]+3*(colonne)
+                        screen.blit(fond_nb_vert, (coordonnees[0], coordonnees[1]))
+                        if nombre==36:
+                            coordonnees[0]=187
+                            coordonnees[1]=84+110
+                        elif nombre==35:
+                            coordonnees[0]=187
+                            coordonnees[1]=84+110*2
+                        elif nombre==34:
+                            coordonnees[0]=187
+                        elif nombre==16:
+                            coordonnees[0]=coordonnees[0]+109
+                        elif nombre==17:
+                            coordonnees[0]=coordonnees[0]+109
+                        elif nombre==18:
+                            coordonnees[0]=coordonnees[0]+109
+                        else:
+                            coordonnees[0]=coordonnees[0]+106
+
+                screen.blit(zero_vert, (18, 82))
+
+                coordonnees_ligne=[1465, 84]
+                for i in range(0,3):
+                    screen.blit(ligne_vert, (coordonnees_ligne[0], coordonnees_ligne[1]+i*(111)))
+                    
+                pygame.display.flip()
+                
+            nv_pari=check_tapis(event.pos)
+            paris.append(nv_pari)
+            nv_pari=0
 
             #boutons menu machine à sous
             if(event.pos[0]>=300 and event.pos[0]<=700) and (event.pos[1]>=300 and event.pos[1]<=500) and tableau=='mas_menu':
