@@ -110,7 +110,7 @@ def slot_partie(mise): #fonction prenant en argument lamise sur laquelle l'utlis
         gains_slot=gains_slot+multi(p7)
         print('bravo vous gagnez:',multi(p7))
 
-    return gains_slot
+    return gains_slot, tirage
 
 print(slot_partie(100))
 
