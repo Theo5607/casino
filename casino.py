@@ -3,6 +3,7 @@ from tkinter import *
 from sqlite3 import *
 from pygame.locals import *
 from Casino_Matvei.test import slot_partie
+from casino_leonardo.roulette import roulette
 
 conn = connect("data.txt")
 cur = conn.cursor()
@@ -248,7 +249,9 @@ mdp_cache_verif=True
 pos_oeil_gauche=0
 
 #variables roulette
-paris=[]
+paris={"mise_rouge" : 0, "mise_noir" : 0,"mise_colone1" : 0,"mise_colone2" : 0,"mise_colone3" : 0,"mise_douzaine1" : 0,"mise_douzaine2" : 0,"mise_douzaine3" : 0,"mise_1_à_18" : 0,"mise_19_à_36" : 0,"mise_impair" : 0,"mise_pair" : 0}
+for i in range(1, 37):
+    paris[i]=0
 
 #variables machine à sous
 font = pygame.font.Font("Polices/dejavu_sansbold.ttf", 100)
@@ -277,10 +280,10 @@ def check_tapis(clic):
     for ligne in range(0,3):
         for colonne in range(0,12):
             nombre=liste_nb_roulette[ligne]+3*(colonne)
-            if(clic[0]>=coordonnees[0] and clic[0]<=coordonnees[0]+103) and (clic[1]>=coordonnees[1] and clic[1]<=coordonnees[1]+103) and tableau=='roulette_tapis':
+            if(clic[0]>=coordonnees[0] and clic[0]<=coordonnees[0]+103) and (clic[1]>=coordonnees[1] and clic[1]<=coordonnees[1]+103):
                 screen.blit(fond_nb_bleu, (coordonnees[0], coordonnees[1]))
                 pygame.display.flip()
-                return nombre
+                return [nombre, 1]
             else:
                 if nombre==36:
                     coordonnees[0]=187
@@ -304,13 +307,15 @@ def check_tapis(clic):
         if(clic[0]>=coordonnees_ligne[0] and clic[0]<=coordonnees_ligne[0]+102) and (clic[1]>=coordonnees_ligne[1]+i*111 and clic[1]<=coordonnees_ligne[1]+i*(111)+105):
             screen.blit(ligne_bleu, (coordonnees_ligne[0], coordonnees_ligne[1]+i*111))
             pygame.display.flip()
-            return 'ligne_'+str(i+1)
+            return ['ligne_'+str(i+1), 1]
 
     if(clic[0]>=coordonnees_zero[0] and clic[0]<=coordonnees_zero[0]+165) and (clic[1]>=coordonnees_zero[1] and clic[1]<=coordonnees_zero[1]+330) and tableau=='roulette_tapis':
         screen.blit(zero_bleu, zero_pos)
         pygame.display.flip()
-        return 0
-        
+        return [0, 1]
+
+    return []
+
 while jouer==1:
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -442,10 +447,14 @@ while jouer==1:
                     screen.blit(ligne_vert, (coordonnees_ligne[0], coordonnees_ligne[1]+i*(111)))
                     
                 pygame.display.flip()
-                
-            nv_pari=check_tapis(event.pos)
-            paris.append(nv_pari)
-            nv_pari=0
+
+            if tableau=='roulette_tapis':
+                liste_paris=check_tapis(event.pos)
+                if len(liste_paris)!=0:
+                    paris[liste_paris[0]]=liste_paris[1]
+
+                    print(paris)
+            
 
             #boutons menu machine à sous
             if(event.pos[0]>=300 and event.pos[0]<=700) and (event.pos[1]>=300 and event.pos[1]<=500) and tableau=='mas_menu':
@@ -524,14 +533,14 @@ while jouer==1:
                     
                     screen.fill(white)
 
-                    if gains > 0 :
-                        compte[2]=compte[2]-int(somme)+gains
+                    if gains[0] > 0 :
+                        compte[2]=compte[2]-int(somme)+gains[0]
                         
                         cur.execute("UPDATE membres SET argent = ? WHERE identifiant = ?", (compte[2], compte[0]))
                         conn.commit()
                         
                         screen.blit(mas_gains, mas_gains_pos)
-                        afficher = font2.render('Vous avez gagné '+str(gains)+' dollars', 1, (0, 0, 0))
+                        afficher = font2.render('Vous avez gagné '+str(gains[0])+' dollars', 1, (0, 0, 0))
                         screen.blit(afficher, (500,400))
                         screen.blit(mas_rejouer, mas_rejouer_pos)
                         screen.blit(mas_quitter, mas_quitter_pos)
@@ -556,6 +565,7 @@ while jouer==1:
                     screen.blit(mas_rectangle_somme, mas_rectangle_somme_pos)
                     pygame.display.flip()
 
-                
-
-            
+        #jouer à la roulette
+        if event.type == KEYDOWN and tableau=='roulette_tapis':
+            if event.key == K_RETURN:
+                roulette(paris)
