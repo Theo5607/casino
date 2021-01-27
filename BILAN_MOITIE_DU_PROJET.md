@@ -1,6 +1,6 @@
 *Difficultés du passé*
 
-</br></br>Théo:
+</br>Théo:
 </br>J'ai eu quelques difficultés à appréhender l'interface de Pygame, mais maintenant je n'ai plus trop de problèmes pour l'utiliser.
 
 
