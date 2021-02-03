@@ -568,4 +568,29 @@ while jouer==1:
         #jouer à la roulette
         if event.type == KEYDOWN and tableau=='roulette_tapis':
             if event.key == K_RETURN:
-                roulette(paris)
+                tableau='roulette_miser'
+                for el in mises.key():
+                    if el==event.key:
+                        if len(somme)<8:
+                            screen.blit(mas_rectangle_somme, mas_rectangle_somme_pos)
+                        
+                            somme=somme+dico_nb[el]
+                            afficher = font.render(somme, 1, (0, 0, 0))
+                            screen.blit(afficher, (500,600))
+                            pygame.display.flip()
+                        else:
+                            somme=somme[0:7]+dico_nb[el]
+
+                            screen.blit(mas_rectangle_somme, mas_rectangle_somme_pos)
+                            
+                            afficher = font.render(somme, 1, (0, 0, 0))
+                            screen.blit(afficher, (500,600))
+                            pygame.display.flip()
+
+                        if event.key == K_BACKSPACE:
+                            screen.blit(mas_rectangle_somme, mas_rectangle_somme_pos)
+                            
+                            somme=somme[0:len(somme)-1]
+                            afficher = font.render(somme, 1, (0, 0, 0))
+                            screen.blit(afficher, (500,600))
+                            pygame.display.flip()
