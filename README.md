@@ -39,4 +39,9 @@ Pour les contributions de Leonardo et Teis, c'est moi qui apparait comme auteur 
 
 <br/>Nous avons utilisé la biblothèque random à travers tout les programmes et les fonction des jeux car  les jeux de casino sont basé sur l'aléatoire, nous avons pricipalement utilisé random.randint afin de tirer des entiers que nous avons utlilisés afiin de définir sur quoi les jeux tombent (nombre à la roulette, cartes au blackjack et les symboles qui toombent dans la machine à sous).
 
+<br/>*casino.py*
+
 <br/>Dans le programme casino.py, nous utilisons la bibliothèque sqlite3 pour gérer la base de données qui stocke l'argent, l'identifiant et le mot de passe. A partir du programme slot_machine.py, j'importe la fonction slot_partie() et depuis le programme roulette_fin.py, j'importe la fonction roulette().
+où l'on
+
+<br/>Dans le prgramme nous utilisons plusieurs variables utilisées tout le long du programme, comme la variable 'tableau' qui sert à savoir dans quel écran on se trouve, il y a également la variable 'compte' qui stocke les informations de l'utilisateur. Chaque image est stockée dans une variable reconnaissable.
