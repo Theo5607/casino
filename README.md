@@ -34,3 +34,7 @@ Pour les contributions de Leonardo et Teis, c'est moi qui apparait comme auteur 
 
 
 # Les aspects techniques du projet
+
+<br/><br/>
+
+<br/>Nous avons utilisé la biblothèque random à travers tout les programmes et les fonction des jeux car  les jeux de casino sont basé sur l'aléatoire, nous avons pricipalement utilisé random.randint afin de tirer des entiers que nous avons utlilisés afiin de définir sur quoi les jeux tombent (nombre à la roulette, cartes au blackjack et les symboles qui toombent dans la machine à sous).
