@@ -29,3 +29,8 @@ Pour les contributions de Leonardo et Teis, c'est moi qui apparait comme auteur 
 <br/><br/>Actuellement, le sysytème de connexion, la machine à sous (même si il n'y a pas d'interface), le profil fonctionnent. On peut parier une mise sur le blackjack mais rien ne se passe après, et on travaille actuellement sur le système de pari pour la roulette.
 
 <br/>PS: il peut arriver que le programme passe certains écrans lorsque deux éléments cliquables sont aux mêmes endroits sur différents écrans.
+
+<br/>____________________
+
+
+# Les aspects techniques du projet
