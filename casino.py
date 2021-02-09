@@ -1,5 +1,4 @@
 import sys, time, pygame
-from tkinter import *
 from sqlite3 import *
 from pygame.locals import *
 from Casino_Matvei.slot_machine import slot_partie
