@@ -1,5 +1,6 @@
 import random
 
+"""la fonction slot_partie prend en argument une mise rentrée par l'utilisateur depuis l'interface et retourne les gains calculés en fonctions des symboles tirés qui sont aussi les retournes"""
 def slot_partie(mise): #fonction prenant en argument lamise sur laquelle l'utlisateur va jouer
     gains_slot=0 #création de la variable gains_slot qui définit combien ont été gagné sur cette session
 
