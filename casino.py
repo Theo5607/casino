@@ -402,6 +402,7 @@ def pari(nom_pari):
 
 #Début de la boucle infinie de Pygame
 while jouer==1:
+    pygame.display.flip()
     #Event listener
     for event in pygame.event.get():
         #Si on clique sur la croix en haut à croite, on arrête la boucle de jeu
@@ -771,5 +772,4 @@ while jouer==1:
                         print(pari_actuel)
 
                 nb_actuel[0]=pari(pari_actuel[0])
-
-        
+pygame.quit()
