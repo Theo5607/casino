@@ -113,7 +113,7 @@ def blackjack():
         while stand_check!=True:
 
             while action !=('1' and '2' and '3' and '4'): #demande au joueur ce qu'il souhaite faire 1= tirer une carte, 2= double la mise et tire une seul carte, 3=si jamais un double tombe on peut diviser les cartes 4= le joueur ne fait rien
-                action=input("Voulez vous ajouter une carte (1), double (2), spilt (3) ou stand (4)")
+                action=input("Voulez vous ajouter une carte (1), double (2), split (3) ou stand (4)")
                 mise_finale=mise_1
                 if action == '1':
                     ct_jr=hit(ct_jr)
