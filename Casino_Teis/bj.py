@@ -66,7 +66,7 @@ def play_blackjack(mise):
     #check si il y a eu blackjack direct
     if (ct_jr[0][0]==1 and (ct_jr[1][0]==(10 or 11 or 12 or 13))) or (ct_jr[1][0]==1 and (ct_jr[0][0]==(10 or 11 or 12 or 13))): #vérification s'il ya eu un blackjack
         gains = mise*2
-        print("Blackjack")
+        phrase-"Vous avez fait Blackjack! Vous gagnez!"
 
 
     else:
@@ -78,7 +78,7 @@ def play_blackjack(mise):
         somme_jr=ct_jr[0][0] + ct_jr[1][0]
         somme_crp=ct_crp[0][0] + ct_crp[1][0]
         end_check=False
-
+        stand=0
         #boucle qui se répéte tant que la partie n'est pas terminée
         while end_check!=True:
 
@@ -88,20 +88,22 @@ def play_blackjack(mise):
                 if action == '1':
                     ct_jr.append(tirer_carte())
                     somme_jr+=ct_jr[len(ct_jr)-1][0]
+                    print("Vous avez piocher un/une: ",ct_jr[len(ct_jr)-1][0])
                     print("vous avez cette somme de cartes:",somme_jr)
                     
 
                 #ajoute des cartes au croupier tant qu'il na pas 17    
                 if action=='4':
+                    stand=1
                     while int(somme_crp) < 17:
                         ct_crp.append(tirer_carte())
                         somme_crp+=ct_crp[len(ct_crp)-1][0]
-                        print(somme_crp)
+                    print(somme_crp)
 
                 #dit que le croupier a perdu s'il a plus de 21 en mains
                 if somme_crp>21 and somme_jr<21:
                     gains=mise*2
-                    phrase="Le croupier a dépassé 21 vous gagnez"
+                    phrase="Le croupier a dépassé 21, vous gagnez!"
                     end_check=True
                     break
                 #dit que le joueur a perdu s'il a plus de 21 en mains
@@ -110,15 +112,24 @@ def play_blackjack(mise):
                     phrase="Vous avez plus de 21 en cartes, vous perdez"
                     end_check=True
                     break
-                elif somme_crp>somme_jr and  somme_crp<=21:
+                elif somme_crp>somme_jr and  somme_crp<=21 and stand==1:
                     gains=0
-                    phrase="le croupier a plus que vous"
+                    phrase="Le croupier a plus que vous, vous perdez."
+                    end_check=True
+                    break
+                elif somme_jr>somme_crp and somme_jr<22 and stand==1 and somme_jr!=somme_crp:
+                    gains=mise*2
+                    phrase="Vous avez plus que le croupier, vous gagnez!"
+                    end_check=True
+                    break
+                elif somme_crp==somme_jr and stand==1:
+                    gains=0
+                    phrase="Le croupier a autant que vous, vous perdez."
                     end_check=True
                     break
 
 
-
-    return gains,phrase
+    return gains,phrase,ct_jr,ct_crp
 
 
 print(play_blackjack(3))
