@@ -112,6 +112,5 @@ def slot_partie(mise): #fonction prenant en argument lamise sur laquelle l'utlis
 
     return gains_slot, tirage
 
-print(slot_partie(100))
 
     
