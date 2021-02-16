@@ -1,88 +1,58 @@
 import random
 
-def ret_spec(nb):
-    '''Retourne le nom de la carte'''
-    if nb==11:
-        return 'valet'
-    elif nb==12:
-        return 'dame'
-    elif nb==13:
-        return 'roi'
-    elif nb==1:
-        return 'as'
-    else:
-        return str(nb)
+def play_blackjack(mise):
+    #phrase qui explique si on a gagner ou pas
+    phrase=" "
+    gains=0
 
-def crea_liste_cartes():
-'''Renvoie un dictionnaire qui renvoie pour une clé qui va de 1 à 52 pour le numéro cartes une liste qui contient la valeur de la carte, son nom et sa couleur'''
-    liste_cartes={}
+    def ret_spec(nb):
+        '''Retourne le nom de la carte'''
+        if nb==11:
+            return 'valet'
+        elif nb==12:
+            return 'dame'
+        elif nb==13:
+            return 'roi'
+        elif nb==1:
+            return 'as'
+        else:
+            return str(nb)
 
-    for i in range(1,53):
-        nb=i
-        famille_nb=0
+    def crea_liste_cartes():
+        liste_cartes={}
 
-        while nb > 13:
-            nb=nb-13
-            famille_nb=famille_nb+1
+        for i in range(1,53):
+            nb=i
+            famille_nb=0
 
-        if famille_nb==0:
-            liste_cartes[i]=[nb,ret_spec(nb),'coeur']
-        elif famille_nb==1:
-            liste_cartes[i]=[nb,ret_spec(nb),'carreau']
-        elif famille_nb==2:
-            liste_cartes[i]=[nb,ret_spec(nb),'pique']
-        elif famille_nb==3:
-            liste_cartes[i]=[nb,ret_spec(nb),'trèfle']
-        if liste_cartes[i][0]>10:
-            liste_cartes[i][0]=10
-    return liste_cartes
+            while nb > 13:
+                nb=nb-13
+                famille_nb=famille_nb+1
 
-liste_cartes=crea_liste_cartes()
+            if famille_nb==0:
+                liste_cartes[i]=[nb,ret_spec(nb),'coeur']
+            elif famille_nb==1:
+                liste_cartes[i]=[nb,ret_spec(nb),'carreau']
+            elif famille_nb==2:
+                liste_cartes[i]=[nb,ret_spec(nb),'pique']
+            elif famille_nb==3:
+                liste_cartes[i]=[nb,ret_spec(nb),'trèfle']
+            if liste_cartes[i][0]>10:
+                liste_cartes[i][0]=10
+        return liste_cartes
 
-
-
-def tirer_carte():
-    '''Tire une carte aléatoire dans le dictionnaire et retourne la carte tirer'''
-    nb_carte = random.randint(1,52)
-    return(liste_cartes[nb_carte])
-
-def mise():
-     '''Demande au joueur le mise qu'il souhaite miser et la retourne'''
-    arg_mise=int(input("Combien voulez vous miser?"))
-    return arg_mise
-
-def hit(ct_jr):
-    ct_jr_hit=ct_jr
-    ct_jr_hit.append(tirer_carte())
-    return ct_jr
-
-
-def stand(ct_crp,ct_jr,somme_crp,somme_jr,gains,mise_finale):
-    '''Le joueur ne tire pas de nouvelle carte, le croupier peut tirer une carte que si la somme des ses deux cartes est inferieur à 17'''
-    print(ct_crp[1][1])
-
-    #ajoute des cartes au croupier tant qu'il n'a pas plus de 17
-    while int(somme_crp) < 17:
-        ct_crp.append(tirer_carte())
-        somme_crp+=ct_crp[len(ct_crp)-1][0]
-    print("les cartes du croupiers sont:",ct_crp)
-    print("la somme des cartes du croupier est:", somme_crp)
-    print("la somme des cartes du joueur est:", somme_jr)
-
-
-    if int(somme_jr) < int(somme_crp) and int(somme_crp)<21:
-        gains=mise_finale*0
-        print("here loose")
-    elif int(somme_jr) > int(somme_crp) or int(somme_crp)>21:
-        gains=mise_finale*2
-        print("here win")
-    return gains
+    liste_cartes=crea_liste_cartes()
 
 
 
-def blackjack():
+    def tirer_carte():
+        '''Tire une carte aléatoire dans le dictionnaire et retourne la carte tirer'''
+        nb_carte = random.randint(1,52)
+        return(liste_cartes[nb_carte])
+  
+        
     '''Tire les différentes cartes aux joueur et au croupier, le joueur gagne directement si la somme de ses cartes est égale à 21, sinon on demande au joueur ce qu'il souhaite faire: 1=tirer une carte'''
-    mise_1=3 #mise()
+    mise #mise()
     gains = 0
     ct_jr = [] #création d'une liste contenant les cartes du joueur
     ct_crp = [] #création d'une liste contenant les cartes du croupier
@@ -95,7 +65,7 @@ def blackjack():
 
     #check si il y a eu blackjack direct
     if (ct_jr[0][0]==1 and (ct_jr[1][0]==(10 or 11 or 12 or 13))) or (ct_jr[1][0]==1 and (ct_jr[0][0]==(10 or 11 or 12 or 13))): #vérification s'il ya eu un blackjack
-        gains = mise_1*2
+        gains = mise*2
         print("Blackjack")
 
 
@@ -107,35 +77,48 @@ def blackjack():
         action=''
         somme_jr=ct_jr[0][0] + ct_jr[1][0]
         somme_crp=ct_crp[0][0] + ct_crp[1][0]
-        stand_check=False
+        end_check=False
 
         #boucle qui se répéte tant que la partie n'est pas terminée
-        while stand_check!=True:
+        while end_check!=True:
 
             while action !=('1' and '2' and '3' and '4'): #demande au joueur ce qu'il souhaite faire 1= tirer une carte, 2= double la mise et tire une seul carte, 3=si jamais un double tombe on peut diviser les cartes 4= le joueur ne fait rien
-                action=input("Voulez vous ajouter une carte (1), double (2), split (3) ou stand (4)")
-                mise_finale=mise_1
+                action=input("Voulez vous ajouter une carte (1), double (2), spilt (3) ou stand (4)")
+
                 if action == '1':
-                    ct_jr=hit(ct_jr)
+                    ct_jr.append(tirer_carte())
                     somme_jr+=ct_jr[len(ct_jr)-1][0]
                     print("vous avez cette somme de cartes:",somme_jr)
+                    
+
+                #ajoute des cartes au croupier tant qu'il na pas 17    
                 if action=='4':
-                    gains=stand(ct_crp,ct_jr,somme_crp,somme_jr,gains,mise_finale)
-                    stand_check=True
+                    while int(somme_crp) < 17:
+                        ct_crp.append(tirer_carte())
+                        somme_crp+=ct_crp[len(ct_crp)-1][0]
+                        print(somme_crp)
 
+                #dit que le croupier a perdu s'il a plus de 21 en mains
+                if somme_crp>21 and somme_jr<21:
+                    gains=mise*2
+                    phrase="Le croupier a dépassé 21 vous gagnez"
+                    end_check=True
+                    break
                 #dit que le joueur a perdu s'il a plus de 21 en mains
-                if somme_jr>21:
+                elif somme_jr>21:
                     gains=0
-                    print("vous avez plus de 21 en valeurs de cartes vous perdez")
+                    phrase="Vous avez plus de 21 en cartes, vous perdez"
+                    end_check=True
+                    break
+                elif somme_crp>somme_jr and  somme_crp<=21:
+                    gains=0
+                    phrase="le croupier a plus que vous"
+                    end_check=True
+                    break
 
 
 
+    return gains,phrase
 
 
-
-
-    print("vous avez gagner:", gains)
-    return gains
-
-
-blackjack()
+print(play_blackjack(3))
