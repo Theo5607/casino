@@ -83,4 +83,4 @@ def roulette(type_mise):
         print("mise impair, vous avez gagné :",type_mise["mise_pair"])#affiche le gain+ la mise de départ
     return(type_mise)#retourne la variale type_mise
 
-type_mise_new=roulette(type_mise)#type_mise_new est une variable égale à roulette(type_mise)
+#type_mise_new=roulette(type_mise)#type_mise_new est une variable égale à roulette(type_mise)
