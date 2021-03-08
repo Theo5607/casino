@@ -39,6 +39,8 @@ curseur = pygame.image.load("Images/Connexion/curseur.png")
 
 alerte = pygame.image.load("Images/Connexion/alerte.png")
 
+retour = pygame.image.load("Images/Connexion/retour.png")
+
 #Chargement images entree casino
 
 entreecasino = pygame.image.load("Images/Menu/entree_casino.png")
@@ -357,6 +359,7 @@ def conn_inscr(n):
     screen.blit(rectangle, (300, 650))
     screen.blit(oeil, (1320, 700))
     screen.blit(curseur, (310, 260))
+    screen.blit(retour, (1350, 800))
 
 def dessine_menu():
     """Fonction qui dessine le menu"""
@@ -477,13 +480,41 @@ while jouer==1:
                 conn_inscr(0)
 
             #bouton inscription
-            if(event.pos[0]>=600 and event.pos[0]<=1000) and (event.pos[1]>=600 and event.pos[1]<=700) and tableau=='bienvenue':
-                tableau='inscription'
+            elif(event.pos[0]>=600 and event.pos[0]<=1000) and (event.pos[1]>=600 and event.pos[1]<=700) and tableau=='bienvenue':
+                tableau='inscr_entrer_uti'
                 conn_inscr(1)
 
             #----------------
+            #boutons inscription
+            elif(event.pos[0]>=300 and event.pos[0]<=1300) and (event.pos[1]>=250 and event.pos[1]<=400) and tableau=='inscr_entrer_mdp':
+                tableau='inscr_entrer_uti'
+                
+                screen.blit(rectangle, (300, 250))
+                screen.blit(rectangle, (300, 650))
+                uti = font.render(str_uti, 1, (0, 0, 0))
+                screen.blit(uti, (300, 250))
+                mdp = font.render(str_mdp, 1, (0, 0, 0))
+                screen.blit(mdp, (300, 650))
+                
+                screen.blit(curseur, (300+long_uti+10, 260))
+                pygame.display.flip()
+
+            elif(event.pos[0]>=300 and event.pos[0]<=1300) and (event.pos[1]>=650 and event.pos[1]<=800) and tableau=='inscr_entrer_uti':
+                tableau='inscr_entrer_mdp'
+
+                screen.blit(rectangle, (300, 250))
+                screen.blit(rectangle, (300, 650))
+                uti = font.render(str_uti, 1, (0, 0, 0))
+                screen.blit(uti, (300, 250))
+                mdp = font.render(str_mdp, 1, (0, 0, 0))
+                screen.blit(mdp, (300, 650))
+                
+                screen.blit(curseur, (300+long_mdp+10, 660))
+                pygame.display.flip()
+                
+                
             #boutons connexion
-            if(event.pos[0]>=300 and event.pos[0]<=1300) and (event.pos[1]>=250 and event.pos[1]<=400) and tableau=='conn_entrer_mdp':
+            elif(event.pos[0]>=300 and event.pos[0]<=1300) and (event.pos[1]>=250 and event.pos[1]<=400) and tableau=='conn_entrer_mdp':
                 tableau='conn_entrer_uti'
                 
                 screen.blit(rectangle, (300, 250))
@@ -496,7 +527,7 @@ while jouer==1:
                 screen.blit(curseur, (300+long_uti+10, 260))
                 pygame.display.flip()
 
-            if(event.pos[0]>=300 and event.pos[0]<=1300) and (event.pos[1]>=650 and event.pos[1]<=800) and tableau=='conn_entrer_uti':
+            elif(event.pos[0]>=300 and event.pos[0]<=1300) and (event.pos[1]>=650 and event.pos[1]<=800) and tableau=='conn_entrer_uti':
                 tableau='conn_entrer_mdp'
 
                 screen.blit(rectangle, (300, 250))
@@ -508,9 +539,30 @@ while jouer==1:
                 
                 screen.blit(curseur, (300+long_mdp+10, 660))
                 pygame.display.flip()
+                
+
+            #bouton retour
+            elif(event.pos[0]>=1350 and event.pos[0]<=1550) and (event.pos[1]>=800 and event.pos[1]<=850) and (tableau=='conn_entrer_uti' or tableau=='conn_entrer_mdp' or tableau=='inscr_entrer_uti' or tableau=='inscr_entrer_mdp'):
+                tableau='bienvenue'
+
+                str_uti=''
+                long_uti=0
+                str_mdp=''
+                str_mdp_cache=''
+                mdp_cache_verification=True
+                long_mdp=0
+                long_mdp_cache=0
+                
+                screen.fill(white)
+                phrase = font2.render('Bienvenue dans le casino Umthombo !', 1, (0, 0, 0))
+                longueur_phrase = phrase.get_rect().width
+                screen.blit(phrase, ((1600-longueur_phrase)/2, 200))
+                screen.blit(inscription, inscription_pos)
+                screen.blit(connexion, connexion_pos)
+                pygame.display.flip()
 
             #bouton oeil pour cacher ou montrer le mdp
-            if(event.pos[0]>=1320 and event.pos[0]<=1420) and (event.pos[1]>=700 and event.pos[1]<=750) and (tableau=='connexion' or tableau=='conn_entrer_uti' or tableau=='conn_entrer_mdp'):
+            elif(event.pos[0]>=1320 and event.pos[0]<=1420) and (event.pos[1]>=700 and event.pos[1]<=750) and (tableau=='connexion' or tableau=='conn_entrer_uti' or tableau=='conn_entrer_mdp' or tableau=='inscr_entrer_uti' or tableau=='inscr_entrer_mdp'):
                 screen.blit(rectangle, (300, 650))
                 if mdp_cache_verification==True:
                     mdp = font.render(str_mdp, 1, (0, 0, 0))
@@ -776,10 +828,10 @@ while jouer==1:
                 pygame.display.flip()
 
         #On vérifie si on clique sur une touche lors de la connexion
-        if event.type == KEYDOWN and (tableau=='conn_entrer_uti' or tableau=='conn_entrer_mdp'):
+        if event.type == KEYDOWN and (tableau=='conn_entrer_uti' or tableau=='conn_entrer_mdp' or tableau=='inscr_entrer_uti' or tableau=='inscr_entrer_mdp'):
             liste_touches=liste_nb+liste_lettres
             for el in liste_touches:
-                if tableau=='conn_entrer_uti':
+                if tableau=='conn_entrer_uti' or tableau=='inscr_entrer_uti':
                     if el==event.key:
                         if len(str_uti)<12:
                             screen.blit(rectangle, (300, 250))
@@ -804,7 +856,7 @@ while jouer==1:
                             screen.blit(curseur, (300+long_uti+10,260))
                             
                             pygame.display.flip()
-                elif tableau=='conn_entrer_mdp':
+                elif tableau=='conn_entrer_mdp' or tableau=='inscr_entrer_mdp':
                     if el==event.key:
                         if len(str_mdp)<12:
                             screen.blit(rectangle, (300, 650))
@@ -849,7 +901,7 @@ while jouer==1:
                             pygame.display.flip()
                         
             if event.key == K_BACKSPACE:
-                if tableau=='conn_entrer_uti':
+                if tableau=='conn_entrer_uti' or tableau=='inscr_entrer_uti':
                     screen.blit(rectangle, (300, 250))
                     
                     str_uti=str_uti[0:len(str_uti)-1]
@@ -860,7 +912,7 @@ while jouer==1:
                     screen.blit(curseur, (300+long_uti+10,260))
                     
                     pygame.display.flip()
-                elif tableau=='conn_entrer_mdp':
+                elif tableau=='conn_entrer_mdp' or tableau=='inscr_entrer_mdp':
                     screen.blit(rectangle, (300, 650))
                     
                     str_mdp=str_mdp[0:len(str_mdp)-1]
@@ -881,24 +933,46 @@ while jouer==1:
                     pygame.display.flip()
 
             if event.key == K_RETURN:
-                sing_id=(str_uti,)
-                sing_mdp=(str_mdp,)
-                if check_identifiant_existe(sing_id)==True and check_mdp(str_uti)==str_mdp:
-                    cur.execute("SELECT argent FROM membres WHERE identifiant = ?",(str_uti,))
-                    argent_sing=cur.fetchone()
+                if tableau=='conn_entrer_uti' or tableau=='conn_entrer_mdp':
+                    sing_id=(str_uti,)
+                    sing_mdp=(str_mdp,)
+                    if check_identifiant_existe(sing_id)==True and check_mdp(str_uti)==str_mdp:
+                        cur.execute("SELECT argent FROM membres WHERE identifiant = ?",(str_uti,))
+                        argent_sing=cur.fetchone()
 
-                    compte=[str_uti, str_mdp, argent_sing[0]]
+                        compte=[str_uti, str_mdp, argent_sing[0]]
 
-                    tableau='entree'
+                        tableau='entree'
 
-                    screen.fill(black)
-                    screen.blit(entreecasino, (0, 0))
-                    screen.blit(btn_entrer, btn_entrer_pos)
-                    pygame.display.flip()
+                        screen.fill(black)
+                        screen.blit(entreecasino, (0, 0))
+                        screen.blit(btn_entrer, btn_entrer_pos)
+                        pygame.display.flip()
 
-                else:
-                    screen.blit(alerte, (300, 800))
-        
+                    else:
+                        screen.blit(alerte, (300, 800))
+                elif tableau=='inscr_entrer_uti' or tableau=='inscr_entrer_mdp':
+                    sing_id=(str_uti,)
+                    sing_mdp=(str_mdp,)
+                    
+                    if len(str_uti)>3 or len(str_uti)<21 or check_identifiant_existe(sing_id)==False:
+                        var =[(str_uti, str_mdp, 10000)]
+                        for i in var:
+                            cur.execute("INSERT INTO membres(identifiant, mdp, argent) VALUES(?,?,?)", i)
+                        conn.commit()
+                        
+                        compte=[str_uti,str_mdp,10000]
+
+                        tableau='entree'
+
+                        screen.fill(black)
+                        screen.blit(entreecasino, (0, 0))
+                        screen.blit(btn_entrer, btn_entrer_pos)
+                        pygame.display.flip()
+
+                    else:
+                        screen.blit(alerte, (300, 800))
+                    
         #On vérifie si on clique sur une touche lors du pari de la machine à sous
         if event.type == KEYDOWN and tableau=='mas_entrer_somme':
             #On vérifie si la touche cliquée est un nombre
