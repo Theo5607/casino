@@ -74,6 +74,10 @@ rect_blanc_pos = (550, 370)
 
 #-----------
 
+#Chargement images blackjack
+
+curseur_bj = pygame.image.load("Images/Jeux/Blackjack/curseur_bj.png")
+
 #Chargement images roulette
 
 roulette_tapis = pygame.image.load("Images/Jeux/Roulette/tapis.png")
@@ -610,6 +614,16 @@ while jouer==1:
                 screen.blit(oeil, (pos_oeil_gauche, 360))
                 pygame.display.flip()
 
+            #Bouton icône blackjack
+            elif(event.pos[0]>=250 and event.pos[0]<=700) and (event.pos[1]>=170 and event.pos[1]<=420) and tableau=='menu':
+                tableau='bj_menu'
+
+                #Affichage du menu du blackjack
+                screen.fill(white)
+                screen.blit(mas_jouer, mas_jouer_pos)
+                screen.blit(mas_retour, mas_retour_pos)
+                pygame.display.flip()
+
             #Bouton icône machine à sous
             elif(event.pos[0]>=900 and event.pos[0]<=1350) and (event.pos[1]>=170 and event.pos[1]<=420) and tableau=='menu':
                 tableau='mas_menu'
@@ -672,8 +686,28 @@ while jouer==1:
                 pygame.display.flip()
 
             #------------
-            #boutons roulette
+            #boutons blackjack
+            
+            #Bouton retour
+            elif(event.pos[0]>=900 and event.pos[0]<=1300) and (event.pos[1]>=300 and event.pos[1]<=500) and tableau=='bj_menu':
+                tableau='menu'
 
+                #Affichage du menu
+                dessine_menu()
+                pygame.display.flip()
+
+            #Bouton jouer
+            elif(event.pos[0]>=300 and event.pos[0]<=700) and (event.pos[1]>=300 and event.pos[1]<=500) and tableau=='bj_menu':
+                tableau='pari_bj'
+
+                screen.fill(white)
+                screen.blit(mas_somme, (0, 0))
+                screen.blit(mas_rectangle_somme, mas_rectangle_somme_pos)
+                screen.blit(curseur_bj, (510, 610))
+                pygame.display.flip()
+
+            #boutons roulette
+            
             #Bouton retour
             elif(event.pos[0]>=900 and event.pos[0]<=1300) and (event.pos[1]>=300 and event.pos[1]<=500) and tableau=='roulette_menu':
                 tableau='menu'
@@ -973,8 +1007,8 @@ while jouer==1:
                     else:
                         screen.blit(alerte, (300, 800))
                     
-        #On vérifie si on clique sur une touche lors du pari de la machine à sous
-        if event.type == KEYDOWN and tableau=='mas_entrer_somme':
+        #On vérifie si on clique sur une touche lors du pari de la machine à sous ou du blackjack
+        if event.type == KEYDOWN and (tableau=='mas_entrer_somme' or tableau=='pari_bj'):
             #On vérifie si la touche cliquée est un nombre
             for el in liste_nb:
                 if el==event.key:
@@ -986,6 +1020,10 @@ while jouer==1:
                         somme=somme+dico_nb[el]
                         afficher = font.render(somme, 1, (0, 0, 0))
                         screen.blit(afficher, (500,600))
+
+                        long_somme=afficher.get_rect().width
+                        screen.blit(curseur_bj, (500+long_somme+10,610))
+                        
                         pygame.display.flip()
                     else:
                         #Si elle égale à 8, on supprime le dernier chiffre et on ajoute le nouveau
@@ -995,6 +1033,10 @@ while jouer==1:
                         
                         afficher = font.render(somme, 1, (0, 0, 0))
                         screen.blit(afficher, (500,600))
+
+                        long_somme=afficher.get_rect().width
+                        screen.blit(curseur_bj, (500+long_somme+10,610))
+                        
                         pygame.display.flip()
 
             #On vérifie si la touche cliquée est 'Retour'
@@ -1005,6 +1047,10 @@ while jouer==1:
                 somme=somme[0:len(somme)-1]
                 afficher = font.render(somme, 1, (0, 0, 0))
                 screen.blit(afficher, (500,600))
+
+                long_somme=afficher.get_rect().width
+                screen.blit(curseur_bj, (500+long_somme+10,610))
+
                 pygame.display.flip()
 
             #On vérifie si la touche cliquée est 'Entrée'
@@ -1137,15 +1183,6 @@ while jouer==1:
                         screen.blit(phrase, ((1600-longueur_phrase)/2, 420))
                         pygame.display.flip()
                         
-                        compte[2]=compte[2]+gains+mises_perdues
-                        
-                        cur.execute("UPDATE membres SET argent = ? WHERE identifiant = ?", (compte[2], compte[0]))
-                        conn.commit()
-                        
-                        screen.blit(mas_rejouer, mas_rejouer_pos)
-                        screen.blit(mas_quitter, mas_quitter_pos)
-                        pygame.display.flip()
-                        
                     else:
                         screen.fill(white)
                         phrase = font2.render('Vous avez perdu '+str((gains+mises_perdues)*-1)+' dollars', 1, (0, 0, 0))
@@ -1153,14 +1190,14 @@ while jouer==1:
                         screen.blit(phrase, ((1600-longueur_phrase)/2, 420))
                         pygame.display.flip()
                         
-                        compte[2]=compte[2]+gains+mises_perdues
+                    compte[2]=compte[2]+gains+mises_perdues
                         
-                        cur.execute("UPDATE membres SET argent = ? WHERE identifiant = ?", (compte[2], compte[0]))
-                        conn.commit()
+                    cur.execute("UPDATE membres SET argent = ? WHERE identifiant = ?", (compte[2], compte[0]))
+                    conn.commit()
                         
-                        screen.blit(mas_rejouer, mas_rejouer_pos)
-                        screen.blit(mas_quitter, mas_quitter_pos)
-                        pygame.display.flip()
+                    screen.blit(mas_rejouer, mas_rejouer_pos)
+                    screen.blit(mas_quitter, mas_quitter_pos)
+                    pygame.display.flip()
                         
         #On vérifie si on clique sur une touche lors du choix des paris sur le tapis de la roulette
         if event.type == KEYDOWN and tableau=='roulette_tapis':
