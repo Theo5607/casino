@@ -1061,45 +1061,48 @@ while jouer==1:
 
                 #Si le joueur a assez d'argent pour parier et que 'somme'>0, alors il peut jouer
                 if compte[2]>=int(somme) and int(somme)>0:
-                    tableau='mas_gains'
+                    if tableau=='mas_entrer_somme':
+                        tableau='mas_gains'
 
-                    #On appelle la fonction roulette qui retourne les gains ou 0 si on perd
-                    gains=slot_partie(int(somme))
+                        #On appelle la fonction roulette qui retourne les gains ou 0 si on perd
+                        gains=slot_partie(int(somme))
 
-                    screen.fill(white)
+                        screen.fill(white)
 
-                    #Si les gains sont supérieurs à 0, le joueur à gagné
-                    if gains[0] > 0 :
-                        #On met à jour la variable 'compte'
-                        compte[2]=compte[2]-int(somme)+gains[0]
+                        #Si les gains sont supérieurs à 0, le joueur à gagné
+                        if gains[0] > 0 :
+                            #On met à jour la variable 'compte'
+                            compte[2]=compte[2]-int(somme)+gains[0]
 
-                        #On met à jour la base de données
-                        cur.execute("UPDATE membres SET argent = ? WHERE identifiant = ?", (compte[2], compte[0]))
-                        conn.commit()
+                            #On met à jour la base de données
+                            cur.execute("UPDATE membres SET argent = ? WHERE identifiant = ?", (compte[2], compte[0]))
+                            conn.commit()
 
-                        #On affiche les gains du joueur
-                        screen.blit(mas_gains, mas_gains_pos)
-                        afficher = font2.render('Vous avez gagné '+str(gains[0])+' dollars', 1, (0, 0, 0))
-                        screen.blit(afficher, (500,400))
-                        screen.blit(mas_rejouer, mas_rejouer_pos)
-                        screen.blit(mas_quitter, mas_quitter_pos)
-                        pygame.display.flip()
-                    #Si il a perdu
-                    else:
-                        #On met à jour la variable 'compte' en faisant la différence de son solde et de sa mise
-                        compte[2]=compte[2]-int(somme)
+                            #On affiche les gains du joueur
+                            screen.blit(mas_gains, mas_gains_pos)
+                            afficher = font2.render('Vous avez gagné '+str(gains[0])+' dollars', 1, (0, 0, 0))
+                            screen.blit(afficher, (500,400))
+                            screen.blit(mas_rejouer, mas_rejouer_pos)
+                            screen.blit(mas_quitter, mas_quitter_pos)
+                            pygame.display.flip()
+                        #Si il a perdu
+                        else:
+                            #On met à jour la variable 'compte' en faisant la différence de son solde et de sa mise
+                            compte[2]=compte[2]-int(somme)
 
-                        #On met à jour la base de données
-                        cur.execute("UPDATE membres SET argent = ? WHERE identifiant = ?", (compte[2], compte[0]))
-                        conn.commit()
+                            #On met à jour la base de données
+                            cur.execute("UPDATE membres SET argent = ? WHERE identifiant = ?", (compte[2], compte[0]))
+                            conn.commit()
 
-                        #On affiche que le joueur a perdu
-                        screen.blit(mas_gains, mas_gains_pos)
-                        afficher = font2.render('Vous avez perdu votre mise', 1, (0, 0, 0))
-                        screen.blit(afficher, (500,400))
-                        screen.blit(mas_rejouer, mas_rejouer_pos)
-                        screen.blit(mas_quitter, mas_quitter_pos)
-                        pygame.display.flip()
+                            #On affiche que le joueur a perdu
+                            screen.blit(mas_gains, mas_gains_pos)
+                            afficher = font2.render('Vous avez perdu votre mise', 1, (0, 0, 0))
+                            screen.blit(afficher, (500,400))
+                            screen.blit(mas_rejouer, mas_rejouer_pos)
+                            screen.blit(mas_quitter, mas_quitter_pos)
+                            pygame.display.flip()
+                    elif tableau=='pari_bj':
+                        pass
                         
                 #Sinon, on affiche que la somme misée est invalide
                 else:
