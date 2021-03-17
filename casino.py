@@ -193,104 +193,6 @@ for el in dico_nb.keys():
 for el in dico_lettre.keys():
     dico_touches[el]=dico_lettre[el]
 
-def go():
-    """Pour se connecter au casino et lancer le casino avec Pygame"""
-    print('Bienvenue au Casino ! Veuillez commencer par créer un compte ou vous connecter.')
-
-    #Variable pour les entrées utilisateurs
-    var=''
-
-    #Liste qui contient les informations du compte
-    compte=[]
-
-    #Si la variable 'var' est différente de 0 ou 1, qui sont les deux possibilités pour se connecter ou s'inscrir
-    while var!='1' and var!='0':
-        var = input('Voulez vous vous connecter (0) ou vous inscrire (1)? ')
-
-    #Si la variable 'var'=0, l'utilisateur veut se connecter
-    if var=='0':
-        #Le nom d'utilisateur entré par le joueur
-        id_entre=''
-        #Mis dans un singulet (pour vérifier avec la table de données)
-        sing=(id_entre,)
-        #Le mot de pass entré par l'utilisateur
-        mdp_entre=''
-
-        #Tant que le nom d'utilisateur est invalide, on lui redemande
-        while len(id_entre)<4 or len(id_entre)>20 or check_identifiant_existe(sing)==False:
-            id_entre=input("Veuillez entrer un identifiant valide et qui existe ")
-            sing=(id_entre,)
-
-        #Tant que le mot de passe est invalide, on lui redemande
-        mdp_entre=input("Entrez votre mot de passe ")
-        while len(mdp_entre)<4 or len(mdp_entre)>20 or check_mdp(id_entre)!=mdp_entre:
-            mdp_entre=input("Mot de passe invalide ")
-
-        #On récupère l'argent de l'utilisateur depuis la base de données
-        cur.execute("SELECT argent FROM membres WHERE identifiant = ?",(id_entre,))
-        argent_sing=cur.fetchone()
-
-        #On rentre toutes les données dans la variable 'compte'
-        compte=[id_entre, mdp_entre, argent_sing[0]]
-            
-        print('Bienvenue, '+id_entre)
-
-        #Affichage de l'entrée du casino
-        screen.fill(black)
-        screen.blit(entreecasino, (0, 0))
-        screen.blit(btn_entrer, btn_entrer_pos)
-        pygame.display.flip()
-
-        #Retourne le compte de l'utilisateur
-        return compte
-
-    #Si la variable 'var'=1, l'utilisateur veut s'inscrire
-    if var=='1':
-        #On appelle la fonction 'creation_compte' qui retourne une liste avec les informations du compte
-        compte=creation_compte()
-        print('Bienvenue, '+compte[0])
-
-        #Affichage de l'entrée du casino
-        screen.fill(black)
-        screen.blit(entreecasino, (0, 0))
-        screen.blit(btn_entrer, btn_entrer_pos)
-        pygame.display.flip()
-
-        #Retourne le compte de l'utilisateur
-        return compte
-
-def creation_compte():
-    """Fonction qui permet à l'utilisateur de créer un compte et qui retourne une liste avec ses informations"""
-    #Le nom d'utilisateur entré par le joueur
-    identifiant=''
-    #Mis dans un singulet (pour vérifier avec la table de données)
-    sing=(identifiant,)
-    #Le mot de pass entré par l'utilisateur
-    mdp=''
-
-    #Tant que le nom d'utilisateur est invalide, on lui redemande
-    identifiant=input("Choisissez un identifiant. ")
-    while len(identifiant)<4 or len(identifiant)>20 or check_identifiant_existe(sing)==True:
-        identifiant=input("Veuillez choisir un identifiant entre 4 et 20 caractères qui n'existe pas. ")
-        sing=(identifiant,)
-
-    #Tant que le mot de passe est invalide, on lui redemande
-    mdp=input('Choisissez un mot de passe. ')
-    while len(mdp)<4 or len(mdp)>20:
-        mdp=input('Veuillez choisir un mot de passe entre 4 et 20 caractères. ')
-
-    #On rentre les informations du compte dans la base de données
-    var =[(identifiant, mdp, 10000)]
-    for i in var:
-        cur.execute("INSERT INTO membres(identifiant, mdp, argent) VALUES(?,?,?)", i)
-    conn.commit()
-
-    #On rentre toutes les données dans la variable 'compte'
-    compte=[identifiant,mdp,10000]
-
-    #Retourne le compte de l'utilisateur
-    return compte
-
 def check_identifiant_existe(sing):
     """Fonction qui recherche un identifiant pris en paramètre dans la base de données et renvoir un booléen pour savoir s'il existe"""
     #On récupère tous les utilisateurs de la base de données
@@ -319,7 +221,6 @@ def check_mdp(identifiant):
     return mdp_sing[0]
 
 #Cette variable sera utlisée dans la boucle infinie de Pygame
-#compte=go()
 compte=[]
 
 #variables connexion
@@ -331,6 +232,15 @@ mdp_cache_verification=True
 long_mdp=0
 long_mdp_cache=0
 
+def resetVariables():
+    str_uti=''
+    long_uti=0
+    str_mdp=''
+    str_mdp_cache=''
+    mdp_cache_verification=True
+    long_mdp=0
+    long_mdp_cache=0
+
 #variables profil
 font_profil = pygame.font.Font("Polices/coolvetica.ttf", 70)
 font_argent = font2 = pygame.font.Font("Polices/dejavu_sansbold.ttf", 30)
@@ -341,13 +251,14 @@ pos_oeil_gauche=0
 paris={"mise_rouge" : 0, "mise_noir" : 0,"mise_colone1" : 0,"mise_colone2" : 0,"mise_colone3" : 0,"mise_douzaine1" : 0,"mise_douzaine2" : 0,"mise_douzaine3" : 0,"mise_1_à_18" : 0,"mise_19_à_36" : 0,"mise_impair" : 0,"mise_pair" : 0,"ligne_1" : 0,"ligne_2" : 0,"ligne_3" : 0}
 for i in range(0, 37):
     paris[i]=0
-somme=''
 pari_actuel=[]
 nb_actuel=[0]
 
 #variables machine à sous
-somme=''
 gains=0
+
+#variable pour entrer un pari
+somme=''
 
 def conn_inscr(n):
     screen.fill(white)
