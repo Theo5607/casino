@@ -3,6 +3,8 @@ from sqlite3 import *
 from pygame.locals import *
 from Casino_Matvei.slot_machine import slot_partie
 from casino_leonardo.roulette_fin import roulette
+from Casino_Teis.bj import play_blackjack
+from Casino_Teis.bj import action
 
 #Création de la base de données
 
@@ -77,6 +79,8 @@ rect_blanc_pos = (550, 370)
 #Chargement images blackjack
 
 curseur_bj = pygame.image.load("Images/Jeux/Blackjack/curseur_bj.png")
+
+blackjack = pygame.image.load("Images/Jeux/Blackjack/blackjack.png")
 
 #Chargement images roulette
 
@@ -256,6 +260,10 @@ nb_actuel=[0]
 
 #variables machine à sous
 gains=0
+
+#variables blackjack
+ct_jr=[]
+cr_crp=[]
 
 #variable pour entrer un pari
 somme=''
@@ -772,6 +780,52 @@ while jouer==1:
                 dessine_menu()
                 pygame.display.flip()
 
+            #------------
+            #boutons blackjack
+
+            #bouton tirer
+            elif(event.pos[0]>=450 and event.pos[0]<=750) and (event.pos[1]>=750 and event.pos[1]<=870) and tableau=='jeu_bj':
+                infos=action(1, ct_jr, ct_crp, screen)
+                if infos[0]==0:
+                    time.sleep(2)
+                    tableau='bj_rejouer'
+
+                    compte[2]=compte[2]-int(somme)
+
+                    cur.execute("UPDATE membres SET argent = ? WHERE identifiant = ?", (compte[2], compte[0]))
+                    conn.commit()
+
+                    screen.fill(white)
+                    screen.blit(mas_gains, mas_gains_pos)
+                    afficher = font2.render('Somme des cartes supérieure à 21, vous avez perdu '+str(somme)+' dollars', 1, (0, 0, 0))
+                    screen.blit(afficher, (500,400))
+                    screen.blit(mas_rejouer, mas_rejouer_pos)
+                    screen.blit(mas_quitter, mas_quitter_pos)
+                    pygame.display.flip()
+                elif infos[0]==1:
+                    screen.blit(blackjack, (500, 670))
+                    pygame.display.flip()
+                    
+                    time.sleep(2)
+                    tableau='bj_rejouer'
+
+                    compte[2]=compte[2]+int(somme)
+
+                    cur.execute("UPDATE membres SET argent = ? WHERE identifiant = ?", (compte[2], compte[0]))
+                    conn.commit()
+
+                    screen.fill(white)
+                    screen.blit(mas_gains, mas_gains_pos)
+                    afficher = font2.render('Blackjack ! Vous avez gagné '+str(somme)+' dollars', 1, (0, 0, 0))
+                    screen.blit(afficher, (500,400))
+                    screen.blit(mas_rejouer, mas_rejouer_pos)
+                    screen.blit(mas_quitter, mas_quitter_pos)
+                    pygame.display.flip()
+                else:
+                    infos=action(1, ct_jr, ct_crp, screen)
+                    ct_jr=infos[1]
+                    ct_crp=infos[2]
+
         #On vérifie si on clique sur une touche lors de la connexion
         if event.type == KEYDOWN and (tableau=='conn_entrer_uti' or tableau=='conn_entrer_mdp' or tableau=='inscr_entrer_uti' or tableau=='inscr_entrer_mdp'):
             liste_touches=liste_nb+liste_lettres
@@ -1013,7 +1067,29 @@ while jouer==1:
                             screen.blit(mas_quitter, mas_quitter_pos)
                             pygame.display.flip()
                     elif tableau=='pari_bj':
-                        pass
+                        tableau='affichage_cartes_bj'
+
+                        infos=play_blackjack(int(somme), screen)
+                        ct_jr=infos[1]
+                        ct_crp=infos[2]
+                        
+                        if gains>0:
+                            tableau='bj_rejouer'
+
+                            compte[2]=compte[2]-int(somme)+infos[0]
+
+                            cur.execute("UPDATE membres SET argent = ? WHERE identifiant = ?", (compte[2], compte[0]))
+                            conn.commit()
+
+                            screen.blit(mas_gains, mas_gains_pos)
+                            afficher = font2.render('Vous avez gagné '+str(infos[0])+' dollars', 1, (0, 0, 0))
+                            screen.blit(afficher, (500,400))
+                            screen.blit(mas_rejouer, mas_rejouer_pos)
+                            screen.blit(mas_quitter, mas_quitter_pos)
+                            pygame.display.flip()
+
+                        else:
+                            tableau='jeu_bj'
                         
                 #Sinon, on affiche que la somme misée est invalide
                 else:
