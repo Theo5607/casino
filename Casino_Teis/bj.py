@@ -48,8 +48,11 @@ def crea_liste_cartes():
             liste_cartes[i]=[nb,ret_spec(nb),'pique',i]
         elif famille_nb==3:
             liste_cartes[i]=[nb,ret_spec(nb),'trèfle',i]
+            
         if liste_cartes[i][0]>10:
             liste_cartes[i][0]=10
+        elif liste_cartes[i][0]==1:
+            liste_cartes[i][0]=11
     return liste_cartes
 
 liste_cartes=crea_liste_cartes()
@@ -63,7 +66,7 @@ def tirer_carte():
 def dessin_carte(nb_carte, x, y, screen):
     screen.blit(dico_images_cartes[nb_carte], (x, y))
     pygame.display.flip()
-    time.sleep(1)
+    time.sleep(0.5)
 
 def play_blackjack(mise, screen):
     #phrase qui explique si on a gagner ou pas
@@ -89,7 +92,7 @@ def play_blackjack(mise, screen):
         dessin_carte(ct_jr[i][3], 400, 300+i*40, screen)
 
     dessin_carte(ct_crp[0][3], 800, 300, screen)
-    screen.blit(back, (800, 330))
+    screen.blit(back, (800, 340))
 
     screen.blit(tirer, (450, 750))
     screen.blit(stand, (850, 750))
@@ -125,7 +128,7 @@ def play_blackjack(mise, screen):
         screen.blit(blackjack, (500, 670))
         pygame.display.flip()
 
-        time.sleep(2)
+        time.sleep(0.5)
         return [gains, [], []]
     else:
         return [gains, ct_jr, ct_crp]
@@ -133,8 +136,14 @@ def play_blackjack(mise, screen):
 def action(act, cartes_joueur, cartes_croupier, screen):
     def calcul_somme(jeu_carte):
         somme=0
+        compteur_as=0
+        for el in jeu_carte:
+            if el[1]=='as':
+                compteur_as+=1
         for el in jeu_carte:
             somme+=el[0]
+        if somme>21 and compteur_as>0:
+            somme-=compteur_as*10
         return somme
         
     ct_jr=cartes_joueur
@@ -146,44 +155,36 @@ def action(act, cartes_joueur, cartes_croupier, screen):
         
     #ajoute des cartes au croupier tant qu'il na pas 17    
     if act==2:
-        stand=1
-        while int(somme_crp) < 17:
+        dessin_carte(ct_crp[1][3], 800, 340, screen)
+        time.sleep(0.5)
+        
+        somme_jr = calcul_somme(ct_jr)
+        somme_crp = calcul_somme(ct_crp)
+        while somme_crp < 17:
             ct_crp.append(tirer_carte())
-            somme_crp+=ct_crp[len(ct_crp)-1][0]
-            print(somme_crp)
+            somme_crp=calcul_somme(ct_crp)
+            
+            dessin_carte(ct_crp[len(ct_crp)-1][3], 800, 300+(len(ct_crp)-1)*40, screen)
+            time.sleep(0.5)
 
         #dit que le croupier a perdu s'il a plus de 21 en mains
         if somme_crp>21 and somme_jr<21:
-            gains=mise*2
-            phrase="Le croupier a dépassé 21, vous gagnez!"
-            end_check=True
+            return gains+1, "Le croupier a dépassé 21! "
 
-        #dit que le joueur a perdu s'il a plus de 21 en mains
-        elif somme_jr>21:
-            gains=0
-            phrase="Vous avez plus de 21 en cartes, vous perdez"
-            end_check=True
+        elif somme_jr>somme_crp and somme_jr<22 and somme_jr!=somme_crp:
+            return gains+1, "Votre somme est supérieure à celle du croupier! "
 
-        elif somme_crp>somme_jr and  somme_crp<=21 and stand==1:
-            gains=0
-            phrase="Le croupier a plus que vous, vous perdez."
-            end_check=True
-
-        elif somme_jr>somme_crp and somme_jr<22 and stand==1 and somme_jr!=somme_crp:
-            gains=mise*2
-            phrase="Vous avez plus que le croupier, vous gagnez!"
-            end_check=True
-
-        elif somme_crp==somme_jr and stand==1:
-            gains=0
-            phrase="Le croupier a autant que vous, vous perdez."
-            end_check=True
+        elif somme_crp>somme_jr and  somme_crp<=21:
+            return gains, "La somme du croupier est supérieure à la votre! "
+            
+        elif somme_crp==somme_jr:
+            return gains, "Le croupier a autant que vous, vous perdez! "
 
     if calcul_somme(ct_jr)>21:
-        return [gains, ct_jr, ct_crp]
+        return gains, ct_jr, ct_crp
     elif calcul_somme(ct_jr)==21:
-        return [gains+1, ct_jr, ct_crp]
+        return gains+1, ct_jr, ct_crp
     else:
-        return [gains-1, ct_jr, ct_crp]
+        return gains-1, ct_jr, ct_crp
 
 #print(play_blackjack(3))
