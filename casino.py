@@ -1124,7 +1124,7 @@ while jouer==1:
                         ct_crp=infos[2]
                         
                         if gains>0:
-                            tableau='bj_rejouer'
+                            tableau='fin_bj'
 
                             compte[2]=compte[2]-int(somme)+infos[0]
 
