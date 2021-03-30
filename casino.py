@@ -1123,7 +1123,7 @@ while jouer==1:
                         ct_jr=infos[1]
                         ct_crp=infos[2]
                         
-                        if gains>0:
+                        if infos[0]>0:
                             tableau='fin_bj'
 
                             compte[2]=compte[2]-int(somme)+infos[0]
