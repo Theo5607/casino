@@ -809,7 +809,7 @@ while jouer==1:
                     pygame.display.flip()
                     
                     time.sleep(2)
-                    tableau='bj_rejouer'
+                    tableau='fin_bj'
 
                     compte[2]=compte[2]+int(somme)
 
