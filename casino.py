@@ -69,6 +69,7 @@ icone_profil_pos = (200, 200)
 retour_profil = pygame.image.load("Images/Menu_jeu/Profil/retour_profil.png")
 retour_profil_pos = (1300, 770)
 oeil = pygame.image.load("Images/Menu_jeu/Profil/oeil.png")
+deco = pygame.image.load("Images/Menu_jeu/Profil/deco.png")
 
 rect_blanc = pygame.image.load("Images/Menu_jeu/Profil/rect_blanc.png")
 rect_blanc_pos = (550, 370)
@@ -236,15 +237,6 @@ mdp_cache_verification=True
 long_mdp=0
 long_mdp_cache=0
 
-def resetVariables():
-    str_uti=''
-    long_uti=0
-    str_mdp=''
-    str_mdp_cache=''
-    mdp_cache_verification=True
-    long_mdp=0
-    long_mdp_cache=0
-
 #variables profil
 font_profil = pygame.font.Font("Polices/coolvetica.ttf", 70)
 font_argent = font2 = pygame.font.Font("Polices/dejavu_sansbold.ttf", 30)
@@ -379,6 +371,9 @@ def pari(nom_pari):
     nb=pari_actuel.pop(0)
                         
     screen.blit(mas_rectangle_somme, mas_rectangle_somme_pos)
+    screen.blit(curseur_bj, (510, 610))
+    argent = font2.render(str(compte[2])+'$', 1, (0, 0, 0))
+    screen.blit(argent, (30, 30))
     pygame.display.flip()
 
     #On retourne le pari supprimé de 'par_actuel'
@@ -529,6 +524,7 @@ while jouer==1:
                 mdp_cache = font_argent.render('Votre mot de passe : '+mdp_cache_str, 1, (0, 0, 0))
                 mdp_long = mdp_cache.get_rect().width
                 screen.blit(mdp_cache, (550, 370))
+                screen.blit(deco, (550, 430))
                 pos_oeil_gauche=mdp_long+30+550
                 screen.blit(oeil, (pos_oeil_gauche, 360))
                 pygame.display.flip()
@@ -604,6 +600,27 @@ while jouer==1:
 
                 pygame.display.flip()
 
+            #bouton se déconnecter
+            elif(event.pos[0]>=550 and event.pos[0]<=700) and (event.pos[1]>=430 and event.pos[1]<=480) and tableau=='profil':
+                tableau='bienvenue'
+                compte=[0,'','']
+
+                str_uti=''
+                long_uti=0
+                str_mdp=''
+                str_mdp_cache=''
+                mdp_cache_verification=True
+                long_mdp=0
+                long_mdp_cache=0
+                
+                screen.fill(white)
+                phrase = font2.render('Bienvenue dans le casino Umthombo !', 1, (0, 0, 0))
+                longueur_phrase = phrase.get_rect().width
+                screen.blit(phrase, ((1600-longueur_phrase)/2, 200))
+                screen.blit(inscription, inscription_pos)
+                screen.blit(connexion, connexion_pos)
+                pygame.display.flip()
+                
             #------------
             #boutons blackjack
             
@@ -623,6 +640,8 @@ while jouer==1:
                 screen.blit(mas_somme, (0, 0))
                 screen.blit(mas_rectangle_somme, mas_rectangle_somme_pos)
                 screen.blit(curseur_bj, (510, 610))
+                argent = font2.render(str(compte[2])+'$', 1, (0, 0, 0))
+                screen.blit(argent, (30, 30))
                 pygame.display.flip()
 
             #boutons roulette
@@ -738,12 +757,16 @@ while jouer==1:
 
             #Bouton jouer
             elif(event.pos[0]>=300 and event.pos[0]<=700) and (event.pos[1]>=300 and event.pos[1]<=500) and tableau=='mas_menu':
-                tableau='mas_somme'
+                somme=''
+                tableau='mas_entrer_somme'
 
                 #Affichage du rectangle pour parier
                 screen.fill(white)
                 screen.blit(mas_somme, (0, 0))
                 screen.blit(mas_rectangle_somme, mas_rectangle_somme_pos)
+                screen.blit(curseur_bj, (510, 610))
+                argent = font2.render(str(compte[2])+'$', 1, (0, 0, 0))
+                screen.blit(argent, (30, 30))
                 pygame.display.flip()
 
             #Bouton retour
@@ -753,23 +776,16 @@ while jouer==1:
                 dessine_menu()
                 pygame.display.flip()
 
-            #boutons rectangle somme machine à sous
-            elif(event.pos[0]>=600 and event.pos[0]<=1000) and (event.pos[1]>=600 and event.pos[1]<=700) and tableau=='mas_somme':
+            #bouton rejouer
+
+            elif(event.pos[0]>=550 and event.pos[0]<=850) and (event.pos[1]>=700 and event.pos[1]<=800) and tableau=='mas_gains':
                 somme=''
                 tableau='mas_entrer_somme'
-
-                #Affiche 0 dans le rectangle si on clique sur le rectangle
-                afficher = font.render('0', 1, (0, 0, 0))
-                screen.blit(afficher, (500,600))
-                pygame.display.flip()
-
-            #bouton rejouer
-            elif(event.pos[0]>=550 and event.pos[0]<=850) and (event.pos[1]>=700 and event.pos[1]<=800) and tableau=='mas_gains':
-                tableau='mas_somme'
 
                 screen.fill(white)
                 screen.blit(mas_somme, (0, 0))
                 screen.blit(mas_rectangle_somme, mas_rectangle_somme_pos)
+                screen.blit(curseur_bj, (510, 610))
                 pygame.display.flip()
 
             #Bouton quitter
@@ -862,7 +878,7 @@ while jouer==1:
                     pygame.display.flip()
                     
         #On vérifie si on clique sur une touche lors de la connexion
-        if event.type == KEYDOWN and (tableau=='conn_entrer_uti' or tableau=='conn_entrer_mdp' or tableau=='inscr_entrer_uti' or tableau=='inscr_entrer_mdp'):
+        if event.type == KEYDOWN and (tableau=='conn_entrer_uti' or tableau=='conn_entrer_mdp' or tableau=='inscr_entrer_uti' or tableau=='inscr_entrer_mdp'                                                         ):
             liste_touches=liste_nb+liste_lettres
             for el in liste_touches:
                 if tableau=='conn_entrer_uti' or tableau=='inscr_entrer_uti':
@@ -989,7 +1005,7 @@ while jouer==1:
                     sing_id=(str_uti,)
                     sing_mdp=(str_mdp,)
                     
-                    if len(str_uti)>3 or len(str_uti)<21 or check_identifiant_existe(sing_id)==False:
+                    if (len(str_uti)>3 or len(str_uti)<21) and check_identifiant_existe(sing_id)==False:
                         var =[(str_uti, str_mdp, 10000)]
                         for i in var:
                             cur.execute("INSERT INTO membres(identifiant, mdp, argent) VALUES(?,?,?)", i)
@@ -1008,7 +1024,7 @@ while jouer==1:
                         screen.blit(alerte, (300, 800))
                     
         #On vérifie si on clique sur une touche lors du pari de la machine à sous ou du blackjack
-        if event.type == KEYDOWN and (tableau=='mas_entrer_somme' or tableau=='pari_bj'):
+        if event.type == KEYDOWN and (tableau=='mas_entrer_somme' or tableau=='pari_bj' or tableau=='roulette_miser'):
             #On vérifie si la touche cliquée est un nombre
             for el in liste_nb:
                 if el==event.key:
@@ -1125,6 +1141,75 @@ while jouer==1:
 
                         else:
                             tableau='jeu_bj'
+                    elif tableau=='roulette_miser':
+                        #Si le pari est invalide on affiche un message à l'utilisateur
+                        if somme == '':
+                            screen.fill(white)
+                            phrase = font2.render("La valeur doit être supérieure à 0. Combien voulez vous miser sur "+str(nb_actuel[0])+" ?", 1, (0, 0, 0))
+                            longueur_phrase = phrase.get_rect().width
+                            screen.blit(phrase, ((1600-longueur_phrase)/2, 420))
+                                                
+                            screen.blit(mas_rectangle_somme, mas_rectangle_somme_pos)
+                            pygame.display.flip()
+
+                        #On appelle la fonction 'pari' pour afficher le prochain pari
+                        if len(pari_actuel)>0 and somme!='':
+                            paris[nb_actuel[0]]=int(somme)
+                            nb_actuel[0]=pari(pari_actuel[0])
+
+                            compte[2]=compte[2]-int(somme)
+
+                            somme=''
+
+                            cur.execute("UPDATE membres SET argent = ? WHERE identifiant = ?", (compte[2], compte[0]))
+                            conn.commit()
+                        #Si on a fait tous les paris, on appelle la fonction 'roulette' pour jouer à la roulette
+                        elif len(pari_actuel)==0 and somme!='':
+                            tableau='roulette_gains'
+                            
+                            paris[nb_actuel[0]]=int(somme)
+                            nb_actuel[0]=0
+                            
+                            compte[2]=compte[2]-int(somme)
+
+                            somme=''
+
+                            cur.execute("UPDATE membres SET argent = ? WHERE identifiant = ?", (compte[2], compte[0]))
+                            conn.commit()
+
+                            #L'argent gagné sur la roulette
+                            dico_gains=roulette(paris)
+                            gains=0
+                            mises_perdues=0
+                            
+                            for el in dico_gains.keys():
+                                if dico_gains[el]>paris[el]:
+                                    gains+=dico_gains[el]
+                                else:
+                                    mises_perdues-=paris[el]
+                                    
+                            if gains+mises_perdues>=0:
+                                screen.fill(white)
+                                phrase = font.render('Vous avez gagné '+str(gains), 1, (0, 0, 0))
+                                longueur_phrase = phrase.get_rect().width
+                                screen.blit(phrase, ((1600-longueur_phrase)/2, 420))
+                                pygame.display.flip()
+                                
+                            else:
+                                screen.fill(white)
+                                phrase = font2.render('Vous avez perdu '+str((mises_perdues-gains)*(-1)), 1, (0, 0, 0))
+                                longueur_phrase = phrase.get_rect().width
+                                screen.blit(phrase, ((1600-longueur_phrase)/2, 420))
+                                pygame.display.flip()
+                                
+                            compte[2]=compte[2]+gains
+                                
+                            cur.execute("UPDATE membres SET argent = ? WHERE identifiant = ?", (compte[2], compte[0]))
+                            conn.commit()
+                                
+                            screen.blit(mas_rejouer, mas_rejouer_pos)
+                            screen.blit(mas_quitter, mas_quitter_pos)
+                            pygame.display.flip()
                         
                 #Sinon, on affiche que la somme misée est invalide
                 else:
@@ -1134,95 +1219,7 @@ while jouer==1:
                     screen.blit(mas_somme_non_valide, (0, 0))
                     screen.blit(mas_rectangle_somme, mas_rectangle_somme_pos)
                     pygame.display.flip()
-
-        #On vérifie si on clique sur une touche lors du pari de la roulette
-        if event.type == KEYDOWN and tableau=='roulette_miser':
-            #On vérifie si la touche cliquée est un nombre
-            for nb in liste_nb:
-                if nb==event.key:
-                    #On vérifie si la taille du nombre parié est inférieur à 8 (la taille maximum)
-                    if len(somme)<8:
-                        #Si oui, on affiche le nombre parié avec le nouveau chiffre et on l'ajoute à la variable 'somme'
-                        somme=somme+dico_nb[nb]
-                        afficher = font.render(somme, 1, (0, 0, 0))
-                        screen.blit(afficher, (500,600))
-                        pygame.display.flip()
-                        #Si elle égale à 8, on supprime le dernier chiffre et on ajoute le nouveau
-                    else:
-                        somme=somme[0:7]+dico_nb[nb]
-                                            
-                        screen.blit(mas_rectangle_somme, (500,600))
-                        afficher = font.render(somme, 1, (0, 0, 0))
-                        screen.blit(afficher, (mas_rectangle_somme_pos))
-                        pygame.display.flip()
-            #On vérifie si la touche cliquée est 'Retour'
-            if event.key == K_BACKSPACE:
-                #On supprime le dernier chiffre de l'affichage et de la variable 'somme'
-                screen.blit(mas_rectangle_somme, mas_rectangle_somme_pos)
-                    
-                somme=somme[0:len(somme)-1]
-                afficher = font.render(somme, 1, (0, 0, 0))
-                screen.blit(afficher, (500,600))
-                pygame.display.flip()
-
-            #On vérifie si la touche cliquée est 'Entrée'
-            elif event.key == K_RETURN:
-                #Si le pari est invalide on affiche un message à l'utilisateur
-                if somme == '':
-                    screen.fill(white)
-                    phrase = font2.render("La valeur doit être supérieure à 0. Combien voulez vous miser sur "+str(nb_actuel[0])+" ?", 1, (0, 0, 0))
-                    longueur_phrase = phrase.get_rect().width
-                    screen.blit(phrase, ((1600-longueur_phrase)/2, 420))
-                                        
-                    screen.blit(mas_rectangle_somme, mas_rectangle_somme_pos)
-                    pygame.display.flip()
-
-                #On appelle la fonction 'pari' pour afficher le prochain pari
-                if len(pari_actuel)>0 and somme!='':
-                    paris[nb_actuel[0]]=int(somme)
-                    nb_actuel[0]=pari(pari_actuel[0])
-                    somme=''
-                #Si on a fait tous les paris, on appelle la fonction 'roulette' pour jouer à la roulette
-                elif len(pari_actuel)==0 and somme!='':
-                    tableau='roulette_gains'
-                    
-                    paris[nb_actuel[0]]=int(somme)
-                    nb_actuel[0]=0
-                    somme=''
-
-                    #L'argent gagné sur la roulette
-                    dico_gains=roulette(paris)
-                    gains=0
-                    mises_perdues=0
-                    
-                    for el in dico_gains.keys():
-                        if dico_gains[el]>paris[el]:
-                            gains+=dico_gains[el]
-                        else:
-                            mises_perdues-=paris[el]
-                            
-                    if gains+mises_perdues>=0:
-                        screen.fill(white)
-                        phrase = font.render('Vous avez gagné '+str(gains+mises_perdues), 1, (0, 0, 0))
-                        longueur_phrase = phrase.get_rect().width
-                        screen.blit(phrase, ((1600-longueur_phrase)/2, 420))
-                        pygame.display.flip()
-                        
-                    else:
-                        screen.fill(white)
-                        phrase = font2.render('Vous avez perdu '+str((gains+mises_perdues)*-1)+' dollars', 1, (0, 0, 0))
-                        longueur_phrase = phrase.get_rect().width
-                        screen.blit(phrase, ((1600-longueur_phrase)/2, 420))
-                        pygame.display.flip()
-                        
-                    compte[2]=compte[2]+gains+mises_perdues
-                        
-                    cur.execute("UPDATE membres SET argent = ? WHERE identifiant = ?", (compte[2], compte[0]))
-                    conn.commit()
-                        
-                    screen.blit(mas_rejouer, mas_rejouer_pos)
-                    screen.blit(mas_quitter, mas_quitter_pos)
-                    pygame.display.flip()
+                
                         
         #On vérifie si on clique sur une touche lors du choix des paris sur le tapis de la roulette
         if event.type == KEYDOWN and tableau=='roulette_tapis':
