@@ -635,6 +635,7 @@ while jouer==1:
             #Bouton jouer
             elif(event.pos[0]>=300 and event.pos[0]<=700) and (event.pos[1]>=300 and event.pos[1]<=500) and tableau=='bj_menu':
                 tableau='pari_bj'
+                somme=''
 
                 screen.fill(white)
                 screen.blit(mas_somme, (0, 0))
@@ -643,7 +644,8 @@ while jouer==1:
                 argent = font2.render(str(compte[2])+'$', 1, (0, 0, 0))
                 screen.blit(argent, (30, 30))
                 pygame.display.flip()
-
+                
+            #------------
             #boutons roulette
             
             #Bouton retour
@@ -745,7 +747,7 @@ while jouer==1:
                 pygame.display.flip()
 
             #Bouton quitter
-            elif(event.pos[0]>=1050 and event.pos[0]<=1350) and (event.pos[1]>=700 and event.pos[1]<=800) and tableau=='roulette_gains':
+            elif(event.pos[0]>=1050 and event.pos[0]<=1350) and (event.pos[1]>=700 and event.pos[1]<=800) and (tableau=='roulette_gains' or tableau=='fin_bj'):
                 tableau='menu'
 
                 #Affiche le menu
@@ -804,7 +806,7 @@ while jouer==1:
                 infos=action(1, ct_jr, ct_crp, screen)
                 if infos[0]==0:
                     time.sleep(2)
-                    tableau='bj_rejouer'
+                    tableau='fin_bj'
 
                     compte[2]=compte[2]-int(somme)
 
@@ -823,7 +825,7 @@ while jouer==1:
                     pygame.display.flip()
                     
                     time.sleep(2)
-                    tableau='bj_rejouer'
+                    tableau='fin_bj'
 
                     compte[2]=compte[2]+int(somme)
 
@@ -876,6 +878,19 @@ while jouer==1:
                     screen.blit(mas_rejouer, mas_rejouer_pos)
                     screen.blit(mas_quitter, mas_quitter_pos)
                     pygame.display.flip()
+                
+                tableau='fin_bj'
+                    
+            #bouton rejouer
+            elif(event.pos[0]>=550 and event.pos[0]<=850) and (event.pos[1]>=700 and event.pos[1]<=800) and tableau=='fin_bj':
+                tableau='pari_bj'
+                somme=''
+    
+                screen.fill(white)
+                screen.blit(mas_somme, (0, 0))
+                screen.blit(mas_rectangle_somme, mas_rectangle_somme_pos)
+                screen.blit(curseur_bj, (510, 610))
+                pygame.display.flip()
                     
         #On vérifie si on clique sur une touche lors de la connexion
         if event.type == KEYDOWN and (tableau=='conn_entrer_uti' or tableau=='conn_entrer_mdp' or tableau=='inscr_entrer_uti' or tableau=='inscr_entrer_mdp'                                                         ):
@@ -1124,8 +1139,8 @@ while jouer==1:
                         ct_jr=infos[1]
                         ct_crp=infos[2]
                         
-                        if gains>0:
-                            tableau='bj_rejouer'
+                        if infos[0]>0:
+                            tableau='fin_bj'
 
                             compte[2]=compte[2]-int(somme)+infos[0]
 
