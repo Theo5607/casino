@@ -5,6 +5,7 @@ from Casino_Matvei.slot_machine import slot_partie
 from casino_leonardo.roulette_fin import roulette
 from Casino_Teis.bj import play_blackjack
 from Casino_Teis.bj import action
+from fonctions import *
 
 #Création de la base de données
 
@@ -126,53 +127,9 @@ font = pygame.font.Font("Polices/dejavu_sansbold.ttf", 100)
 font2 = pygame.font.Font("Polices/dejavu_sansbold.ttf", 50)
 
 #-----------
-#Affichage de l'image de connexion au début du programme
-screen.fill(white)
-phrase = font2.render('Bienvenue dans le casino Umthombo !', 1, (0, 0, 0))
-longueur_phrase = phrase.get_rect().width
-screen.blit(phrase, ((1600-longueur_phrase)/2, 200))
-screen.blit(inscription, inscription_pos)
-screen.blit(connexion, connexion_pos)
-pygame.display.flip()
 
-def ret_spec(nb):
-    """Prend en argument un nombre correspondant à celui des cartes de jeu et retourne une string contenant le nom de la carte"""
-    if nb==11:
-        return 'valet'
-    elif nb==12:
-        return 'dame'
-    elif nb==13:
-        return 'roi'
-    elif nb==1:
-        return 'as'
-    else:
-        return str(nb)
 
-def crea_liste_cartes():
-    """Crée un dictionnaire de cartes contenant pour chaque carte qui est une clé sa valeur, son nom et sa couleur"""
-    liste_cartes={}
-
-    for i in range(1,53):
-        nb=i
-        famille_nb=0
-
-        while nb > 13:
-            nb=nb-13
-            famille_nb=famille_nb+1
-
-        if famille_nb==0:
-            liste_cartes[i]=[nb,ret_spec(nb),'coeur']
-        elif famille_nb==1:
-            liste_cartes[i]=[nb,ret_spec(nb),'carreau']
-        elif famille_nb==2:
-            liste_cartes[i]=[nb,ret_spec(nb),'pique']
-        elif famille_nb==3:
-            liste_cartes[i]=[nb,ret_spec(nb),'trèfle']
-    
-    return liste_cartes
-
-#Crée un dictionnaire de cartes grâce à la fonction ci-dessus
-liste_cartes=crea_liste_cartes()
+ecran_de_demarrage(screen)
 
 #Liste des touches correspondant au nombres/lettres du clavier
 liste_nb = (K_0, K_1, K_2, K_3, K_4, K_5, K_6, K_7, K_8, K_9)
@@ -185,6 +142,7 @@ for el in liste_nb:
     dico_nb[el]=str(var)
     var+=1
 
+#La boucle assigne à chaque touche qui est la clé sa lettre associée
 dico_lettre = {}
 liste_lettre_str = ('a','b','c','d','e','f','g','h','i','j','q','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z')
 var=0
@@ -192,6 +150,7 @@ for el in liste_lettres:
     dico_lettre[el]=liste_lettre_str[var]
     var+=1
 
+#On crée un dictionnaire contenant les lettres et les nombres
 dico_touches = {}
 for el in dico_nb.keys():
     dico_touches[el]=str(dico_nb[el])
@@ -260,106 +219,6 @@ cr_crp=[]
 #variable pour entrer un pari
 somme=''
 
-def conn_inscr(n):
-    screen.fill(white)
-    utilisateur = font2.render("Nom d'utilisateur:", 1, (0, 0, 0))
-    longueur_utilisateur = utilisateur.get_rect().width
-    screen.blit(utilisateur, ((1600-longueur_utilisateur)/2, 100))
-
-    mdp = font2.render("Mot de passe:", 1, (0, 0, 0))
-    longueur_mdp = mdp.get_rect().width
-    screen.blit(mdp, ((1600-longueur_mdp)/2, 500))
-
-    screen.blit(rectangle, (300, 250))
-    screen.blit(rectangle, (300, 650))
-    screen.blit(oeil, (1320, 700))
-    screen.blit(curseur, (310, 260))
-    screen.blit(retour, (1350, 800))
-
-def dessine_menu():
-    """Fonction qui dessine le menu"""
-    screen.blit(fond, (0,0))
-    screen.blit(banderole, (0, 0))
-    screen.blit(profil, profil_pos)
-    screen.blit(blackjack_icone, blackjack_icone_pos)
-    screen.blit(slot_icone, slot_icone_pos)
-    screen.blit(roulette_icone, roulette_icone_pos)
-    screen.blit(quitter, quitter_pos)
-
-def check_tapis(clic):
-    """Fonction qui vérifie un clic dans le tapis de la roulette pour parier, si il correspond à un nombre ou un pari spécifique, la fonction le renvoie"""
-    liste_nb_roulette=[3,2,1]
-    nombre=0
-    ligne=1
-    colonne=1
-    #Coordonées à vérifier pour le clic des nombres
-    coordonnees=[187, 84]
-    coordonnees_zero=[18, 82]
-    #Boucle for qui traverse les 3 lignes
-    for ligne in range(0,3):
-        #Boucle for qui traverse toutes les colonnes
-        for colonne in range(0,12):
-            #On récupère le nombre correspondant à la ligne et colonne
-            nombre=liste_nb_roulette[ligne]+3*(colonne)
-            #On vérifie les coordonnées du clic
-            if(clic[0]>=coordonnees[0] and clic[0]<=coordonnees[0]+103) and (clic[1]>=coordonnees[1] and clic[1]<=coordonnees[1]+103):
-                #On retourne le nombre et on change le fond du nombre selon si il avait été sélectionné ou pas
-                if paris[nombre]==0:
-                    screen.blit(fond_nb_bleu, (coordonnees[0], coordonnees[1]))
-                    pygame.display.flip()
-                    return [nombre, 1]
-                elif paris[nombre]==1:
-                    screen.blit(fond_nb_vert, (coordonnees[0], coordonnees[1]))
-                    pygame.display.flip()
-                    return [nombre, 0]
-            else:
-                if nombre==36:
-                    coordonnees[0]=187
-                    coordonnees[1]=84+110
-                elif nombre==35:
-                    coordonnees[0]=187
-                    coordonnees[1]=84+110*2
-                elif nombre==34:
-                    coordonnees[0]=187
-                elif nombre==16:
-                    coordonnees[0]=coordonnees[0]+109
-                elif nombre==17:
-                    coordonnees[0]=coordonnees[0]+109
-                elif nombre==18:
-                    coordonnees[0]=coordonnees[0]+109
-                else:
-                    coordonnees[0]=coordonnees[0]+106
-
-    #Coordonées à vérifier pour le clic des lignes
-    coordonnees_ligne=[1465, 84]
-    #Boucle qui traverse les 3 lignes
-    for i in range(0,3):
-        #On vérifie les coordonnées du clic
-        if(clic[0]>=coordonnees_ligne[0] and clic[0]<=coordonnees_ligne[0]+102) and (clic[1]>=coordonnees_ligne[1]+i*111 and clic[1]<=coordonnees_ligne[1]+i*(111)+105):
-            #On retourne le nom de la ligne et on change le fond du nombre selon si il avait été sélectionné ou pas
-            if paris['ligne_'+str(i+1)]==0:
-                screen.blit(ligne_bleu, (coordonnees_ligne[0], coordonnees_ligne[1]+i*111))
-                pygame.display.flip()
-                return ['ligne_'+str(i+1), 1]
-            elif paris['ligne_'+str(i+1)]==1:
-                screen.blit(ligne_vert, (coordonnees_ligne[0], coordonnees_ligne[1]+i*111))
-                pygame.display.flip()
-                return ['ligne_'+str(i+1), 0]
-
-    #On vérifie si on clique sur 0
-    if(clic[0]>=coordonnees_zero[0] and clic[0]<=coordonnees_zero[0]+165) and (clic[1]>=coordonnees_zero[1] and clic[1]<=coordonnees_zero[1]+330) and tableau=='roulette_tapis':
-        if paris[0]==0:
-            screen.blit(zero_bleu, zero_pos)
-            pygame.display.flip()
-            return [0, 1]
-        elif paris[0]==1:
-            screen.blit(zero_vert, zero_pos)
-            pygame.display.flip()
-            return [0, 0]
-
-    #On retourne une liste vide si les vérifications de clic n'ont pas été concluantes.
-    return []
-
 def pari(nom_pari):
     """Affiche à l'écran Combien voulez-vous parier sur 'nom_du_pari'"""
     screen.fill(white)
@@ -395,7 +254,7 @@ while jouer==1:
             #bouton connexion
             if(event.pos[0]>=600 and event.pos[0]<=1000) and (event.pos[1]>=400 and event.pos[1]<=500) and tableau=='bienvenue':
                 tableau='conn_entrer_uti'
-                conn_inscr(0)
+                conn_inscr(screen, 0)
 
             #bouton inscription
             elif(event.pos[0]>=600 and event.pos[0]<=1000) and (event.pos[1]>=600 and event.pos[1]<=700) and tableau=='bienvenue':
@@ -498,7 +357,7 @@ while jouer==1:
             if(event.pos[0]>=650 and event.pos[0]<=950) and (event.pos[1]>=700 and event.pos[1]<=800) and tableau=='entree':
                 tableau='menu'
 
-                dessine_menu()
+                dessine_menu(screen)
                 pygame.display.flip()
                 
             #boutons menu jeu
@@ -571,7 +430,7 @@ while jouer==1:
                 tableau='menu'
 
                 #Affichage du menu
-                dessine_menu()
+                dessine_menu(screen)
                 pygame.display.flip()
 
             #Bouton oeil pour cacher ou montrer le mot de passe
@@ -629,7 +488,7 @@ while jouer==1:
                 tableau='menu'
 
                 #Affichage du menu
-                dessine_menu()
+                dessine_menu(screen)
                 pygame.display.flip()
 
             #Bouton jouer
@@ -653,7 +512,7 @@ while jouer==1:
                 tableau='menu'
 
                 #Affichage du menu
-                dessine_menu()
+                dessine_menu(screen)
                 pygame.display.flip()
 
             #Bouton jouer
@@ -699,7 +558,7 @@ while jouer==1:
 
             #Clic sur le tapis
             elif tableau=='roulette_tapis':
-                liste_paris=check_tapis(event.pos)
+                liste_paris=check_tapis(screen, event.pos, paris)
                 if len(liste_paris)!=0:
                     paris[liste_paris[0]]=liste_paris[1]
 
@@ -751,7 +610,7 @@ while jouer==1:
                 tableau='menu'
 
                 #Affiche le menu
-                dessine_menu()
+                dessine_menu(screen)
                 pygame.display.flip()
 
             #------------
@@ -775,7 +634,7 @@ while jouer==1:
             elif(event.pos[0]>=900 and event.pos[0]<=1300) and (event.pos[1]>=300 and event.pos[1]<=500) and tableau=='mas_menu':
                 tableau='menu'
 
-                dessine_menu()
+                dessine_menu(screen)
                 pygame.display.flip()
 
             #bouton rejouer
@@ -795,7 +654,7 @@ while jouer==1:
                 tableau='menu'
 
                 #Affiche le menu
-                dessine_menu()
+                dessine_menu(screen)
                 pygame.display.flip()
 
             #------------
