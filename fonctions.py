@@ -226,4 +226,19 @@ def check_tapis(screen, clic, paris):
     #On retourne une liste vide si les vérifications de clic n'ont pas été concluantes.
     return []
 
+def affichage_curseur(screen, str_uti, str_mdp):
+    screen.blit(rectangle, (300, 250))
+    screen.blit(rectangle, (300, 650))
+    uti = font.render(str_uti, 1, (0, 0, 0))
+    screen.blit(uti, (300, 250))
+    mdp = font.render(str_mdp, 1, (0, 0, 0))
+    screen.blit(mdp, (300, 650))
+    pygame.display.flip()
+
+def affichage_menu_jeu(screen):
+    screen.fill(white)
+    screen.blit(mas_jouer, mas_jouer_pos)
+    screen.blit(mas_retour, mas_retour_pos)
+    pygame.display.flip()
+
 #FONCTIONS DE FONCTIONNEMENT

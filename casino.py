@@ -259,34 +259,24 @@ while jouer==1:
             #bouton inscription
             elif(event.pos[0]>=600 and event.pos[0]<=1000) and (event.pos[1]>=600 and event.pos[1]<=700) and tableau=='bienvenue':
                 tableau='inscr_entrer_uti'
-                conn_inscr(1)
+                conn_inscr(screen, 1)
 
             #----------------
             #boutons inscription
             elif(event.pos[0]>=300 and event.pos[0]<=1300) and (event.pos[1]>=250 and event.pos[1]<=400) and tableau=='inscr_entrer_mdp':
                 tableau='inscr_entrer_uti'
                 
-                screen.blit(rectangle, (300, 250))
-                screen.blit(rectangle, (300, 650))
-                uti = font.render(str_uti, 1, (0, 0, 0))
-                screen.blit(uti, (300, 250))
-                mdp = font.render(str_mdp, 1, (0, 0, 0))
-                screen.blit(mdp, (300, 650))
-                
-                screen.blit(curseur, (300+long_uti+10, 260))
+                affichage_curseur(screen, str_uti, str_mdp)
+
+                affichage_image(screen, curseur, (300+long_uti+10, 260))
                 pygame.display.flip()
 
             elif(event.pos[0]>=300 and event.pos[0]<=1300) and (event.pos[1]>=650 and event.pos[1]<=800) and tableau=='inscr_entrer_uti':
                 tableau='inscr_entrer_mdp'
 
-                screen.blit(rectangle, (300, 250))
-                screen.blit(rectangle, (300, 650))
-                uti = font.render(str_uti, 1, (0, 0, 0))
-                screen.blit(uti, (300, 250))
-                mdp = font.render(str_mdp, 1, (0, 0, 0))
-                screen.blit(mdp, (300, 650))
-                
-                screen.blit(curseur, (300+long_mdp+10, 660))
+                affichage_curseur(screen, str_uti, str_mdp)
+
+                affichage_image(screen, curseur, (300+long_mdp+10, 660))
                 pygame.display.flip()
                 
                 
@@ -294,27 +284,17 @@ while jouer==1:
             elif(event.pos[0]>=300 and event.pos[0]<=1300) and (event.pos[1]>=250 and event.pos[1]<=400) and tableau=='conn_entrer_mdp':
                 tableau='conn_entrer_uti'
                 
-                screen.blit(rectangle, (300, 250))
-                screen.blit(rectangle, (300, 650))
-                uti = font.render(str_uti, 1, (0, 0, 0))
-                screen.blit(uti, (300, 250))
-                mdp = font.render(str_mdp, 1, (0, 0, 0))
-                screen.blit(mdp, (300, 650))
+                affichage_curseur(screen, str_uti, str_mdp)
                 
-                screen.blit(curseur, (300+long_uti+10, 260))
+                affichage_image(screen, curseur, (300+long_uti+10, 260))
                 pygame.display.flip()
 
             elif(event.pos[0]>=300 and event.pos[0]<=1300) and (event.pos[1]>=650 and event.pos[1]<=800) and tableau=='conn_entrer_uti':
                 tableau='conn_entrer_mdp'
 
-                screen.blit(rectangle, (300, 250))
-                screen.blit(rectangle, (300, 650))
-                uti = font.render(str_uti, 1, (0, 0, 0))
-                screen.blit(uti, (300, 250))
-                mdp = font.render(str_mdp, 1, (0, 0, 0))
-                screen.blit(mdp, (300, 650))
+                affichage_curseur(screen, str_uti, str_mdp)
                 
-                screen.blit(curseur, (300+long_mdp+10, 660))
+                affichage_image(screen, curseur, (300+long_mdp+10, 660))
                 pygame.display.flip()
                 
 
@@ -330,21 +310,15 @@ while jouer==1:
                 long_mdp=0
                 long_mdp_cache=0
                 
-                screen.fill(white)
-                phrase = font2.render('Bienvenue dans le casino Umthombo !', 1, (0, 0, 0))
-                longueur_phrase = phrase.get_rect().width
-                screen.blit(phrase, ((1600-longueur_phrase)/2, 200))
-                screen.blit(inscription, inscription_pos)
-                screen.blit(connexion, connexion_pos)
-                pygame.display.flip()
+                ecran_de_demarrage(screen)
 
             #bouton oeil pour cacher ou montrer le mdp
             elif(event.pos[0]>=1320 and event.pos[0]<=1420) and (event.pos[1]>=700 and event.pos[1]<=750) and (tableau=='connexion' or tableau=='conn_entrer_uti' or tableau=='conn_entrer_mdp' or tableau=='inscr_entrer_uti' or tableau=='inscr_entrer_mdp'):
-                screen.blit(rectangle, (300, 650))
+                affichage_curseur(screen, rectangle, (300, 650))
                 if mdp_cache_verification==True:
                     mdp = font.render(str_mdp, 1, (0, 0, 0))
-                    screen.blit(mdp, (300, 650))
-                    screen.blit(curseur, (300+10+long_mdp, 660))
+                    affichage_image(screen, mdp, (300, 650))
+                    affichage_image(screen, curseur, (300+10+long_mdp, 660))
                     mdp_cache_verification=False
                 elif mdp_cache_verification==False:
                     mdp_cache = font.render(str_mdp_cache, 1, (0, 0, 0))
@@ -373,19 +347,26 @@ while jouer==1:
 
                 #Affichage du profil
                 screen.fill(white)
-                screen.blit(retour_profil, retour_profil_pos)
-                screen.blit(icone_profil, icone_profil_pos)
+                
+                affichage_image(screen, retour_profil, retour_profil_pos)
+                affichage_image(screen, icone_profil, icone_profil_pos)
+                
                 pseudo = font_profil.render(compte[0].upper(), 1, (0, 0, 0))
                 longueur_pseudo = pseudo.get_rect().width
                 screen.blit(pseudo, (200+((200-longueur_pseudo)/2), 420))
+                
                 argent = font_argent.render('Vous avez actuellement '+str(compte[2])+' dollars sur votre compte', 1, (0, 0, 0))
                 screen.blit(argent, (550, 300))
+                
                 mdp_cache = font_argent.render('Votre mot de passe : '+mdp_cache_str, 1, (0, 0, 0))
                 mdp_long = mdp_cache.get_rect().width
                 screen.blit(mdp_cache, (550, 370))
-                screen.blit(deco, (550, 430))
+                
+                affichage_image(screen, deco, (550, 430))
+                
                 pos_oeil_gauche=mdp_long+30+550
-                screen.blit(oeil, (pos_oeil_gauche, 360))
+                affichage_image(screen, oeil, (pos_oeil_gauche, 360))
+                
                 pygame.display.flip()
 
             #Bouton icône blackjack
@@ -393,35 +374,27 @@ while jouer==1:
                 tableau='bj_menu'
 
                 #Affichage du menu du blackjack
-                screen.fill(white)
-                screen.blit(mas_jouer, mas_jouer_pos)
-                screen.blit(mas_retour, mas_retour_pos)
-                pygame.display.flip()
+                affichage_menu_jeu(screen)
 
             #Bouton icône machine à sous
             elif(event.pos[0]>=900 and event.pos[0]<=1350) and (event.pos[1]>=170 and event.pos[1]<=420) and tableau=='menu':
                 tableau='mas_menu'
 
                 #Affichage du menu de la machine à sous
-                screen.fill(white)
-                screen.blit(mas_jouer, mas_jouer_pos)
-                screen.blit(mas_retour, mas_retour_pos)
-                pygame.display.flip()
+                affichage_menu_jeu(screen)
 
             #Bouton icône roulette
             elif(event.pos[0]>=500 and event.pos[0]<=1100) and (event.pos[1]>=550 and event.pos[1]<=800) and tableau=='menu':
                 tableau='roulette_menu'
 
                 #Affichage du menu de la roulette
-                screen.fill(white)
-                screen.blit(mas_jouer, mas_jouer_pos)
-                screen.blit(mas_retour, mas_retour_pos)
-                pygame.display.flip()
+                affichage_menu_jeu(screen)
 
             #Bouton quiter le casion
             elif(event.pos[0]>=1300 and event.pos[0]<=1550) and (event.pos[1]>=770 and event.pos[1]<=850) and tableau=='menu':
                 #Stopper la boucle infinie
                 jouer = 0
+                
             #----------------
             #boutons profil
 
