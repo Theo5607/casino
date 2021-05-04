@@ -3,7 +3,7 @@ import random
 def slot_partie(mise): #fonction prenant en argument lamise sur laquelle l'utlisateur va jouer
     gains_slot=0 #création de la variable gains_slot qui définit combien ont été gagné sur cette session
 
-    symboles=['7','cloche','bar3','bar2','bar1','lemon','scatter'] #liste des symboles tirables
+    symboles=['7','cloche','cherry','watermelon','bar','lemon','scatter'] #liste des symboles tirables
 
     #définition des symboles tirés
     p1=random.randint(0,6)
@@ -71,15 +71,15 @@ def slot_partie(mise): #fonction prenant en argument lamise sur laquelle l'utlis
         return gains_temp
 
     #p1-p2-p3 (horizontale haut)
-    if p1==p2 and p1==p3 and p1!=0 and p1!=6: 
+    if p1==p2 and p1==p3 and p1!=0 and p1!=6:
         gains_slot=gains_slot+multi(p1)
         print('bravo vous gagnez:',multi(p1))
-    
+
     #p1-p5-p9 (diagonale haut-gauche to bas-droite)
     if p1==p5 and p1==p9 and p1!=0 and p1!=6:
         gains_slot=gains_slot+multi(p1)
         print('bravo vous gagnez:',multi(p1))
-    
+
     #p1-p4-p7 (verticale gauche)
     if p1==p2 and p1==p3 and p1!=0 and p1!=6:
         gains_slot=gains_slot+multi(p1)
@@ -111,6 +111,3 @@ def slot_partie(mise): #fonction prenant en argument lamise sur laquelle l'utlis
         print('bravo vous gagnez:',multi(p7))
 
     return gains_slot, tirage
-
-
-    
