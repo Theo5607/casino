@@ -226,6 +226,43 @@ def check_tapis(screen, clic, paris):
     #On retourne une liste vide si les vérifications de clic n'ont pas été concluantes.
     return []
 
+def affichage_tapis(screen):
+    screen.fill(white)
+    affichage_image(screen, roulette_tapis, (0, 0))
+    liste_nb_roulette=[3,2,1]
+    nombre=0
+    ligne=1
+    colonne=1
+    coordonnees=[187, 84]
+    for ligne in range(0,3):
+        for colonne in range(0,12):
+            nombre=liste_nb_roulette[ligne]+3*(colonne)
+            screen.blit(fond_nb_vert, (coordonnees[0], coordonnees[1]))
+            if nombre==36:
+                coordonnees[0]=187
+                coordonnees[1]=84+110
+            elif nombre==35:
+                coordonnees[0]=187
+                coordonnees[1]=84+110*2
+            elif nombre==34:
+                coordonnees[0]=187
+            elif nombre==16:
+                coordonnees[0]=coordonnees[0]+109
+            elif nombre==17:
+                coordonnees[0]=coordonnees[0]+109
+            elif nombre==18:
+                coordonnees[0]=coordonnees[0]+109
+            else:
+                coordonnees[0]=coordonnees[0]+106
+
+    screen.blit(zero_vert, (18, 82))
+
+    coordonnees_ligne=[1465, 84]
+    for i in range(0,3):
+        screen.blit(ligne_vert, (coordonnees_ligne[0], coordonnees_ligne[1]+i*(111)))
+                    
+    pygame.display.flip()
+
 def affichage_curseur(screen, str_uti, str_mdp):
     screen.blit(rectangle, (300, 250))
     screen.blit(rectangle, (300, 650))
@@ -240,5 +277,14 @@ def affichage_menu_jeu(screen):
     screen.blit(mas_jouer, mas_jouer_pos)
     screen.blit(mas_retour, mas_retour_pos)
     pygame.display.flip()
+
+def affichage_paris(screen):
+    screen.blit(mas_somme, (0, 0))
+    screen.blit(mas_rectangle_somme, mas_rectangle_somme_pos)
+    screen.blit(curseur_bj, (510, 610))
+
+def affichage_rejouer(screen):
+    screen.blit(mas_rejouer, mas_rejouer_pos)
+    screen.blit(mas_quitter, mas_quitter_pos)
 
 #FONCTIONS DE FONCTIONNEMENT
