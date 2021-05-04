@@ -120,6 +120,21 @@ cr_crp=[]
 #variable pour entrer un pari
 somme=''
 
+def check_clic(clic, posx, posy, tableau_demande):
+    tableau_bool=False
+    
+    for el in tableau_demande:
+        if el==tableau:
+            tableau_bool=True
+    
+    if tableau_bool==True:
+        if(clic[0]>=posx[0] and clic[0]<=posx[1]) and (clic[1]>=posy[0] and clic[1]<=posy[1]):
+            return True
+        else:
+            return False
+    else:
+        return False
+
 def pari(nom_pari):
     """Affiche à l'écran Combien voulez-vous parier sur 'nom_du_pari'"""
     screen.fill(white)
@@ -153,54 +168,41 @@ while jouer==1:
             #boutons bienvenue
 
             #bouton connexion
-            if(event.pos[0]>=600 and event.pos[0]<=1000) and (event.pos[1]>=400 and event.pos[1]<=500) and tableau=='bienvenue':
+            if check_clic(event.pos, (600, 1000), (400, 500), ['bienvenue'])==True:
                 tableau='conn_entrer_uti'
                 conn_inscr(screen, 0)
 
             #bouton inscription
-            elif(event.pos[0]>=600 and event.pos[0]<=1000) and (event.pos[1]>=600 and event.pos[1]<=700) and tableau=='bienvenue':
+            elif check_clic(event.pos, (600, 1000), (600, 700), ['bienvenue'])==True:
                 tableau='inscr_entrer_uti'
                 conn_inscr(screen, 1)
 
             #----------------
-            #boutons inscription
-            elif(event.pos[0]>=300 and event.pos[0]<=1300) and (event.pos[1]>=250 and event.pos[1]<=400) and tableau=='inscr_entrer_mdp':
-                tableau='inscr_entrer_uti'
+            #boutons inscription/connexion
+            elif check_clic(event.pos, (300, 1300), (250, 400), ['inscr_entrer_mdp', 'conn_entrer_mdp'])==True:
+                if tableau=='inscr_entrer_mdp':
+                    tableau='inscr_entrer_uti'
+                else:
+                    tableau='conn_entrer_uti'
                 
                 affichage_curseur(screen, str_uti, str_mdp)
 
                 affichage_image(screen, curseur, (300+long_uti+10, 260))
                 pygame.display.flip()
-
-            elif(event.pos[0]>=300 and event.pos[0]<=1300) and (event.pos[1]>=650 and event.pos[1]<=800) and tableau=='inscr_entrer_uti':
-                tableau='inscr_entrer_mdp'
-
-                affichage_curseur(screen, str_uti, str_mdp)
-
-                affichage_image(screen, curseur, (300+long_mdp+10, 660))
-                pygame.display.flip()
-                
-                
-            #boutons connexion
-            elif(event.pos[0]>=300 and event.pos[0]<=1300) and (event.pos[1]>=250 and event.pos[1]<=400) and tableau=='conn_entrer_mdp':
-                tableau='conn_entrer_uti'
-                
-                affichage_curseur(screen, str_uti, str_mdp)
-                
-                affichage_image(screen, curseur, (300+long_uti+10, 260))
-                pygame.display.flip()
-
-            elif(event.pos[0]>=300 and event.pos[0]<=1300) and (event.pos[1]>=650 and event.pos[1]<=800) and tableau=='conn_entrer_uti':
-                tableau='conn_entrer_mdp'
+            elif check_clic(event.pos, (300, 1300), (650, 800), ['inscr_entrer_uti', 'conn_entrer_uti'])==True:
+                if tableau=='inscr_entrer_uti':
+                    tableau='inscr_entrer_mdp'
+                else:
+                    tableau='conn_entrer_mdp'
 
                 affichage_curseur(screen, str_uti, str_mdp)
-                
+
                 affichage_image(screen, curseur, (300+long_mdp+10, 660))
                 pygame.display.flip()
                 
 
             #bouton retour
-            elif(event.pos[0]>=1350 and event.pos[0]<=1550) and (event.pos[1]>=800 and event.pos[1]<=850) and (tableau=='conn_entrer_uti' or tableau=='conn_entrer_mdp' or tableau=='inscr_entrer_uti' or tableau=='inscr_entrer_mdp'):
+            elif check_clic(event.pos, (1350, 1550), (800, 850), ['inscr_entrer_uti', 'conn_entrer_uti', 'conn_entrer_mdp', 'inscr_entrer_mdp'])==True:
                 tableau='bienvenue'
 
                 str_uti=''
@@ -214,7 +216,7 @@ while jouer==1:
                 ecran_de_demarrage(screen)
 
             #bouton oeil pour cacher ou montrer le mdp
-            elif(event.pos[0]>=1320 and event.pos[0]<=1420) and (event.pos[1]>=700 and event.pos[1]<=750) and (tableau=='connexion' or tableau=='conn_entrer_uti' or tableau=='conn_entrer_mdp' or tableau=='inscr_entrer_uti' or tableau=='inscr_entrer_mdp'):
+            elif check_clic(event.pos, (1320, 1420), (700, 750), ['connexion','inscr_entrer_uti', 'conn_entrer_uti', 'conn_entrer_mdp', 'inscr_entrer_mdp'])==True:
                 affichage_curseur(screen, rectangle, (300, 650))
                 if mdp_cache_verification==True:
                     mdp = font.render(str_mdp, 1, (0, 0, 0))
