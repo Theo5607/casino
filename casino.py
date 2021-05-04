@@ -217,7 +217,7 @@ while jouer==1:
 
             #bouton oeil pour cacher ou montrer le mdp
             elif check_clic(event.pos, (1320, 1420), (700, 750), ['connexion','inscr_entrer_uti', 'conn_entrer_uti', 'conn_entrer_mdp', 'inscr_entrer_mdp'])==True:
-                affichage_curseur(screen, rectangle, (300, 650))
+                affichage_image(screen, rectangle, (300, 650))
                 if mdp_cache_verification==True:
                     mdp = font.render(str_mdp, 1, (0, 0, 0))
                     affichage_image(screen, mdp, (300, 650))
@@ -226,14 +226,14 @@ while jouer==1:
                 elif mdp_cache_verification==False:
                     mdp_cache = font.render(str_mdp_cache, 1, (0, 0, 0))
                     screen.blit(mdp_cache, (300, 650))
-                    screen.blit(curseur, (300+10+long_mdp_cache, 660))
+                    affichage_image(screen, curseur, (300+10+long_mdp_cache, 660))
                     mdp_cache_verification=True
                 
             #----------------
             #boutons menu jeu
 
             #Bouton pour accéder au profil
-            elif(event.pos[0]>=1450 and event.pos[0]<=1550) and (event.pos[1]>=20 and event.pos[1]<=70) and tableau=='menu':
+            elif check_clic(event.pos, (1450, 1550), (20, 70), ['menu'])==True:
                 tableau='profil'
 
                 #Déclaration du mot de passe caché, c'est à dire sous cette forme : *****
@@ -266,45 +266,41 @@ while jouer==1:
                 pygame.display.flip()
 
             #Bouton icône blackjack
-            elif(event.pos[0]>=250 and event.pos[0]<=700) and (event.pos[1]>=170 and event.pos[1]<=420) and tableau=='menu':
+            elif check_clic(event.pos, (250, 700), (170, 420), ['menu'])==True:
                 tableau='bj_menu'
 
                 #Affichage du menu du blackjack
                 affichage_menu_jeu(screen)
 
             #Bouton icône machine à sous
-            elif(event.pos[0]>=900 and event.pos[0]<=1350) and (event.pos[1]>=170 and event.pos[1]<=420) and tableau=='menu':
+            elif check_clic(event.pos, (900, 1350), (170, 420), ['menu'])==True:
                 tableau='mas_menu'
 
                 #Affichage du menu de la machine à sous
                 affichage_menu_jeu(screen)
 
             #Bouton icône roulette
-            elif(event.pos[0]>=500 and event.pos[0]<=1100) and (event.pos[1]>=550 and event.pos[1]<=800) and tableau=='menu':
+            elif check_clic(event.pos, (500, 1100), (550, 800), ['menu'])==True:
                 tableau='roulette_menu'
 
                 #Affichage du menu de la roulette
                 affichage_menu_jeu(screen)
 
-            #Bouton quiter le casion
-            elif(event.pos[0]>=1300 and event.pos[0]<=1550) and (event.pos[1]>=770 and event.pos[1]<=850) and tableau=='menu':
-                #Stopper la boucle infinie
-                jouer = 0
+            #Bouton quiter le casion/retour du profil
+            elif check_clic(event.pos, (1300, 1550), (770, 850), ['menu','profil'])==True:
+                if tableau=='menu':
+                    #Stopper la boucle infinie
+                    jouer = 0
+                else:
+                    #Affichage du menu
+                    dessine_menu(screen)
+                    pygame.display.flip()
                 
             #----------------
             #boutons profil
-
-            #Bouton de retour
-            elif(event.pos[0]>=1300 and event.pos[0]<=1550) and (event.pos[1]>=770 and event.pos[1]<=850) and tableau=='profil':
-                tableau='menu'
-
-                #Affichage du menu
-                dessine_menu(screen)
-                pygame.display.flip()
-
             #Bouton oeil pour cacher ou montrer le mot de passe
-            elif(event.pos[0]>=pos_oeil_gauche and event.pos[0]<=pos_oeil_gauche+100) and (event.pos[1]>=360 and event.pos[1]<=410) and tableau=='profil':
-                affichage_image(rect_blanc, rect_blanc_pos)
+            elif check_clic(event.pos, (pos_oeil_gauche, pos_oeil_gauche+100), (360, 410), ['profil'])==True:
+                affichage_image(screen, rect_blanc, rect_blanc_pos)
 
                 #La variable booléenne 'mdp_cache_verif' nous dit si le mot de passe est caché ou pas
                 if mdp_cache_verif==True:
@@ -329,7 +325,7 @@ while jouer==1:
                 pygame.display.flip()
 
             #bouton se déconnecter
-            elif(event.pos[0]>=550 and event.pos[0]<=700) and (event.pos[1]>=430 and event.pos[1]<=480) and tableau=='profil':
+            elif check_clic(event.pos, (550, 700), (430, 480), ['profil'])==True:
                 tableau='bienvenue'
                 compte=[0,'','']
 
@@ -347,7 +343,7 @@ while jouer==1:
             #boutons blackjack
             
             #Bouton retour
-            elif(event.pos[0]>=900 and event.pos[0]<=1300) and (event.pos[1]>=300 and event.pos[1]<=500) and tableau=='bj_menu':
+            elif check_clic(event.pos, (900, 1300), (300, 500), ['bj_menu'])==True:
                 tableau='menu'
 
                 #Affichage du menu
@@ -355,7 +351,7 @@ while jouer==1:
                 pygame.display.flip()
 
             #Bouton jouer
-            elif(event.pos[0]>=300 and event.pos[0]<=700) and (event.pos[1]>=300 and event.pos[1]<=500) and tableau=='bj_menu':
+            elif check_clic(event.pos, (300, 700), (300, 500), ['bj_menu'])==True:
                 tableau='pari_bj'
                 somme=''
 
@@ -371,7 +367,7 @@ while jouer==1:
             #boutons roulette
             
             #Bouton retour
-            elif(event.pos[0]>=900 and event.pos[0]<=1300) and (event.pos[1]>=300 and event.pos[1]<=500) and tableau=='roulette_menu':
+            elif check_clic(event.pos, (900, 1300), (300, 500), ['roulette_menu'])==True:
                 tableau='menu'
 
                 #Affichage du menu
@@ -379,7 +375,7 @@ while jouer==1:
                 pygame.display.flip()
 
             #Bouton jouer
-            elif(event.pos[0]>=300 and event.pos[0]<=700) and (event.pos[1]>=300 and event.pos[1]<=500) and tableau=='roulette_menu':
+            elif check_clic(event.pos, (300, 700), (300, 500), ['roulette_menu'])==True:
                 tableau='roulette_tapis'
 
                 #Affichage du tapis pour parier
@@ -394,14 +390,14 @@ while jouer==1:
                     print(paris)
                     
             #bouton rejouer
-            elif(event.pos[0]>=550 and event.pos[0]<=850) and (event.pos[1]>=700 and event.pos[1]<=800) and tableau=='roulette_gains':
+            elif check_clic(event.pos, (550, 850), (700, 800), ['roulette_gains'])==True:
                 tableau='roulette_tapis'
 
                 #Affichage du tapis pour parier
                 affichage_tapis(screen)
 
             #Bouton quitter
-            elif(event.pos[0]>=1050 and event.pos[0]<=1350) and (event.pos[1]>=700 and event.pos[1]<=800) and (tableau=='roulette_gains' or tableau=='fin_bj'):
+            elif check_clic(event.pos, (1050, 1350), (700, 800), ['roulette_gains','fin_bj'])==True:
                 tableau='menu'
 
                 #Affiche le menu
@@ -412,7 +408,7 @@ while jouer==1:
             #boutons menu machine à sous
 
             #Bouton jouer
-            elif(event.pos[0]>=300 and event.pos[0]<=700) and (event.pos[1]>=300 and event.pos[1]<=500) and tableau=='mas_menu':
+            elif check_clic(event.pos, (300, 700), (300, 500), ['mas_menu'])==True:
                 somme=''
                 tableau='mas_entrer_somme'
 
@@ -427,15 +423,14 @@ while jouer==1:
                 pygame.display.flip()
 
             #Bouton retour
-            elif(event.pos[0]>=900 and event.pos[0]<=1300) and (event.pos[1]>=300 and event.pos[1]<=500) and tableau=='mas_menu':
+            elif check_clic(event.pos, (900, 1300), (300, 500), ['mas_menu'])==True:
                 tableau='menu'
 
                 dessine_menu(screen)
                 pygame.display.flip()
 
             #bouton rejouer
-
-            elif(event.pos[0]>=550 and event.pos[0]<=850) and (event.pos[1]>=700 and event.pos[1]<=800) and tableau=='mas_gains':
+            elif check_clic(event.pos, (550, 850), (700, 800), ['mas_gains'])==True:
                 somme=''
                 tableau='mas_entrer_somme'
 
@@ -450,7 +445,7 @@ while jouer==1:
                 pygame.display.flip()
 
             #Bouton quitter
-            elif(event.pos[0]>=1050 and event.pos[0]<=1350) and (event.pos[1]>=700 and event.pos[1]<=800) and tableau=='mas_gains':
+            elif check_clic(event.pos, (1050, 1350), (700, 800), ['mas_gains'])==True:
                 tableau='menu'
 
                 #Affiche le menu
@@ -461,7 +456,7 @@ while jouer==1:
             #boutons blackjack
 
             #bouton tirer
-            elif(event.pos[0]>=450 and event.pos[0]<=750) and (event.pos[1]>=750 and event.pos[1]<=870) and tableau=='jeu_bj':
+            elif check_clic(event.pos, (450, 750), (750, 870), ['jeu_bj'])==True:
                 infos=action(1, ct_jr, ct_crp, screen)
                 if infos[0]==0:
                     time.sleep(2)
@@ -501,7 +496,7 @@ while jouer==1:
                     ct_crp=infos[2]
 
             #bouton stand
-            elif(event.pos[0]>=850 and event.pos[0]<=1050) and (event.pos[1]>=750 and event.pos[1]<=870) and tableau=='jeu_bj':
+            elif check_clic(event.pos, (850, 1050), (750, 870), ['jeu_bj'])==True:
                 infos=action(2, ct_jr, ct_crp, screen)
                 if infos[0]==0:
                     time.sleep(2)
@@ -537,7 +532,7 @@ while jouer==1:
                 tableau='fin_bj'
                     
             #bouton rejouer
-            elif(event.pos[0]>=550 and event.pos[0]<=850) and (event.pos[1]>=700 and event.pos[1]<=800) and tableau=='fin_bj':
+            elif check_clic(event.pos, (550, 850), (700, 800), ['fin_bj'])==True:
                 tableau='pari_bj'
                 somme=''
     
@@ -648,8 +643,6 @@ while jouer==1:
                     elif mdp_cache_verification==False:
                         screen.blit(afficher, (300, 650))
                         affichage_image(screen, curseur, (300+long_mdp+10,660))
-
-                    affichage_image(screen, curseur, (300+long_mdp+10,660))
                     
                     pygame.display.flip()
 
