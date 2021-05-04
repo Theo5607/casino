@@ -20,6 +20,8 @@ def animation_machine(liste_de_symboles):
     scatter= pygame.image.load("images/scatter.png")
     cloche=pygame.image.load("images/cloche.png")
     lemon = pygame.image.load("images/lemon_temp.png")
+    
+    #defintion des postions possibles pour les symboles, allant de gauche a droite et du haut vers le bas
 
     pos_1=(495, 95)
     pos_2=(700, 95)
@@ -32,10 +34,9 @@ def animation_machine(liste_de_symboles):
     pos_9=(905, 505)
     list_pos=[pos_1,pos_2,pos_3,pos_4,pos_5,pos_6,pos_7,pos_8,pos_9]
 
-    symboles=['7','cloche','bar3','bar2','bar1','lemon','scatter']
-
     list_symbole = slot_partie(13)[0]
-
+    
+    #recupere les positions pour les symboles sortant de slot_partie
 
     for i in range (9):
         if list_symbole[i-1]==0:
