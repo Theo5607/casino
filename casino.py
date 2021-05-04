@@ -686,7 +686,7 @@ while jouer==1:
                         
                         compte=[str_uti,str_mdp,10000]
 
-                        tableau='entree'
+                        tableau='menu'
 
                         screen.fill(black)
                         dessine_menu(screen)
