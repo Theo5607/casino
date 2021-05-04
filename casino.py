@@ -2,6 +2,7 @@ import sys, time, pygame
 from sqlite3 import *
 from pygame.locals import *
 from Casino_Matvei.slot_machine import slot_partie
+from Casino_Matvei.animation_slot import animation_machine
 from casino_leonardo.roulette_fin import roulette
 from Casino_Teis.bj import play_blackjack
 from Casino_Teis.bj import action
@@ -17,6 +18,16 @@ cur.execute("CREATE TABLE IF NOT EXISTS membres (identifiant TEXT, mdp TEXT, arg
 
 black = 0, 0, 0
 white = 255, 255, 255
+
+#importation symbole machine à sous
+
+bar= pygame.image.load("Images/Jeux/Machine_a_sous/Symboles/bar.png")
+bar_2= pygame.image.load("Images/Jeux/Machine_a_sous/Symboles/bar_2.png")
+bar_3= pygame.image.load("Images/Jeux/Machine_a_sous/Symboles/bar_3.png")
+symb_7= pygame.image.load("Images/Jeux/Machine_a_sous/Symboles/7.png")
+scatter= pygame.image.load("Images/Jeux/Machine_a_sous/Symboles/scatter.png")
+cloche=pygame.image.load("Images/Jeux/Machine_a_sous/Symboles/cloche.png")
+cherry = pygame.image.load("Images/Jeux/Machine_a_sous/Symboles/cherry.png")
 
 #Tant que la valeur est à 1, le jeu continuera
 jouer=1
@@ -413,7 +424,7 @@ while jouer==1:
                 tableau='mas_entrer_somme'
 
                 #Affichage du rectangle pour parier
-                screen.fill(white)
+                affichage_image(screen, mas_fond, (0, 0))
                 affichage_image(screen, mas_somme, (0, 0))
                 affichage_image(screen, mas_rectangle_somme, mas_rectangle_somme_pos)
                 affichage_image(screen, curseur_bj, (510, 610))
@@ -430,13 +441,12 @@ while jouer==1:
                 pygame.display.flip()
 
             #bouton rejouer
-            elif check_clic(event.pos, (550, 850), (700, 800), ['mas_gains'])==True:
+            elif check_clic(event.pos, (450, 750), (700, 800), ['mas_gains'])==True:
                 somme=''
                 tableau='mas_entrer_somme'
 
                 #Affichage du rectangle pour parier
-                screen.fill(white)
-                affichage_image(screen, mas_somme, (0, 0))
+                affichage_image(screen, mas_fond, (0, 0))
                 affichage_image(screen, mas_rectangle_somme, mas_rectangle_somme_pos)
                 affichage_image(screen, curseur_bj, (510, 610))
                 
@@ -445,7 +455,7 @@ while jouer==1:
                 pygame.display.flip()
 
             #Bouton quitter
-            elif check_clic(event.pos, (1050, 1350), (700, 800), ['mas_gains'])==True:
+            elif check_clic(event.pos, (840, 1140), (700, 800), ['mas_gains'])==True:
                 tableau='menu'
 
                 #Affiche le menu
@@ -742,10 +752,12 @@ while jouer==1:
                     if tableau=='mas_entrer_somme':
                         tableau='mas_gains'
 
+                        affichage_image(screen, mas_fond, (0,0))
+
                         #On appelle la fonction roulette qui retourne les gains ou 0 si on perd
                         gains=slot_partie(int(somme))
-
-                        screen.fill(white)
+                        animation_machine(screen, gains[1], [bar, bar_2, bar_3, cherry, scatter, symb_7, cloche])
+                        time.sleep(2)
 
                         #Si les gains sont supérieurs à 0, le joueur à gagné
                         if gains[0] > 0 :
@@ -757,9 +769,10 @@ while jouer==1:
                             conn.commit()
 
                             #On affiche les gains du joueur
-                            affichage_image(screen, mas_gains, mas_gains_pos)
+                            affichage_image(screen, mas_fond, (0,0))
                             afficher = font2.render('Vous avez gagné '+str(gains[0])+' dollars', 1, (0, 0, 0))
-                            screen.blit(afficher, (500,400))
+                            longueur_phrase = afficher.get_rect().width
+                            screen.blit(afficher, ((1600-longueur_phrase)/2, 420))
                             affichage_image(screen, mas_rejouer, mas_rejouer_pos)
                             affichage_image(screen, mas_quitter, mas_quitter_pos)
                             pygame.display.flip()
@@ -773,9 +786,10 @@ while jouer==1:
                             conn.commit()
 
                             #On affiche que le joueur a perdu
-                            affichage_image(screen, mas_gains, mas_gains_pos)
+                            affichage_image(screen, mas_fond, (0,0))
                             afficher = font2.render('Vous avez perdu votre mise', 1, (0, 0, 0))
-                            screen.blit(afficher, (500,400))
+                            longueur_phrase = afficher.get_rect().width
+                            screen.blit(afficher, ((1600-longueur_phrase)/2, 420))
                             affichage_image(screen, mas_rejouer, mas_rejouer_pos)
                             affichage_image(screen, mas_quitter, mas_quitter_pos)
                             pygame.display.flip()
@@ -816,15 +830,15 @@ while jouer==1:
 
                         #On appelle la fonction 'pari' pour afficher le prochain pari
                         if len(pari_actuel)>0 and somme!='':
+                            compte[2]=compte[2]-int(somme)
+                            
+                            cur.execute("UPDATE membres SET argent = ? WHERE identifiant = ?", (compte[2], compte[0]))
+                            conn.commit()
+                            
                             paris[nb_actuel[0]]=int(somme)
                             nb_actuel[0]=pari(pari_actuel[0])
 
-                            compte[2]=compte[2]-int(somme)
-
                             somme=''
-
-                            cur.execute("UPDATE membres SET argent = ? WHERE identifiant = ?", (compte[2], compte[0]))
-                            conn.commit()
                         #Si on a fait tous les paris, on appelle la fonction 'roulette' pour jouer à la roulette
                         elif len(pari_actuel)==0 and somme!='':
                             tableau='roulette_gains'
@@ -875,11 +889,11 @@ while jouer==1:
                         
                 #Sinon, on affiche que la somme misée est invalide
                 else:
-                    tableau='mas_somme'
-
-                    screen.fill(white)
+                    somme=''
+                    
                     affichage_image(screen, mas_somme_non_valide, (0, 0))
                     affichage_image(screen, mas_rectangle_somme, mas_rectangle_somme_pos)
+                    affichage_image(screen, curseur_bj, (510, 610))
                     pygame.display.flip()
                 
                         

@@ -75,6 +75,8 @@ ligne_bleu = pygame.image.load("Images/Jeux/Roulette/ligne_bleu.png")
 
 #Chargement images machine à sous
 
+mas_fond = pygame.image.load("Images/Jeux/Machine_a_sous/fond_mas.png")
+
 mas_jouer = pygame.image.load("Images/Jeux/Machine_a_sous/jouer.png")
 mas_jouer_pos = (300, 300)
 mas_retour = pygame.image.load("Images/Jeux/Machine_a_sous/retour.png")
@@ -90,9 +92,9 @@ mas_gains_pos = (500, 400)
 mas_somme_non_valide = pygame.image.load("Images/Jeux/Machine_a_sous/somme_non_valide.png")
 
 mas_rejouer = pygame.image.load("Images/Jeux/Machine_a_sous/rejouer.png")
-mas_rejouer_pos = (550, 700)
+mas_rejouer_pos = (450, 700)
 mas_quitter = pygame.image.load("Images/Jeux/Machine_a_sous/quitter.png")
-mas_quitter_pos = (1050, 700)
+mas_quitter_pos = (840, 700)
 
 #-----------
 #Chargement polices
