@@ -115,9 +115,12 @@ mdp_cache_verif=True
 pos_oeil_gauche=0
 
 #variables roulette
-paris={"mise_rouge" : 0, "mise_noir" : 0,"mise_colone1" : 0,"mise_colone2" : 0,"mise_colone3" : 0,"mise_douzaine1" : 0,"mise_douzaine2" : 0,"mise_douzaine3" : 0,"mise_1_à_18" : 0,"mise_19_à_36" : 0,"mise_impair" : 0,"mise_pair" : 0,"ligne_1" : 0,"ligne_2" : 0,"ligne_3" : 0}
-for i in range(0, 37):
-    paris[i]=0
+def re_paris():
+    paris_new={"mise_rouge" : 0, "mise_noir" : 0,"mise_colone1" : 0,"mise_colone2" : 0,"mise_colone3" : 0,"mise_douzaine1" : 0,"mise_douzaine2" : 0,"mise_douzaine3" : 0,"mise_1_à_18" : 0,"mise_19_à_36" : 0,"mise_impair" : 0,"mise_pair" : 0,"ligne_1" : 0,"ligne_2" : 0,"ligne_3" : 0}
+    for i in range(0, 37):
+        paris_new[i]=0
+    return paris_new
+paris=re_paris()
 pari_actuel=[]
 nb_actuel=[0]
 
@@ -397,7 +400,7 @@ while jouer==1:
 
             #Clic sur le tapis
             elif tableau=='roulette_tapis':
-                liste_paris=check_tapis(screen, event.pos, paris)
+                liste_paris=check_tapis(screen, event.pos, paris, tableau)
                 if len(liste_paris)!=0:
                     paris[liste_paris[0]]=liste_paris[1]
 
@@ -561,7 +564,7 @@ while jouer==1:
                 pygame.display.flip()
                     
         #On vérifie si on clique sur une touche lors de la connexion
-        if event.type == KEYDOWN and (tableau=='conn_entrer_uti' or tableau=='conn_entrer_mdp' or tableau=='inscr_entrer_uti' or tableau=='inscr_entrer_mdp'                                                         ):
+        if event.type == KEYDOWN and (tableau=='conn_entrer_uti' or tableau=='conn_entrer_mdp' or tableau=='inscr_entrer_uti' or tableau=='inscr_entrer_mdp'):
             liste_touches=liste_nb+liste_lettres
             for el in liste_touches:
                 if tableau=='conn_entrer_uti' or tableau=='inscr_entrer_uti':
@@ -887,6 +890,8 @@ while jouer==1:
                                 
                             cur.execute("UPDATE membres SET argent = ? WHERE identifiant = ?", (compte[2], compte[0]))
                             conn.commit()
+
+                            paris=re_paris()
                                 
                             affichage_image(screen, mas_rejouer, mas_rejouer_pos)
                             affichage_image(screen, mas_quitter, mas_quitter_pos)

@@ -4,10 +4,10 @@ for i in range(1,36):
 #un dictionnaire qui a comme clés sur quoi il va parier et la valeur est égale à combien il va parier
 
 import random#fait appel à la biblioth
-x=random.randint(0,36)#nombre aléatoire entre 0 et 36
 
 def roulette(type_mise):
     """prend en argument un dictionnaire qui a comme clés sur quoi il va parier et la valeur est égale à combien il va parier et retourne les gains ainsi que les symboles qui ont gagné"""
+    x=random.randint(0,36)#nombre aléatoire entre 0 et 36
     print("Le chiffre qui est sorti :",x)#affiche le nombre choisi
     rouge = [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36]#chiffre dans la catégorie rouge
     noir = [2,4,6,8,10,11,13,15,17,20,22,24,26,28,29,31,33,35]#chiffre dans la catégorie noir
@@ -27,7 +27,7 @@ def roulette(type_mise):
 
     #Mise par chiffre
 
-    for i in range(1,36):# i un chiffre entre 1 et 36
+    for i in range(0,37):# i un chiffre entre 1 et 36
         if x == i+1: #si x est égale a un chiffre entre 1 et 36
             type_mise[i+1]=type_mise[i+1]*36#multiplie la mise par 36
             print(type_mise[i+1])#affiche le gain+ la mise de départ

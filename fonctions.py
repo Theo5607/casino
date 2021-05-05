@@ -73,7 +73,12 @@ zero_pos = (21, 83)
 ligne_vert = pygame.image.load("Images/Jeux/Roulette/ligne_vert.png")
 ligne_bleu = pygame.image.load("Images/Jeux/Roulette/ligne_bleu.png")
 
-liste_triple_ligne = [pygame.image.load("Images/Jeux/Roulette/1_12_vert.png"), pygame.image.load("Images/Jeux/Roulette/13_24_vert.png"), pygame.image.load("Images/Jeux/Roulette/25_36_vert.png")]
+liste_triple_ligne_vert = [pygame.image.load("Images/Jeux/Roulette/1_12_vert.png"), pygame.image.load("Images/Jeux/Roulette/13_24_vert.png"), pygame.image.load("Images/Jeux/Roulette/25_36_vert.png")]
+liste_triple_ligne_bleu = [pygame.image.load("Images/Jeux/Roulette/1_12_bleu.png"), pygame.image.load("Images/Jeux/Roulette/13_24_bleu.png"), pygame.image.load("Images/Jeux/Roulette/25_36_bleu.png")]
+
+liste_sextuple_ligne_vert = [pygame.image.load("Images/Jeux/Roulette/1_18_vert.png"), pygame.image.load("Images/Jeux/Roulette/pair_vert.png"), pygame.image.load("Images/Jeux/Roulette/noir_vert.png"),pygame.image.load("Images/Jeux/Roulette/rouge_vert.png"), pygame.image.load("Images/Jeux/Roulette/impair_vert.png"), pygame.image.load("Images/Jeux/Roulette/19_36_vert.png")]
+liste_sextuple_ligne_bleu = [pygame.image.load("Images/Jeux/Roulette/1_18_bleu.png"), pygame.image.load("Images/Jeux/Roulette/pair_bleu.png"), pygame.image.load("Images/Jeux/Roulette/noir_bleu.png"),pygame.image.load("Images/Jeux/Roulette/rouge_bleu.png"), pygame.image.load("Images/Jeux/Roulette/impair_bleu.png"), pygame.image.load("Images/Jeux/Roulette/19_36_bleu.png")]
+
 
 #Chargement images machine à sous
 
@@ -160,7 +165,7 @@ def dessine_menu(screen):
     screen.blit(roulette_icone, roulette_icone_pos)
     screen.blit(quitter, quitter_pos)
 
-def check_tapis(screen, clic, paris):
+def check_tapis(screen, clic, paris, tableau):
     """Fonction qui vérifie un clic dans le tapis de la roulette pour parier, si il correspond à un nombre ou un pari spécifique, la fonction le renvoie"""
     liste_nb_roulette=[3,2,1]
     nombre=0
@@ -230,16 +235,32 @@ def check_tapis(screen, clic, paris):
             screen.blit(zero_vert, zero_pos)
             pygame.display.flip()
             return [0, 0]
-        
-    if(clic[0]>=coordonnees_zero[0] and clic[0]<=coordonnees_zero[0]+165) and (clic[1]>=coordonnees_zero[1] and clic[1]<=coordonnees_zero[1]+330) and tableau=='roulette_tapis':
-        if paris[0]==0:
-            screen.blit(zero_bleu, zero_pos)
-            pygame.display.flip()
-            return [0, 1]
-        elif paris[0]==1:
-            screen.blit(zero_vert, zero_pos)
-            pygame.display.flip()
-            return [0, 0]
+
+    ligne_triple=['mise_douzaine1','mise_douzaine2','mise_douzaine3']
+    coordonnees_triple=[187, 415]
+    for i in range(0,3):
+        if(clic[0]>=coordonnees_triple[0]+i*422 and clic[0]<=coordonnees_triple[0]+416+i*422) and (clic[1]>=coordonnees_triple[1] and clic[1]<=coordonnees_triple[1]+179) and tableau=='roulette_tapis':
+            if paris[ligne_triple[i]]==0:
+                screen.blit(liste_triple_ligne_bleu[i], (coordonnees_triple[0]+i*422, coordonnees_triple[1]))
+                pygame.display.flip()
+                return [ligne_triple[i], 1]
+            elif paris[ligne_triple[i]]==1:
+                screen.blit(liste_triple_ligne_vert[i], (coordonnees_triple[0]+i*422, coordonnees_triple[1]))
+                pygame.display.flip()
+                return [ligne_triple[i], 0]
+
+    ligne_sextuple=['mise_1_à_18','mise_pair','mise_noir','mise_rouge','mise_impair','mise_19_à_36']
+    coordonnees_sextuple=[187, 599]
+    for i in range(0,6):
+        if(clic[0]>=coordonnees_sextuple[0]+i*213 and clic[0]<=coordonnees_sextuple[0]+209+i*213) and (clic[1]>=coordonnees_sextuple[1] and clic[1]<=coordonnees_sextuple[1]+179) and tableau=='roulette_tapis':
+            if paris[ligne_sextuple[i]]==0:
+                screen.blit(liste_sextuple_ligne_bleu[i], (coordonnees_sextuple[0]+i*213, coordonnees_sextuple[1]))
+                pygame.display.flip()
+                return [ligne_sextuple[i], 1]
+            elif paris[ligne_sextuple[i]]==1:
+                screen.blit(liste_sextuple_ligne_vert[i], (coordonnees_sextuple[0]+i*213, coordonnees_sextuple[1]))
+                pygame.display.flip()
+                return [ligne_sextuple[i], 0]
 
     #On retourne une liste vide si les vérifications de clic n'ont pas été concluantes.
     return []
@@ -281,7 +302,7 @@ def affichage_tapis(screen):
 
     coordonnees_triple_ligne=[187, 414]
     for i in range(0,3):
-        screen.blit(liste_triple_ligne[i], (coordonnees_triple_ligne[0]+i*(426), coordonnees_triple_ligne[1]))
+        screen.blit(liste_triple_ligne_vert[i], (coordonnees_triple_ligne[0]+i*(426), coordonnees_triple_ligne[1]))
                     
     pygame.display.flip()
 
