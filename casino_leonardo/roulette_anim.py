@@ -5,8 +5,8 @@ print("x")
 pygame.init()
 screen = pygame.display.set_mode((1600,900))
 
-bandeau = pygame.image.load("bandeau_roulette.png")
-triangle = pygame.image.load("triangle.png")
+bandeau = pygame.image.load("images/bandeau_roulette.png")
+triangle = pygame.image.load("images/triangle.png")
 screen.fill(white)
 if x == 1:
     for i in range(283):
