@@ -15,15 +15,15 @@ def animation_machine(screen, liste_de_symboles, liste_images):
     
     #defintion des postions possibles pour les symboles, allant de gauche a droite et du haut vers le bas
 
-    pos_1=(495, 165)
-    pos_2=(700, 165)
-    pos_3=(905, 165)
-    pos_4=(495, 370)
-    pos_5=(700, 370)
-    pos_6=(905, 370)
-    pos_7=(495, 575)
-    pos_8=(700, 575)
-    pos_9=(905, 575)
+    pos_1=(495, 120)
+    pos_2=(700, 120)
+    pos_3=(905, 120)
+    pos_4=(495, 325)
+    pos_5=(700, 325)
+    pos_6=(905, 325)
+    pos_7=(495, 530)
+    pos_8=(700, 530)
+    pos_9=(905, 530)
     list_pos=[pos_1,pos_2,pos_3,pos_4,pos_5,pos_6,pos_7,pos_8,pos_9]
     
     #recupere les positions pour les symboles sortant de slot_partie

@@ -73,6 +73,8 @@ zero_pos = (21, 83)
 ligne_vert = pygame.image.load("Images/Jeux/Roulette/ligne_vert.png")
 ligne_bleu = pygame.image.load("Images/Jeux/Roulette/ligne_bleu.png")
 
+liste_triple_ligne = [pygame.image.load("Images/Jeux/Roulette/1_12_vert.png"), pygame.image.load("Images/Jeux/Roulette/13_24_vert.png"), pygame.image.load("Images/Jeux/Roulette/25_36_vert.png")]
+
 #Chargement images machine à sous
 
 mas_fond = pygame.image.load("Images/Jeux/Machine_a_sous/fond_mas.png")
@@ -91,10 +93,14 @@ mas_gains_pos = (500, 400)
 
 mas_somme_non_valide = pygame.image.load("Images/Jeux/Machine_a_sous/somme_non_valide.png")
 
-mas_rejouer = pygame.image.load("Images/Jeux/Machine_a_sous/rejouer.png")
+mas_rejouer = pygame.image.load("Images/Jeux/Machine_a_sous/mas_rejouer.png")
 mas_rejouer_pos = (450, 700)
-mas_quitter = pygame.image.load("Images/Jeux/Machine_a_sous/quitter.png")
+mas_quitter = pygame.image.load("Images/Jeux/Machine_a_sous/mas_quitter.png")
 mas_quitter_pos = (840, 700)
+
+rejouer = pygame.image.load("Images/Jeux/Machine_a_sous/mas_rejouer.png")
+retour_menu = pygame.image.load("Images/Jeux/Machine_a_sous/mas_quitter.png")
+
 
 #-----------
 #Chargement polices
@@ -224,6 +230,16 @@ def check_tapis(screen, clic, paris):
             screen.blit(zero_vert, zero_pos)
             pygame.display.flip()
             return [0, 0]
+        
+    if(clic[0]>=coordonnees_zero[0] and clic[0]<=coordonnees_zero[0]+165) and (clic[1]>=coordonnees_zero[1] and clic[1]<=coordonnees_zero[1]+330) and tableau=='roulette_tapis':
+        if paris[0]==0:
+            screen.blit(zero_bleu, zero_pos)
+            pygame.display.flip()
+            return [0, 1]
+        elif paris[0]==1:
+            screen.blit(zero_vert, zero_pos)
+            pygame.display.flip()
+            return [0, 0]
 
     #On retourne une liste vide si les vérifications de clic n'ont pas été concluantes.
     return []
@@ -262,6 +278,10 @@ def affichage_tapis(screen):
     coordonnees_ligne=[1465, 84]
     for i in range(0,3):
         screen.blit(ligne_vert, (coordonnees_ligne[0], coordonnees_ligne[1]+i*(111)))
+
+    coordonnees_triple_ligne=[187, 414]
+    for i in range(0,3):
+        screen.blit(liste_triple_ligne[i], (coordonnees_triple_ligne[0]+i*(426), coordonnees_triple_ligne[1]))
                     
     pygame.display.flip()
 

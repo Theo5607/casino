@@ -181,6 +181,7 @@ while jouer==1:
             #bouton connexion
             if check_clic(event.pos, (600, 1000), (400, 500), ['bienvenue'])==True:
                 tableau='conn_entrer_uti'
+                time.sleep(0.15)
                 conn_inscr(screen, 0)
 
             #bouton inscription
@@ -373,6 +374,8 @@ while jouer==1:
                 screen.blit(argent, (30, 30))
                 
                 pygame.display.flip()
+
+                somme=''
                 
             #------------
             #boutons roulette
@@ -415,6 +418,8 @@ while jouer==1:
                 dessine_menu(screen)
                 pygame.display.flip()
 
+                somme=''
+
             #------------
             #boutons menu machine à sous
 
@@ -441,7 +446,7 @@ while jouer==1:
                 pygame.display.flip()
 
             #bouton rejouer
-            elif check_clic(event.pos, (450, 750), (700, 800), ['mas_gains'])==True:
+            elif check_clic(event.pos, (500, 700), (800, 850), ['mas_gains'])==True:
                 somme=''
                 tableau='mas_entrer_somme'
 
@@ -455,13 +460,15 @@ while jouer==1:
                 pygame.display.flip()
 
             #Bouton quitter
-            elif check_clic(event.pos, (840, 1140), (700, 800), ['mas_gains'])==True:
+            elif check_clic(event.pos, (900, 1100), (800, 850), ['mas_gains'])==True:
                 tableau='menu'
 
                 #Affiche le menu
                 dessine_menu(screen)
                 pygame.display.flip()
 
+                somme=''
+                
             #------------
             #boutons blackjack
 
@@ -757,7 +764,7 @@ while jouer==1:
                         #On appelle la fonction roulette qui retourne les gains ou 0 si on perd
                         gains=slot_partie(int(somme))
                         animation_machine(screen, gains[1], [bar, bar_2, bar_3, cherry, scatter, symb_7, cloche])
-                        time.sleep(2)
+                        time.sleep(1)
 
                         #Si les gains sont supérieurs à 0, le joueur à gagné
                         if gains[0] > 0 :
@@ -769,12 +776,11 @@ while jouer==1:
                             conn.commit()
 
                             #On affiche les gains du joueur
-                            affichage_image(screen, mas_fond, (0,0))
                             afficher = font2.render('Vous avez gagné '+str(gains[0])+' dollars', 1, (0, 0, 0))
                             longueur_phrase = afficher.get_rect().width
-                            screen.blit(afficher, ((1600-longueur_phrase)/2, 420))
-                            affichage_image(screen, mas_rejouer, mas_rejouer_pos)
-                            affichage_image(screen, mas_quitter, mas_quitter_pos)
+                            screen.blit(afficher, ((1600-longueur_phrase)/2, 750))
+                            affichage_image(screen, rejouer, (500, 800))
+                            affichage_image(screen, retour_menu, (900, 800))
                             pygame.display.flip()
                         #Si il a perdu
                         else:
@@ -786,12 +792,11 @@ while jouer==1:
                             conn.commit()
 
                             #On affiche que le joueur a perdu
-                            affichage_image(screen, mas_fond, (0,0))
                             afficher = font2.render('Vous avez perdu votre mise', 1, (0, 0, 0))
                             longueur_phrase = afficher.get_rect().width
-                            screen.blit(afficher, ((1600-longueur_phrase)/2, 420))
-                            affichage_image(screen, mas_rejouer, mas_rejouer_pos)
-                            affichage_image(screen, mas_quitter, mas_quitter_pos)
+                            screen.blit(afficher, ((1600-longueur_phrase)/2, 750))
+                            affichage_image(screen, rejouer, (500, 800))
+                            affichage_image(screen, retour_menu, (900, 800))
                             pygame.display.flip()
                     elif tableau=='pari_bj':
                         tableau='affichage_cartes_bj'
