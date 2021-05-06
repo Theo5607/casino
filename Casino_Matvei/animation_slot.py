@@ -6,12 +6,12 @@ def animation_machine(screen, liste_de_symboles, liste_images):
 #importation de toutes les images
 
     bar= liste_images[0]
-    bar_2= liste_images[1]
-    bar_3= liste_images[2]
+    lemon= liste_images[1]
+    watermelon= liste_images[2]
     symb_7= liste_images[5]
     scatter= liste_images[4]
     cloche=liste_images[6]
-    lemon = liste_images[3]
+    cherry = liste_images[3]
     
     #defintion des postions possibles pour les symboles, allant de gauche a droite et du haut vers le bas
 
@@ -34,9 +34,9 @@ def animation_machine(screen, liste_de_symboles, liste_images):
         elif list_symbole[i]==1:
             screen.blit(cloche,list_pos[i])
         elif list_symbole[i]==2:
-            screen.blit(bar_3,list_pos[i])
+            screen.blit(cherry,list_pos[i])
         elif list_symbole[i]==3:
-            screen.blit(bar_2,list_pos[i])
+            screen.blit(watermelon,list_pos[i])
         elif list_symbole[i]==4:
             screen.blit(bar,list_pos[i])
         elif list_symbole[i]==5:
