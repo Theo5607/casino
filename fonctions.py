@@ -82,7 +82,7 @@ liste_sextuple_ligne_bleu = [pygame.image.load("Images/Jeux/Roulette/1_18_bleu.p
 
 #Chargement images machine à sous
 
-mas_fond = pygame.image.load("Images/Jeux/Machine_a_sous/fond_mas.png")
+mas_fond = pygame.image.load("Images/Jeux/Machine_a_sous/fond_machine_pimp.jpg")
 
 mas_jouer = pygame.image.load("Images/Jeux/Machine_a_sous/jouer.png")
 mas_jouer_pos = (300, 300)
