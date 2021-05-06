@@ -22,8 +22,8 @@ white = 255, 255, 255
 #importation symbole machine à sous
 
 bar= pygame.image.load("Images/Jeux/Machine_a_sous/Symboles/bar.png")
-bar_2= pygame.image.load("Images/Jeux/Machine_a_sous/Symboles/bar_2.png")
-bar_3= pygame.image.load("Images/Jeux/Machine_a_sous/Symboles/bar_3.png")
+lemon= pygame.image.load("Images/Jeux/Machine_a_sous/Symboles/lemon.png")
+watermelon= pygame.image.load("Images/Jeux/Machine_a_sous/Symboles/watermelon.png")
 symb_7= pygame.image.load("Images/Jeux/Machine_a_sous/Symboles/7.png")
 scatter= pygame.image.load("Images/Jeux/Machine_a_sous/Symboles/scatter.png")
 cloche=pygame.image.load("Images/Jeux/Machine_a_sous/Symboles/cloche.png")
@@ -786,7 +786,7 @@ while jouer==1:
 
                         #On appelle la fonction roulette qui retourne les gains ou 0 si on perd
                         gains=slot_partie(int(somme))
-                        animation_machine(screen, gains[1], [bar, bar_2, bar_3, cherry, scatter, symb_7, cloche])
+                        animation_machine(screen, gains[1], [bar, lemon, watermelon, cherry, scatter, symb_7, cloche])
                         time.sleep(1)
 
                         #Si les gains sont supérieurs à 0, le joueur à gagné
