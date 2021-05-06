@@ -199,10 +199,17 @@ while jouer==1:
                     tableau='inscr_entrer_uti'
                 else:
                     tableau='conn_entrer_uti'
-                
-                affichage_curseur(screen, str_uti, str_mdp)
 
                 affichage_image(screen, curseur, (300+long_uti+10, 260))
+                screen.blit(rectangle, (300, 650))
+
+                if mdp_cache_verification==False:
+                    mdp = font.render(str_mdp, 1, (0, 0, 0))
+                    screen.blit(mdp, (300, 650))
+                else:
+                    mdp_cache = font.render(str_mdp_cache, 1, (0, 0, 0))
+                    screen.blit(mdp_cache, (300, 650))
+                    
                 pygame.display.flip()
             elif check_clic(event.pos, (300, 1300), (650, 800), ['inscr_entrer_uti', 'conn_entrer_uti'])==True:
                 if tableau=='inscr_entrer_uti':
@@ -210,9 +217,20 @@ while jouer==1:
                 else:
                     tableau='conn_entrer_mdp'
 
-                affichage_curseur(screen, str_uti, str_mdp)
+                screen.blit(rectangle, (300, 250))
+                screen.blit(rectangle, (300, 650))
+                uti = font.render(str_uti, 1, (0, 0, 0))
+                screen.blit(uti, (300, 250))
 
-                affichage_image(screen, curseur, (300+long_mdp+10, 660))
+                if mdp_cache_verification==False:
+                    mdp = font.render(str_mdp, 1, (0, 0, 0))
+                    screen.blit(mdp, (300, 650))
+                    affichage_image(screen, curseur, (300+long_mdp+10, 660))
+                else:
+                    mdp_cache = font.render(str_mdp_cache, 1, (0, 0, 0))
+                    screen.blit(mdp_cache, (300, 650))
+                    long_mdp_cache=mdp_cache.get_rect().width
+                    affichage_image(screen, curseur, (300+long_mdp_cache+10, 660))
                 pygame.display.flip()
                 
 
@@ -236,12 +254,14 @@ while jouer==1:
                 if mdp_cache_verification==True:
                     mdp = font.render(str_mdp, 1, (0, 0, 0))
                     affichage_image(screen, mdp, (300, 650))
-                    affichage_image(screen, curseur, (300+10+long_mdp, 660))
+                    if tableau == 'conn_entrer_mdp' or tableau == 'inscr_entrer_mdp':
+                        affichage_image(screen, curseur, (300+10+long_mdp, 660))
                     mdp_cache_verification=False
                 elif mdp_cache_verification==False:
                     mdp_cache = font.render(str_mdp_cache, 1, (0, 0, 0))
                     screen.blit(mdp_cache, (300, 650))
-                    affichage_image(screen, curseur, (300+10+long_mdp_cache, 660))
+                    if tableau == 'conn_entrer_mdp' or tableau == 'inscr_entrer_mdp':
+                        affichage_image(screen, curseur, (300+10+long_mdp_cache, 660))
                     mdp_cache_verification=True
                 
             #----------------
@@ -861,20 +881,25 @@ while jouer==1:
                             cur.execute("UPDATE membres SET argent = ? WHERE identifiant = ?", (compte[2], compte[0]))
                             conn.commit()
 
+                            paris_copie=paris.copy()
+
                             #L'argent gagné sur la roulette
                             dico_gains=roulette(paris)
                             gains=0
                             mises_perdues=0
+
+                            print(paris)
                             
                             for el in dico_gains.keys():
-                                if dico_gains[el]>paris[el]:
+                                if dico_gains[el]>paris_copie[el]:
                                     gains+=dico_gains[el]
                                 else:
                                     mises_perdues-=paris[el]
+                            print(gains, mises_perdues)
                                     
                             if gains+mises_perdues>=0:
                                 screen.fill(white)
-                                phrase = font.render('Vous avez gagné '+str(gains), 1, (0, 0, 0))
+                                phrase = font2.render('Vous avez gagné '+str(gains), 1, (0, 0, 0))
                                 longueur_phrase = phrase.get_rect().width
                                 screen.blit(phrase, ((1600-longueur_phrase)/2, 420))
                                 pygame.display.flip()

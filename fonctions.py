@@ -306,13 +306,18 @@ def affichage_tapis(screen):
                     
     pygame.display.flip()
 
-def affichage_curseur(screen, str_uti, str_mdp):
+def affichage_curseur(screen, str_uti, str_mdp, mdp_cache_verification, str_mdp_cache):
     screen.blit(rectangle, (300, 250))
     screen.blit(rectangle, (300, 650))
     uti = font.render(str_uti, 1, (0, 0, 0))
     screen.blit(uti, (300, 250))
-    mdp = font.render(str_mdp, 1, (0, 0, 0))
-    screen.blit(mdp, (300, 650))
+    if mdp_cache_verification==True:
+        mdp = font.render(str_mdp, 1, (0, 0, 0))
+        screen.blit(mdp, (300, 650))
+        
+    else:
+        mdp_cache = font.render(str_mdp_cache, 1, (0, 0, 0))
+        screen.blit(mdp_cache, (300, 650))
     pygame.display.flip()
 
 def affichage_menu_jeu(screen):
