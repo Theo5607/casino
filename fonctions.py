@@ -5,6 +5,9 @@ pygame.init()
 
 #VARIABLES IMPORTANTES: IMAGES, POLICES, COULEURS RGB
 #Chargement images connexion
+hall_casino = pygame.image.load("Images/Connexion/hall_casino.png")
+hall_casino_vierge = pygame.image.load("Images/Connexion/hall_casino_vierge.png")
+
 connexion = pygame.image.load("Images/Connexion/connexion.png")
 connexion_pos = (600, 400)
 inscription = pygame.image.load("Images/Connexion/inscription.png")
@@ -33,7 +36,7 @@ blackjack_icone_pos = (250, 170)
 slot_icone = pygame.image.load("Images/Menu_jeu/slot_icone.png")
 slot_icone_pos = (900, 170)
 roulette_icone = pygame.image.load("Images/Menu_jeu/roulette_icone.png")
-roulette_icone_pos = (500, 550)
+roulette_icone_pos = (560, 550)
 quitter = pygame.image.load("Images/Menu_jeu/quitter.png")
 quitter_pos = (1300, 770)
 
@@ -45,6 +48,7 @@ retour_profil = pygame.image.load("Images/Menu_jeu/Profil/retour_profil.png")
 retour_profil_pos = (1300, 770)
 oeil = pygame.image.load("Images/Menu_jeu/Profil/oeil.png")
 deco = pygame.image.load("Images/Menu_jeu/Profil/deco.png")
+fond_profil = pygame.image.load("Images/Menu_jeu/Profil/fond_profil.png")
 
 rect_blanc = pygame.image.load("Images/Menu_jeu/Profil/rect_blanc.png")
 rect_blanc_pos = (550, 370)
@@ -53,6 +57,8 @@ rect_blanc_pos = (550, 370)
 #-----------
 
 #Chargement images blackjack
+
+fond_blackjack = pygame.image.load("Images/Jeux/Blackjack/fond_blackjack.png")
 
 curseur_bj = pygame.image.load("Images/Jeux/Blackjack/curseur_bj.png")
 
@@ -110,8 +116,10 @@ retour_menu = pygame.image.load("Images/Jeux/Machine_a_sous/mas_quitter.png")
 #-----------
 #Chargement polices
 
-font = pygame.font.Font("Polices/dejavu_sansbold.ttf", 100)
-font2 = pygame.font.Font("Polices/dejavu_sansbold.ttf", 50)
+font = pygame.font.Font("Polices/ADAM.CG_PRO.otf", 100)
+font2 = pygame.font.Font("Polices/ADAM.CG_PRO.otf", 50)
+taper_font = pygame.font.Font("Polices/dejavu_sansbold.ttf", 100)
+taper_font2 = pygame.font.Font("Polices/dejavu_sansbold.ttf", 50)
 
 #-----------
 
@@ -120,32 +128,24 @@ font2 = pygame.font.Font("Polices/dejavu_sansbold.ttf", 50)
 black = 0, 0, 0
 white = 255, 255, 255
 
-#Chargement polices
-
-font = pygame.font.Font("Polices/dejavu_sansbold.ttf", 100)
-font2 = pygame.font.Font("Polices/dejavu_sansbold.ttf", 50)
-
 #FONCTIONS D'AFFICHAGE
 
 def affichage_image(screen, image, position):
     screen.blit(image, (position[0], position[1]))
 
 def ecran_de_demarrage(screen):
-    screen.fill(white)
-    phrase = font2.render('Bienvenue dans le casino Umthombo !', 1, (0, 0, 0))
-    longueur_phrase = phrase.get_rect().width
-    screen.blit(phrase, ((1600-longueur_phrase)/2, 200))
+    screen.blit(hall_casino, (0, 0))
     screen.blit(inscription, inscription_pos)
     screen.blit(connexion, connexion_pos)
     pygame.display.flip()
 
 def conn_inscr(screen, n):
-    screen.fill(white)
-    utilisateur = font2.render("Nom d'utilisateur:", 1, (0, 0, 0))
+    screen.blit(hall_casino_vierge, (0,0))
+    utilisateur = font2.render("Nom d'utilisateur:", 1, (255, 255, 255))
     longueur_utilisateur = utilisateur.get_rect().width
     screen.blit(utilisateur, ((1600-longueur_utilisateur)/2, 100))
 
-    mdp = font2.render("Mot de passe:", 1, (0, 0, 0))
+    mdp = font2.render("Mot de passe:", 1, (255, 255, 255))
     longueur_mdp = mdp.get_rect().width
     screen.blit(mdp, ((1600-longueur_mdp)/2, 500))
 

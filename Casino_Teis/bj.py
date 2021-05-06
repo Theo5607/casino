@@ -8,6 +8,7 @@ blackjack = pygame.image.load("Images/Jeux/Blackjack/blackjack.png")
 
 stand = pygame.image.load("Images/Jeux/Blackjack/stand.png")
 tirer = pygame.image.load("Images/Jeux/Blackjack/tirer.png")
+fond_bj = pygame.image.load("Images/Jeux/Blackjack/fond_blackjack.png")
 
 back = pygame.image.load("Images/Jeux/Blackjack/back.png")
 
@@ -85,7 +86,7 @@ def play_blackjack(mise, screen):
     ct_jr.append(tirer_carte())
     ct_crp.append(tirer_carte())
 
-    screen.fill(vert)
+    screen.blit(fond_bj, (0,0))
     pygame.display.flip()
 
     for i in range(0, len(ct_jr)):
@@ -94,8 +95,8 @@ def play_blackjack(mise, screen):
     dessin_carte(ct_crp[0][3], 800, 300, screen)
     screen.blit(back, (800, 340))
 
-    screen.blit(tirer, (450, 750))
-    screen.blit(stand, (850, 750))
+    screen.blit(tirer, (325, 750))
+    screen.blit(stand, (725, 750))
 
     pygame.display.flip()
 
