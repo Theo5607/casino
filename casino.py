@@ -4,6 +4,7 @@ from pygame.locals import *
 from Casino_Matvei.slot_machine import slot_partie
 from Casino_Matvei.animation_slot import animation_machine
 from casino_leonardo.roulette_fin import roulette
+from casino_leonardo.roulette_fin import animation_roulette
 from Casino_Teis.bj import play_blackjack
 from Casino_Teis.bj import action
 from fonctions import *
@@ -110,7 +111,7 @@ long_mdp_cache=0
 
 #variables profil
 font_profil = pygame.font.Font("Polices/coolvetica.ttf", 70)
-font_argent = font2 = pygame.font.Font("Polices/dejavu_sansbold.ttf", 30)
+font_argent = font2 = pygame.font.Font("Polices/ADAM.CG_PRO.otf", 30)
 mdp_cache_verif=True
 pos_oeil_gauche=0
 
@@ -277,7 +278,7 @@ while jouer==1:
                     mdp_cache_str=mdp_cache_str+'*'
 
                 #Affichage du profil
-                screen.fill(white)
+                affichage_image(screen, fond_profil, (0,0))
                 
                 affichage_image(screen, retour_profil, retour_profil_pos)
                 affichage_image(screen, icone_profil, icone_profil_pos)
@@ -500,7 +501,7 @@ while jouer==1:
             #boutons blackjack
 
             #bouton tirer
-            elif check_clic(event.pos, (450, 750), (750, 870), ['jeu_bj'])==True:
+            elif check_clic(event.pos, (325, 625), (750, 870), ['jeu_bj'])==True:
                 infos=action(1, ct_jr, ct_crp, screen)
                 if infos[0]==0:
                     time.sleep(2)
@@ -540,7 +541,7 @@ while jouer==1:
                     ct_crp=infos[2]
 
             #bouton stand
-            elif check_clic(event.pos, (850, 1050), (750, 870), ['jeu_bj'])==True:
+            elif check_clic(event.pos, (725, 1025), (750, 870), ['jeu_bj'])==True:
                 infos=action(2, ct_jr, ct_crp, screen)
                 if infos[0]==0:
                     time.sleep(2)
@@ -888,7 +889,7 @@ while jouer==1:
                             paris_copie=paris.copy()
 
                             #L'argent gagné sur la roulette
-                            dico_gains=roulette(paris)
+                            dico_gains=roulette(paris, screen)
                             gains=0
                             mises_perdues=0
 

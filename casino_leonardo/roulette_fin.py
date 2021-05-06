@@ -1,3 +1,5 @@
+import pygame, time
+
 type_mise = {"mise_rouge" : 100, "mise_noir" : 100,"mise_colone1" : 100,"mise_colone2" : 100,"mise_colone3" : 100,"mise_douzaine1" : 100,"mise_douzaine2" : 100,"mise_douzaine3" : 100,"mise_1_à_18" : 100,"mise_19_à_36" : 100,"mise_impair" : 100,"mise_pair" : 100}
 for i in range(0,37):
     type_mise[i]=0
@@ -5,9 +7,27 @@ for i in range(0,37):
 
 import random#fait appel à la biblioth
 
-def roulette(type_mise):
+def animation_roulette(screen, x):
+    white = 255, 255, 255
+
+    bandeau = pygame.image.load("Images/Jeux/Roulette/Animation/bandeau_roulette.png")
+    triangle = pygame.image.load("Images/Jeux/Roulette/Animation/triangle.png")
+    screen.fill(white)
+    list_machine=[323,379,299,331,307,395,283,347,407,363,399,415,339,423,371,463,387,439,355,459,375,451,359,403,391,443,327,427,343,351,411,367,467,383,435,335,419]
+
+    for i in range(list_machine[x]):
+        screen.blit(bandeau, (-17760+30*i,430))
+        screen.blit(triangle, (780,340))
+        pygame.display.flip()
+        time.sleep(0.025)
+    return
+
+
+def roulette(type_mise, screen):
     """prend en argument un dictionnaire qui a comme clés sur quoi il va parier et la valeur est égale à combien il va parier et retourne les gains ainsi que les symboles qui ont gagné"""
     x=random.randint(0,36)#nombre aléatoire entre 0 et 36
+    animation_roulette(screen, x)
+    time.sleep(2)
     print("Le chiffre qui est sorti :",x)#affiche le nombre choisi
     rouge = [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36]#chiffre dans la catégorie rouge
     noir = [2,4,6,8,10,11,13,15,17,20,22,24,26,28,29,31,33,35]#chiffre dans la catégorie noir
