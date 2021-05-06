@@ -21,9 +21,9 @@ white = 255, 255, 255
 
 #importation symbole machine à sous
 
-bar= pygame.image.load("Images/Jeux/Machine_a_sous/Symboles/bar.png")
-lemon= pygame.image.load("Images/Jeux/Machine_a_sous/Symboles/lemon.png")
-watermelon= pygame.image.load("Images/Jeux/Machine_a_sous/Symboles/watermelon.png")
+bar= pygame.image.load("Images/Jeux/Machine_a_sous/Symboles/lemon.png")
+bar_2= pygame.image.load("Images/Jeux/Machine_a_sous/Symboles/bar.png")
+bar_3= pygame.image.load("Images/Jeux/Machine_a_sous/Symboles/watermelon.png")
 symb_7= pygame.image.load("Images/Jeux/Machine_a_sous/Symboles/7.png")
 scatter= pygame.image.load("Images/Jeux/Machine_a_sous/Symboles/scatter.png")
 cloche=pygame.image.load("Images/Jeux/Machine_a_sous/Symboles/cloche.png")
@@ -204,10 +204,10 @@ while jouer==1:
                 screen.blit(rectangle, (300, 650))
 
                 if mdp_cache_verification==False:
-                    mdp = font.render(str_mdp, 1, (0, 0, 0))
+                    mdp = taper_font.render(str_mdp, 1, (0, 0, 0))
                     screen.blit(mdp, (300, 650))
                 else:
-                    mdp_cache = font.render(str_mdp_cache, 1, (0, 0, 0))
+                    mdp_cache = taper_font.render(str_mdp_cache, 1, (0, 0, 0))
                     screen.blit(mdp_cache, (300, 650))
                     
                 pygame.display.flip()
@@ -219,15 +219,15 @@ while jouer==1:
 
                 screen.blit(rectangle, (300, 250))
                 screen.blit(rectangle, (300, 650))
-                uti = font.render(str_uti, 1, (0, 0, 0))
+                uti = taper_font.render(str_uti, 1, (0, 0, 0))
                 screen.blit(uti, (300, 250))
 
                 if mdp_cache_verification==False:
-                    mdp = font.render(str_mdp, 1, (0, 0, 0))
+                    mdp = taper_font.render(str_mdp, 1, (0, 0, 0))
                     screen.blit(mdp, (300, 650))
                     affichage_image(screen, curseur, (300+long_mdp+10, 660))
                 else:
-                    mdp_cache = font.render(str_mdp_cache, 1, (0, 0, 0))
+                    mdp_cache = taper_font.render(str_mdp_cache, 1, (0, 0, 0))
                     screen.blit(mdp_cache, (300, 650))
                     long_mdp_cache=mdp_cache.get_rect().width
                     affichage_image(screen, curseur, (300+long_mdp_cache+10, 660))
@@ -252,13 +252,13 @@ while jouer==1:
             elif check_clic(event.pos, (1320, 1420), (700, 750), ['connexion','inscr_entrer_uti', 'conn_entrer_uti', 'conn_entrer_mdp', 'inscr_entrer_mdp'])==True:
                 affichage_image(screen, rectangle, (300, 650))
                 if mdp_cache_verification==True:
-                    mdp = font.render(str_mdp, 1, (0, 0, 0))
+                    mdp = taper_font.render(str_mdp, 1, (0, 0, 0))
                     affichage_image(screen, mdp, (300, 650))
                     if tableau == 'conn_entrer_mdp' or tableau == 'inscr_entrer_mdp':
                         affichage_image(screen, curseur, (300+10+long_mdp, 660))
                     mdp_cache_verification=False
                 elif mdp_cache_verification==False:
-                    mdp_cache = font.render(str_mdp_cache, 1, (0, 0, 0))
+                    mdp_cache = taper_font.render(str_mdp_cache, 1, (0, 0, 0))
                     screen.blit(mdp_cache, (300, 650))
                     if tableau == 'conn_entrer_mdp' or tableau == 'inscr_entrer_mdp':
                         affichage_image(screen, curseur, (300+10+long_mdp_cache, 660))
@@ -593,7 +593,7 @@ while jouer==1:
                             affichage_image(screen, rectangle, (300, 250))
 
                             str_uti=str_uti+str(dico_touches[el])
-                            afficher = font.render(str_uti, 1, (0, 0, 0))
+                            afficher = taper_font.render(str_uti, 1, (0, 0, 0))
                             screen.blit(afficher, (300, 250))
 
                             long_uti=afficher.get_rect().width
@@ -605,7 +605,7 @@ while jouer==1:
                             
                             affichage_image(screen, rectangle, (300, 250))
                             
-                            afficher = font.render(str_uti, 1, (0, 0, 0))
+                            afficher = taper_font.render(str_uti, 1, (0, 0, 0))
                             screen.blit(afficher, (300, 250))
 
                             long_uti=afficher.get_rect().width
@@ -620,9 +620,9 @@ while jouer==1:
                             str_mdp=str_mdp+str(dico_touches[el])
                             str_mdp_cache+='*'
                             
-                            afficher_cache = font.render(str_mdp_cache, 1, (0, 0, 0))
+                            afficher_cache = taper_font.render(str_mdp_cache, 1, (0, 0, 0))
                             long_mdp_cache=afficher_cache.get_rect().width
-                            afficher = font.render(str_mdp, 1, (0, 0, 0))
+                            afficher = taper_font.render(str_mdp, 1, (0, 0, 0))
                             long_mdp=afficher.get_rect().width
                             
                             if mdp_cache_verification==True:
@@ -640,9 +640,9 @@ while jouer==1:
                             
                             affichage_image(screen, rectangle, (300, 650))
 
-                            afficher_cache = font.render(str_mdp_cache, 1, (0, 0, 0))
+                            afficher_cache = taper_font.render(str_mdp_cache, 1, (0, 0, 0))
                             long_mdp_cache=afficher_cache.get_rect().width
-                            afficher = font.render(str_mdp, 1, (0, 0, 0))
+                            afficher = taper_font.render(str_mdp, 1, (0, 0, 0))
                             long_mdp=afficher.get_rect().width
                             
                             if mdp_cache_verification==True:
@@ -661,7 +661,7 @@ while jouer==1:
                     affichage_image(screen, rectangle, (300, 250))
                     
                     str_uti=str_uti[0:len(str_uti)-1]
-                    afficher = font.render(str_uti, 1, (0, 0, 0))
+                    afficher = taper_font.render(str_uti, 1, (0, 0, 0))
                     screen.blit(afficher, (300,250))
 
                     long_uti=afficher.get_rect().width
@@ -673,9 +673,9 @@ while jouer==1:
                     
                     str_mdp=str_mdp[0:len(str_mdp)-1]
                     str_mdp_cache=str_mdp_cache[0:len(str_mdp_cache)-1]
-                    afficher_cache = font.render(str_mdp_cache, 1, (0, 0, 0))
+                    afficher_cache = taper_font.render(str_mdp_cache, 1, (0, 0, 0))
                     long_mdp_cache=afficher_cache.get_rect().width
-                    afficher = font.render(str_mdp, 1, (0, 0, 0))
+                    afficher = taper_font.render(str_mdp, 1, (0, 0, 0))
                     long_mdp=afficher.get_rect().width
                     if mdp_cache_verification==True:
                         screen.blit(afficher_cache, (300, 650))
@@ -736,7 +736,7 @@ while jouer==1:
                         affichage_image(screen, mas_rectangle_somme, mas_rectangle_somme_pos)
                     
                         somme=somme+dico_nb[el]
-                        afficher = font.render(somme, 1, (0, 0, 0))
+                        afficher = taper_font.render(somme, 1, (0, 0, 0))
                         screen.blit(afficher, (500,600))
 
                         long_somme=afficher.get_rect().width
@@ -749,7 +749,7 @@ while jouer==1:
 
                         affichage_image(screen, mas_rectangle_somme, mas_rectangle_somme_pos)
                         
-                        afficher = font.render(somme, 1, (0, 0, 0))
+                        afficher = taper_font.render(somme, 1, (0, 0, 0))
                         screen.blit(afficher, (500,600))
 
                         long_somme=afficher.get_rect().width
@@ -763,7 +763,7 @@ while jouer==1:
                 affichage_image(screen, mas_rectangle_somme, mas_rectangle_somme_pos)
                 
                 somme=somme[0:len(somme)-1]
-                afficher = font.render(somme, 1, (0, 0, 0))
+                afficher = taper_font.render(somme, 1, (0, 0, 0))
                 screen.blit(afficher, (500,600))
 
                 long_somme=afficher.get_rect().width
@@ -786,7 +786,7 @@ while jouer==1:
 
                         #On appelle la fonction roulette qui retourne les gains ou 0 si on perd
                         gains=slot_partie(int(somme))
-                        animation_machine(screen, gains[1], [bar, lemon, watermelon, cherry, scatter, symb_7, cloche])
+                        animation_machine(screen, gains[1], [bar, bar_2, bar_3, cherry, scatter, symb_7, cloche])
                         time.sleep(1)
 
                         #Si les gains sont supérieurs à 0, le joueur à gagné
@@ -940,8 +940,6 @@ while jouer==1:
                 for el in paris.keys():
                     if paris[el]==1:
                         pari_actuel.append(el)
-
-                        print(pari_actuel)
 
                 nb_actuel[0]=pari(pari_actuel[0])
 pygame.quit()
