@@ -321,15 +321,11 @@ while jouer==1:
                 #Affichage du menu de la roulette
                 affichage_menu_jeu(screen)
 
-            #Bouton quiter le casion/retour du profil
-            elif check_clic(event.pos, (1300, 1550), (770, 850), ['menu','profil'])==True:
+            #Bouton quiter le casion
+            elif check_clic(event.pos, (1300, 1550), (770, 850), ['menu'])==True:
                 if tableau=='menu':
                     #Stopper la boucle infinie
-                    jouer = 0
-                else:
-                    #Affichage du menu
-                    dessine_menu(screen)
-                    pygame.display.flip()
+                    jouer = 0        
                 
             #----------------
             #boutons profil
@@ -373,6 +369,14 @@ while jouer==1:
                 long_mdp_cache=0
                 
                 ecran_de_demarrage(screen)
+
+            #bouton retour
+            elif check_clic(event.pos, (1300, 1550), (770, 850), ['profil'])==True:
+                tableau="menu"
+                
+                #Affichage du menu
+                dessine_menu(screen)
+                pygame.display.flip()
                 
             #------------
             #boutons blackjack
