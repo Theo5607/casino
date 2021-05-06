@@ -5,8 +5,8 @@ def animation_machine(screen, liste_de_symboles, liste_images):
 
 #importation de toutes les images
 
-    bar= liste_images[0]
-    lemon= liste_images[1]
+    bar= liste_images[1]
+    lemon= liste_images[0]
     watermelon= liste_images[2]
     symb_7= liste_images[5]
     scatter= liste_images[4]
