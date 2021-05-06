@@ -315,7 +315,7 @@ while jouer==1:
                 affichage_menu_jeu(screen)
 
             #Bouton icône roulette
-            elif check_clic(event.pos, (500, 1100), (550, 800), ['menu'])==True:
+            elif check_clic(event.pos, (560, 1040), (550, 820), ['menu'])==True:
                 tableau='roulette_menu'
 
                 #Affichage du menu de la roulette
