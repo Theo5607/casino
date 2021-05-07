@@ -46,9 +46,6 @@ cache_oeil = pygame.image.load("Images/Menu_jeu/Profil/cache_oeil.png")
 deco = pygame.image.load("Images/Menu_jeu/Profil/deco.png")
 fond_profil = pygame.image.load("Images/Menu_jeu/Profil/fond_profil.png")
 
-rect_blanc = pygame.image.load("Images/Menu_jeu/Profil/rect_blanc.png")
-rect_blanc_pos = (550, 370)
-
 
 #-----------
 
@@ -94,14 +91,8 @@ mas_jouer_pos = (300, 300)
 mas_retour = pygame.image.load("Images/Jeux/Machine_a_sous/retour.png")
 mas_retour_pos = (900, 300)
 
-mas_somme = pygame.image.load("Images/Jeux/Machine_a_sous/texte_somme.png")
 mas_rectangle_somme = pygame.image.load("Images/Jeux/Machine_a_sous/rectangle_somme.png")
 mas_rectangle_somme_pos = (500, 600)
-
-mas_gains = pygame.image.load("Images/Jeux/Machine_a_sous/gains.png")
-mas_gains_pos = (500, 400)
-
-mas_somme_non_valide = pygame.image.load("Images/Jeux/Machine_a_sous/somme_non_valide.png")
 
 mas_rejouer = pygame.image.load("Images/Jeux/Machine_a_sous/mas_rejouer.png")
 mas_rejouer_pos = (500, 700)
