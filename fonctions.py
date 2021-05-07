@@ -21,12 +21,6 @@ alerte = pygame.image.load("Images/Connexion/alerte.png")
 
 retour = pygame.image.load("Images/Connexion/retour.png")
 
-#Chargement images entree casino
-
-entreecasino = pygame.image.load("Images/Menu/entree_casino.png")
-btn_entrer = pygame.image.load("Images/Menu/btn_entrer.png")
-btn_entrer_pos = (650, 700)
-
 #Chargement images menu choix du jeu
 fond = pygame.image.load("Images/Menu_jeu/hall_casino.png")
 
@@ -47,6 +41,8 @@ icone_profil_pos = (200, 200)
 retour_profil = pygame.image.load("Images/Menu_jeu/Profil/retour_profil.png")
 retour_profil_pos = (1300, 770)
 oeil = pygame.image.load("Images/Menu_jeu/Profil/oeil.png")
+oeil_ferme = pygame.image.load("Images/Menu_jeu/Profil/oeil_ferme.png")
+cache_oeil = pygame.image.load("Images/Menu_jeu/Profil/cache_oeil.png")
 deco = pygame.image.load("Images/Menu_jeu/Profil/deco.png")
 fond_profil = pygame.image.load("Images/Menu_jeu/Profil/fond_profil.png")
 
@@ -64,10 +60,13 @@ curseur_bj = pygame.image.load("Images/Jeux/Blackjack/curseur_bj.png")
 
 blackjack = pygame.image.load("Images/Jeux/Blackjack/blackjack.png")
 
+rectangle_bj = pygame.image.load("Images/Jeux/Blackjack/rectangle.png")
+
 #Chargement images roulette
 
+fond_roulette = pygame.image.load("Images/Jeux/Roulette/fond_roulette.png")
+
 roulette_tapis = pygame.image.load("Images/Jeux/Roulette/tapis.png")
-roulette_tapis_bleu = pygame.image.load("Images/Jeux/Roulette/tapis_bleu.png")
 
 fond_nb_vert = pygame.image.load("Images/Jeux/Roulette/fond_nb_vert.png")
 fond_nb_bleu = pygame.image.load("Images/Jeux/Roulette/fond_nb_bleu.png")
@@ -105,9 +104,9 @@ mas_gains_pos = (500, 400)
 mas_somme_non_valide = pygame.image.load("Images/Jeux/Machine_a_sous/somme_non_valide.png")
 
 mas_rejouer = pygame.image.load("Images/Jeux/Machine_a_sous/mas_rejouer.png")
-mas_rejouer_pos = (450, 700)
+mas_rejouer_pos = (500, 700)
 mas_quitter = pygame.image.load("Images/Jeux/Machine_a_sous/mas_quitter.png")
-mas_quitter_pos = (840, 700)
+mas_quitter_pos = (900, 700)
 
 rejouer = pygame.image.load("Images/Jeux/Machine_a_sous/mas_rejouer.png")
 retour_menu = pygame.image.load("Images/Jeux/Machine_a_sous/mas_quitter.png")
@@ -131,15 +130,18 @@ white = 255, 255, 255
 #FONCTIONS D'AFFICHAGE
 
 def affichage_image(screen, image, position):
+    """Permet d'afficher une image depuis le fichier casino.py"""
     screen.blit(image, (position[0], position[1]))
 
 def ecran_de_demarrage(screen):
+    """Permet d'afficher l'écran de démarrage avec les boutons connexion et insciption"""
     screen.blit(hall_casino, (0, 0))
     screen.blit(inscription, inscription_pos)
     screen.blit(connexion, connexion_pos)
     pygame.display.flip()
 
 def conn_inscr(screen, n):
+    """Permet d'afficher le formulaire d'inscription/connexion"""
     screen.blit(hall_casino_vierge, (0,0))
     utilisateur = font2.render("Nom d'utilisateur:", 1, (255, 255, 255))
     longueur_utilisateur = utilisateur.get_rect().width
@@ -149,9 +151,9 @@ def conn_inscr(screen, n):
     longueur_mdp = mdp.get_rect().width
     screen.blit(mdp, ((1600-longueur_mdp)/2, 500))
 
-    screen.blit(rectangle, (300, 250))
-    screen.blit(rectangle, (300, 650))
-    screen.blit(oeil, (1320, 700))
+    screen.blit(rectangle, (290, 240))
+    screen.blit(rectangle, (290, 640))
+    screen.blit(oeil_ferme, (1320, 700))
     screen.blit(curseur, (310, 260))
     screen.blit(retour, (1350, 800))
 
@@ -212,18 +214,6 @@ def check_tapis(screen, clic, paris, tableau):
     #Coordonées à vérifier pour le clic des lignes
     coordonnees_ligne=[1465, 84]
     #Boucle qui traverse les 3 lignes
-    for i in range(0,3):
-        #On vérifie les coordonnées du clic
-        if(clic[0]>=coordonnees_ligne[0] and clic[0]<=coordonnees_ligne[0]+102) and (clic[1]>=coordonnees_ligne[1]+i*111 and clic[1]<=coordonnees_ligne[1]+i*(111)+105):
-            #On retourne le nom de la ligne et on change le fond du nombre selon si il avait été sélectionné ou pas
-            if paris['ligne_'+str(i+1)]==0:
-                screen.blit(ligne_bleu, (coordonnees_ligne[0], coordonnees_ligne[1]+i*111))
-                pygame.display.flip()
-                return ['ligne_'+str(i+1), 1]
-            elif paris['ligne_'+str(i+1)]==1:
-                screen.blit(ligne_vert, (coordonnees_ligne[0], coordonnees_ligne[1]+i*111))
-                pygame.display.flip()
-                return ['ligne_'+str(i+1), 0]
 
     #On vérifie si on clique sur 0
     if(clic[0]>=coordonnees_zero[0] and clic[0]<=coordonnees_zero[0]+165) and (clic[1]>=coordonnees_zero[1] and clic[1]<=coordonnees_zero[1]+330) and tableau=='roulette_tapis':
@@ -236,20 +226,22 @@ def check_tapis(screen, clic, paris, tableau):
             pygame.display.flip()
             return [0, 0]
 
-    ligne_triple=['mise_douzaine1','mise_douzaine2','mise_douzaine3']
+    #On vérifie si on clique sur les douzaines
+    ligne_triple=['la première douzaine','la deuxième douzaine','la troisième douzaine']
     coordonnees_triple=[187, 415]
     for i in range(0,3):
-        if(clic[0]>=coordonnees_triple[0]+i*422 and clic[0]<=coordonnees_triple[0]+416+i*422) and (clic[1]>=coordonnees_triple[1] and clic[1]<=coordonnees_triple[1]+179) and tableau=='roulette_tapis':
+        if(clic[0]>=coordonnees_triple[0]+i*426 and clic[0]<=coordonnees_triple[0]+414+i*426) and (clic[1]>=coordonnees_triple[1] and clic[1]<=coordonnees_triple[1]+179) and tableau=='roulette_tapis':
             if paris[ligne_triple[i]]==0:
-                screen.blit(liste_triple_ligne_bleu[i], (coordonnees_triple[0]+i*422, coordonnees_triple[1]))
+                screen.blit(liste_triple_ligne_bleu[i], (coordonnees_triple[0]+i*426, coordonnees_triple[1]))
                 pygame.display.flip()
                 return [ligne_triple[i], 1]
             elif paris[ligne_triple[i]]==1:
-                screen.blit(liste_triple_ligne_vert[i], (coordonnees_triple[0]+i*422, coordonnees_triple[1]))
+                screen.blit(liste_triple_ligne_vert[i], (coordonnees_triple[0]+i*426, coordonnees_triple[1]))
                 pygame.display.flip()
                 return [ligne_triple[i], 0]
 
-    ligne_sextuple=['mise_1_à_18','mise_pair','mise_noir','mise_rouge','mise_impair','mise_19_à_36']
+    #On vérifie si on clique sur la dernière ligne
+    ligne_sextuple=['la première moitié','les nombres pairs','le noir','le rouge','les nombres impairs','la deuxième moitié']
     coordonnees_sextuple=[187, 599]
     for i in range(0,6):
         if(clic[0]>=coordonnees_sextuple[0]+i*213 and clic[0]<=coordonnees_sextuple[0]+209+i*213) and (clic[1]>=coordonnees_sextuple[1] and clic[1]<=coordonnees_sextuple[1]+179) and tableau=='roulette_tapis':
@@ -266,7 +258,8 @@ def check_tapis(screen, clic, paris, tableau):
     return []
 
 def affichage_tapis(screen):
-    screen.fill(white)
+    """Fonction qui affiche le tapis"""
+    screen.blit(fond_roulette, (0,0))
     affichage_image(screen, roulette_tapis, (0, 0))
     liste_nb_roulette=[3,2,1]
     nombre=0
@@ -296,17 +289,18 @@ def affichage_tapis(screen):
 
     screen.blit(zero_vert, (18, 82))
 
-    coordonnees_ligne=[1465, 84]
-    for i in range(0,3):
-        screen.blit(ligne_vert, (coordonnees_ligne[0], coordonnees_ligne[1]+i*(111)))
-
     coordonnees_triple_ligne=[187, 414]
     for i in range(0,3):
         screen.blit(liste_triple_ligne_vert[i], (coordonnees_triple_ligne[0]+i*(426), coordonnees_triple_ligne[1]))
+
+    coordonnees_sextuple_ligne=[187, 599]
+    for i in range(0,6):
+        screen.blit(liste_sextuple_ligne_vert[i], (coordonnees_sextuple_ligne[0]+i*(213), coordonnees_sextuple_ligne[1]))
                     
     pygame.display.flip()
 
 def affichage_curseur(screen, str_uti, str_mdp, mdp_cache_verification, str_mdp_cache):
+    """Permet d'afficher le curseur en fonction de l'utilisateur, du mot de passe, de s'il est caché ou pas et du mot de passe caché"""
     screen.blit(rectangle, (300, 250))
     screen.blit(rectangle, (300, 650))
     uti = font.render(str_uti, 1, (0, 0, 0))
@@ -321,18 +315,8 @@ def affichage_curseur(screen, str_uti, str_mdp, mdp_cache_verification, str_mdp_
     pygame.display.flip()
 
 def affichage_menu_jeu(screen):
-    screen.fill(white)
+    """Fonction qui affiche les boutons jouer et retour"""
+    screen.blit(fond, (0,0))
     screen.blit(mas_jouer, mas_jouer_pos)
     screen.blit(mas_retour, mas_retour_pos)
     pygame.display.flip()
-
-def affichage_paris(screen):
-    screen.blit(mas_somme, (0, 0))
-    screen.blit(mas_rectangle_somme, mas_rectangle_somme_pos)
-    screen.blit(curseur_bj, (510, 610))
-
-def affichage_rejouer(screen):
-    screen.blit(mas_rejouer, mas_rejouer_pos)
-    screen.blit(mas_quitter, mas_quitter_pos)
-
-#FONCTIONS DE FONCTIONNEMENT
