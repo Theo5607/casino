@@ -46,10 +46,6 @@ cache_oeil = pygame.image.load("Images/Menu_jeu/Profil/cache_oeil.png")
 deco = pygame.image.load("Images/Menu_jeu/Profil/deco.png")
 fond_profil = pygame.image.load("Images/Menu_jeu/Profil/fond_profil.png")
 
-rect_blanc = pygame.image.load("Images/Menu_jeu/Profil/rect_blanc.png")
-rect_blanc_pos = (550, 370)
-
-
 #-----------
 
 #Chargement images blackjack
