@@ -81,7 +81,7 @@ def slot_partie(mise): #fonction prenant en argument lamise sur laquelle l'utlis
         print('bravo vous gagnez:',multi(p1))
 
     #p1-p4-p7 (verticale gauche)
-    if p1==p2 and p1==p3 and p1!=0 and p1!=6:
+    if p1==p4 and p1==p7 and p1!=0 and p1!=6:
         gains_slot=gains_slot+multi(p1)
         print('bravo vous gagnez:',multi(p1))
 
