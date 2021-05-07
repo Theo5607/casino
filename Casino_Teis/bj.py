@@ -2,7 +2,7 @@ import random
 import sys, time, pygame
 from pygame.locals import *
 
-vert = 0, 255, 0
+#Importation des images
 
 blackjack = pygame.image.load("Images/Jeux/Blackjack/blackjack.png")
 
@@ -11,6 +11,8 @@ tirer = pygame.image.load("Images/Jeux/Blackjack/tirer.png")
 fond_bj = pygame.image.load("Images/Jeux/Blackjack/fond_blackjack.png")
 
 back = pygame.image.load("Images/Jeux/Blackjack/back.png")
+
+#Création d'un dictionnaire de cartes
 
 dico_images_cartes={}
 
@@ -31,6 +33,7 @@ def ret_spec(nb):
         return str(nb)
 
 def crea_liste_cartes():
+    """Crée la liste de cartes"""
     liste_cartes={}
 
     for i in range(1,53):
@@ -65,6 +68,7 @@ def tirer_carte():
     return(liste_cartes[nb_carte])
 
 def dessin_carte(nb_carte, x, y, screen):
+    """Affiche une carte en fonction de son numéro et de ses coordonnées"""
     screen.blit(dico_images_cartes[nb_carte], (x, y))
     pygame.display.flip()
     time.sleep(0.5)
@@ -100,41 +104,19 @@ def play_blackjack(mise, screen):
 
     pygame.display.flip()
 
-    #def animation_cartes(liste, x, y):
-        #liste_cartes_deja_posees=[]
-        #for el in liste:      
-            #for i in range(y,0,-2):
-                #screen.fill(vert)
-                #var=0
-                #for carte in liste_cartes_deja_posees:
-                        #var+=1
-                        #screen.blit(carte, (x, y+40*var))
-                        #pygame.display.flip()
-                #screen.blit(dico_images_cartes[el[3]], (x, y-i))
-                #pygame.display.flip()
-                #time.sleep(0.00001)
-                
-            #y+=40
-            #liste_cartes_deja_posees.append(dico_images_cartes[el[3]])
-        #pygame.display.flip()
-
-    #animation_cartes(ct_jr, 400, 300)
-    #animation_cartes(ct_crp, 800, 300)
-
     #check si il y a eu blackjack direct
     
-    if (ct_jr[0][0]==1 and (ct_jr[1][0]==(10 or 11 or 12 or 13))) or (ct_jr[1][0]==1 and (ct_jr[0][0]==(10 or 11 or 12 or 13))): #vérification s'il ya eu un blackjack
+    if (ct_jr[0][0]==11 and ct_jr[1][0]==10) or (ct_jr[1][0]==11 and ct_jr[0][0]==10): #vérification s'il ya eu un blackjack
         gains = mise*2
 
-        screen.blit(blackjack, (500, 670))
+        screen.blit(blackjack, (375, 325))
         pygame.display.flip()
-
-        time.sleep(0.5)
         return [gains, [], []]
     else:
         return [gains, ct_jr, ct_crp]
 
 def action(act, cartes_joueur, cartes_croupier, screen):
+    """Fonction qui prend en paramètres les cartes du croupier et du joueru, l'action (tirer ou stand) et qui réagit en fonction des cartes tirées"""
     def calcul_somme(jeu_carte):
         somme=0
         compteur_as=0
@@ -157,7 +139,10 @@ def action(act, cartes_joueur, cartes_croupier, screen):
     #ajoute des cartes au croupier tant qu'il na pas 17    
     if act==2:
         dessin_carte(ct_crp[1][3], 800, 340, screen)
-        time.sleep(0.5)
+
+        if (ct_crp[0][0]==11 and ct_crp[1][0]==10) or (ct_crp[1][0]==11 and ct_crp[0][0]==10): #vérification s'il ya eu un blackjack
+            pygame.display.flip()
+            return [gains, "Le croupier a fait Blackjack ! Vous perdez votre mise."]
         
         somme_jr = calcul_somme(ct_jr)
         somme_crp = calcul_somme(ct_crp)
@@ -187,5 +172,3 @@ def action(act, cartes_joueur, cartes_croupier, screen):
         return gains+1, ct_jr, ct_crp
     else:
         return gains-1, ct_jr, ct_crp
-
-#print(play_blackjack(3))

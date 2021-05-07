@@ -7,6 +7,7 @@ from casino_leonardo.roulette_fin import roulette
 from casino_leonardo.roulette_fin import animation_roulette
 from Casino_Teis.bj import play_blackjack
 from Casino_Teis.bj import action
+from Casino_Teis.bj import dessin_carte
 from fonctions import *
 
 #Création de la base de données
@@ -117,7 +118,7 @@ pos_oeil_gauche=0
 
 #variables roulette
 def re_paris():
-    paris_new={"mise_rouge" : 0, "mise_noir" : 0,"mise_colone1" : 0,"mise_colone2" : 0,"mise_colone3" : 0,"mise_douzaine1" : 0,"mise_douzaine2" : 0,"mise_douzaine3" : 0,"mise_1_à_18" : 0,"mise_19_à_36" : 0,"mise_impair" : 0,"mise_pair" : 0,"ligne_1" : 0,"ligne_2" : 0,"ligne_3" : 0}
+    paris_new={"le rouge" : 0, "le noir" : 0,"la première colonne" : 0,"la deuxième colonne" : 0,"la troisième colonne" : 0,"la première douzaine" : 0,"la deuxième douzaine" : 0,"la troisième douzaine" : 0,"la première moitié" : 0,"la deuxième moitié" : 0,"les nombres impairs" : 0,"les nombres pairs" : 0}
     for i in range(0, 37):
         paris_new[i]=0
     return paris_new
@@ -136,12 +137,15 @@ cr_crp=[]
 somme=''
 
 def check_clic(clic, posx, posy, tableau_demande):
+    """Fonction qui prend en paramètres un clic, des coordonnées et et une liste des tableaux à vérifier et qui renvoie un booléen pour vérifier si le clic est dans la zone demandée"""
     tableau_bool=False
-    
+
+    #la boucle parcourt la liste des tableaux à vérifier et renvoie True si il est dedans
     for el in tableau_demande:
         if el==tableau:
             tableau_bool=True
-    
+
+    #Vérifie les coordonnées du clic
     if tableau_bool==True:
         if(clic[0]>=posx[0] and clic[0]<=posx[1]) and (clic[1]>=posy[0] and clic[1]<=posy[1]):
             return True
@@ -152,8 +156,8 @@ def check_clic(clic, posx, posy, tableau_demande):
 
 def pari(nom_pari):
     """Affiche à l'écran Combien voulez-vous parier sur 'nom_du_pari'"""
-    screen.fill(white)
-    phrase = font2.render("Combien voulez vous miser sur "+str(nom_pari)+" ?", 1, (0, 0, 0))
+    affichage_image(screen, fond_roulette, (0, 0))
+    phrase = font2.render("Combien voulez vous miser sur "+str(nom_pari)+" ?", 1, (255, 255, 255))
     longueur_phrase = phrase.get_rect().width
     screen.blit(phrase, ((1600-longueur_phrase)/2, 420))
 
@@ -162,7 +166,7 @@ def pari(nom_pari):
                         
     screen.blit(mas_rectangle_somme, mas_rectangle_somme_pos)
     screen.blit(curseur_bj, (510, 610))
-    argent = font2.render(str(compte[2])+'$', 1, (0, 0, 0))
+    argent = font2.render(str(compte[2])+'$', 1, (255, 255, 255))
     screen.blit(argent, (30, 30))
     pygame.display.flip()
 
@@ -194,7 +198,7 @@ while jouer==1:
                 conn_inscr(screen, 1)
 
             #----------------
-            #boutons inscription/connexion
+            #boutons inscription/connexion (servent à replacer le curseur)
             elif check_clic(event.pos, (300, 1300), (250, 400), ['inscr_entrer_mdp', 'conn_entrer_mdp'])==True:
                 if tableau=='inscr_entrer_mdp':
                     tableau='inscr_entrer_uti'
@@ -202,7 +206,7 @@ while jouer==1:
                     tableau='conn_entrer_uti'
 
                 affichage_image(screen, curseur, (300+long_uti+10, 260))
-                screen.blit(rectangle, (300, 650))
+                screen.blit(rectangle, (290, 640))
 
                 if mdp_cache_verification==False:
                     mdp = taper_font.render(str_mdp, 1, (0, 0, 0))
@@ -218,8 +222,8 @@ while jouer==1:
                 else:
                     tableau='conn_entrer_mdp'
 
-                screen.blit(rectangle, (300, 250))
-                screen.blit(rectangle, (300, 650))
+                screen.blit(rectangle, (290, 240))
+                screen.blit(rectangle, (290, 640))
                 uti = taper_font.render(str_uti, 1, (0, 0, 0))
                 screen.blit(uti, (300, 250))
 
@@ -251,16 +255,19 @@ while jouer==1:
 
             #bouton oeil pour cacher ou montrer le mdp
             elif check_clic(event.pos, (1320, 1420), (700, 750), ['connexion','inscr_entrer_uti', 'conn_entrer_uti', 'conn_entrer_mdp', 'inscr_entrer_mdp'])==True:
-                affichage_image(screen, rectangle, (300, 650))
+                affichage_image(screen, rectangle, (290, 640))
                 if mdp_cache_verification==True:
                     mdp = taper_font.render(str_mdp, 1, (0, 0, 0))
                     affichage_image(screen, mdp, (300, 650))
+                    affichage_image(screen, cache_oeil, (1320, 700))
+                    affichage_image(screen, oeil, (1320, 700))
                     if tableau == 'conn_entrer_mdp' or tableau == 'inscr_entrer_mdp':
                         affichage_image(screen, curseur, (300+10+long_mdp, 660))
                     mdp_cache_verification=False
                 elif mdp_cache_verification==False:
                     mdp_cache = taper_font.render(str_mdp_cache, 1, (0, 0, 0))
                     screen.blit(mdp_cache, (300, 650))
+                    affichage_image(screen, oeil_ferme, (1320, 700))
                     if tableau == 'conn_entrer_mdp' or tableau == 'inscr_entrer_mdp':
                         affichage_image(screen, curseur, (300+10+long_mdp_cache, 660))
                     mdp_cache_verification=True
@@ -297,7 +304,7 @@ while jouer==1:
                 affichage_image(screen, deco, (550, 430))
                 
                 pos_oeil_gauche=mdp_long+30+550
-                affichage_image(screen, oeil, (pos_oeil_gauche, 360))
+                affichage_image(screen, oeil_ferme, (pos_oeil_gauche, 360))
                 
                 pygame.display.flip()
 
@@ -339,20 +346,51 @@ while jouer==1:
                     mdp_cache_verif=False
 
                     #Affichage du mot de passe
-                    mdp = font_argent.render('Votre mot de passe : '+compte[1], 1, (0, 0, 0))
+                    affichage_image(screen, fond_profil, (0,0))
+                
+                    affichage_image(screen, retour_profil, retour_profil_pos)
+                    affichage_image(screen, icone_profil, icone_profil_pos)
+                    
+                    pseudo = font_profil.render(compte[0].upper(), 1, (0, 0, 0))
+                    longueur_pseudo = pseudo.get_rect().width
+                    screen.blit(pseudo, (200+((200-longueur_pseudo)/2), 420))
+                    
+                    argent = font_argent.render('Vous avez actuellement '+str(compte[2])+' dollars sur votre compte', 1, (0, 0, 0))
+                    screen.blit(argent, (550, 300))
+                    
+                    mdp = font_argent.render('Votre mot de passe : '+str_mdp, 1, (0, 0, 0))
                     mdp_long = mdp.get_rect().width
                     screen.blit(mdp, (550, 370))
+                    
+                    affichage_image(screen, deco, (550, 430))
+                    
                     pos_oeil_gauche=mdp_long+30+550
                     affichage_image(screen, oeil, (pos_oeil_gauche, 360))
+
                 else:
                     mdp_cache_verif=True
 
                     #Affichage du mot de passe caché
+                    affichage_image(screen, fond_profil, (0,0))
+                
+                    affichage_image(screen, retour_profil, retour_profil_pos)
+                    affichage_image(screen, icone_profil, icone_profil_pos)
+                    
+                    pseudo = font_profil.render(compte[0].upper(), 1, (0, 0, 0))
+                    longueur_pseudo = pseudo.get_rect().width
+                    screen.blit(pseudo, (200+((200-longueur_pseudo)/2), 420))
+                    
+                    argent = font_argent.render('Vous avez actuellement '+str(compte[2])+' dollars sur votre compte', 1, (0, 0, 0))
+                    screen.blit(argent, (550, 300))
+                    
                     mdp_cache = font_argent.render('Votre mot de passe : '+mdp_cache_str, 1, (0, 0, 0))
                     mdp_long = mdp_cache.get_rect().width
                     screen.blit(mdp_cache, (550, 370))
+                    
+                    affichage_image(screen, deco, (550, 430))
+                    
                     pos_oeil_gauche=mdp_long+30+550
-                    affichage_image(screen, oeil, (pos_oeil_gauche, 360))
+                    affichage_image(screen, oeil_ferme, (pos_oeil_gauche, 360))
 
                 pygame.display.flip()
 
@@ -395,8 +433,13 @@ while jouer==1:
                 tableau='pari_bj'
                 somme=''
 
-                screen.fill(white)
-                affichage_paris(screen)
+                #Affichage du pari
+                affichage_image(screen, fond_blackjack, (0, 0))
+                affichage_image(screen, mas_rectangle_somme, (250, 750))
+                affichage_image(screen, curseur_bj, (260, 760))
+                afficher = font2.render('Combien voulez-vous parier ?', 1, (0, 0, 0))
+                longueur_afficher = afficher.get_rect().width
+                screen.blit(afficher, ((1100-longueur_afficher)/2, 680))
                 
                 argent = font2.render(str(compte[2])+'$', 1, (0, 0, 0))
                 screen.blit(argent, (30, 30))
@@ -432,14 +475,14 @@ while jouer==1:
                     print(paris)
                     
             #bouton rejouer
-            elif check_clic(event.pos, (550, 850), (700, 800), ['roulette_gains'])==True:
+            elif check_clic(event.pos, (500, 700), (700, 770), ['roulette_gains'])==True:
                 tableau='roulette_tapis'
 
                 #Affichage du tapis pour parier
                 affichage_tapis(screen)
 
             #Bouton quitter
-            elif check_clic(event.pos, (1050, 1350), (700, 800), ['roulette_gains','fin_bj'])==True:
+            elif check_clic(event.pos, (900, 1100), (700, 770), ['roulette_gains'])==True:
                 tableau='menu'
 
                 #Affiche le menu
@@ -456,9 +499,13 @@ while jouer==1:
                 somme=''
                 tableau='mas_entrer_somme'
 
-                #Affichage du rectangle pour parier
+                #Affichage du pari
                 affichage_image(screen, mas_fond, (0, 0))
-                affichage_image(screen, mas_somme, (0, 0))
+                
+                afficher = font2.render('Combien voulez-vous parier ?', 1, (0, 0, 0))
+                longueur_afficher = afficher.get_rect().width
+                screen.blit(afficher, ((1600-longueur_afficher)/2, 400))
+                
                 affichage_image(screen, mas_rectangle_somme, mas_rectangle_somme_pos)
                 affichage_image(screen, curseur_bj, (510, 610))
                 
@@ -478,7 +525,7 @@ while jouer==1:
                 somme=''
                 tableau='mas_entrer_somme'
 
-                #Affichage du rectangle pour parier
+                #Affichage du pari
                 affichage_image(screen, mas_fond, (0, 0))
                 affichage_image(screen, mas_rectangle_somme, mas_rectangle_somme_pos)
                 affichage_image(screen, curseur_bj, (510, 610))
@@ -503,8 +550,8 @@ while jouer==1:
             #bouton tirer
             elif check_clic(event.pos, (325, 625), (750, 870), ['jeu_bj'])==True:
                 infos=action(1, ct_jr, ct_crp, screen)
+                #L'indice 0 de infos correspond aux gains. Si il est nul, c'est que le joueur a perdu, et on l'affiche
                 if infos[0]==0:
-                    time.sleep(2)
                     tableau='fin_bj'
 
                     compte[2]=compte[2]-int(somme)
@@ -512,17 +559,18 @@ while jouer==1:
                     cur.execute("UPDATE membres SET argent = ? WHERE identifiant = ?", (compte[2], compte[0]))
                     conn.commit()
 
-                    screen.fill(white)
-                    affichage_image(screen, mas_gains, mas_gains_pos)
+                    affichage_image(screen, rectangle_bj, (310, 610))
                     afficher = font2.render('Somme des cartes supérieure à 21, vous avez perdu '+str(somme)+' dollars', 1, (0, 0, 0))
-                    screen.blit(afficher, (500,400))
-                    affichage_rejouer(screen)
+                    longueur_afficher = afficher.get_rect().width
+                    screen.blit(afficher, ((1100-longueur_afficher)/2, 750))
+                    affichage_image(screen, mas_rejouer, (375, 810))
+                    affichage_image(screen, mas_quitter, (775, 810))
+                    dessin_carte(ct_jr[len(ct_jr)-1][3], 400, 300+(len(ct_jr)-1)*40, screen)
+                    if len(ct_crp)>2:
+                        dessin_carte(ct_crp[len(ct_crp)-1][3], 800, 300+(len(ct_crp)-1)*40, screen)
                     pygame.display.flip()
+                #Si il est égal à 1, le joueur double sa mise et on l'affiche
                 elif infos[0]==1:
-                    affichage_image(screen, blackjack, (500, 670))
-                    pygame.display.flip()
-                    
-                    time.sleep(2)
                     tableau='fin_bj'
 
                     compte[2]=compte[2]+int(somme)
@@ -530,11 +578,16 @@ while jouer==1:
                     cur.execute("UPDATE membres SET argent = ? WHERE identifiant = ?", (compte[2], compte[0]))
                     conn.commit()
 
-                    screen.fill(white)
-                    affichage_image(screen, mas_gains, mas_gains_pos)
+                    affichage_image(screen, rectangle_bj, (310, 610))
                     afficher = font2.render('Blackjack ! Vous avez gagné '+str(somme)+' dollars', 1, (0, 0, 0))
-                    screen.blit(afficher, (500,400))
-                    affichage_rejouer(screen)
+                    longueur_afficher = afficher.get_rect().width
+                    screen.blit(afficher, ((1100-longueur_afficher)/2, 750))
+                    affichage_image(screen, mas_rejouer, (375, 810))
+                    affichage_image(screen, mas_quitter, (775, 810))
+                    dessin_carte(ct_jr[len(ct_jr)-1][3], 400, 300+(len(ct_jr)-1)*40, screen)
+                    if len(ct_crp)>2:
+                        dessin_carte(ct_crp[len(ct_crp)-1][3], 800, 300+(len(ct_crp)-1)*40, screen)
+                        affichage_image(screen, blackjack, (375, 325))
                     pygame.display.flip()
                 else:
                     ct_jr=infos[1]
@@ -543,8 +596,8 @@ while jouer==1:
             #bouton stand
             elif check_clic(event.pos, (725, 1025), (750, 870), ['jeu_bj'])==True:
                 infos=action(2, ct_jr, ct_crp, screen)
+                #Même principe que le bouton tirer sauf qu'on vérifie si le croupier a plus que nous avec la fonction action
                 if infos[0]==0:
-                    time.sleep(2)
                     tableau='bj_rejouer'
 
                     compte[2]=compte[2]-int(somme)
@@ -552,14 +605,24 @@ while jouer==1:
                     cur.execute("UPDATE membres SET argent = ? WHERE identifiant = ?", (compte[2], compte[0]))
                     conn.commit()
 
-                    screen.fill(white)
-                    affichage_image(screen, mas_gains, mas_gains_pos)
-                    afficher = font2.render(infos[1]+'Vous avez perdu '+str(somme)+' dollars', 1, (0, 0, 0))
-                    screen.blit(afficher, (500,400))
-                    affichage_rejouer(screen)
+                    affichage_image(screen, rectangle_bj, (310, 610))
+
+                    afficher = font2.render(infos[1], 1, (0, 0, 0))
+                    longueur_afficher = afficher.get_rect().width
+                    screen.blit(afficher, ((1100-longueur_afficher)/2, 680))
+                    
+                    afficher = font2.render('Vous avez perdu '+str(somme)+' dollars', 1, (0, 0, 0))
+                    longueur_afficher = afficher.get_rect().width
+                    screen.blit(afficher, ((1100-longueur_afficher)/2, 750))
+                    
+                    affichage_image(screen, mas_rejouer, (375, 810))
+                    affichage_image(screen, mas_quitter, (775, 810))
+                    dessin_carte(ct_jr[len(ct_jr)-1][3], 400, 300+(len(ct_jr)-1)*40, screen)
+                    
+                    if len(ct_crp)>2:
+                        dessin_carte(ct_crp[len(ct_crp)-1][3], 800, 300+(len(ct_crp)-1)*40, screen)
                     pygame.display.flip()
                 elif infos[0]==1:
-                    time.sleep(2)
                     tableau='bj_rejouer'
 
                     compte[2]=compte[2]+int(somme)
@@ -567,35 +630,64 @@ while jouer==1:
                     cur.execute("UPDATE membres SET argent = ? WHERE identifiant = ?", (compte[2], compte[0]))
                     conn.commit()
 
-                    screen.fill(white)
-                    affichage_image(screen, mas_gains, mas_gains_pos)
-                    afficher = font2.render(infos[1]+'Vous avez gagné '+str(somme)+' dollars', 1, (0, 0, 0))
-                    screen.blit(afficher, (500,400))
-                    affichage_rejouer(screen)
+                    affichage_image(screen, rectangle_bj, (310, 610))
+                    
+                    afficher = font2.render(infos[1], 1, (0, 0, 0))
+                    longueur_afficher = afficher.get_rect().width
+                    screen.blit(afficher, ((1100-longueur_afficher)/2, 680))
+                    
+                    afficher = font2.render('Vous avez gagné '+str(somme)+' dollars', 1, (0, 0, 0))
+                    longueur_afficher = afficher.get_rect().width
+                    screen.blit(afficher, ((1100-longueur_afficher)/2, 750))
+                    
+                    affichage_image(screen, mas_rejouer, (375, 810))
+                    affichage_image(screen, mas_quitter, (775, 810))
+                    dessin_carte(ct_jr[len(ct_jr)-1][3], 400, 300+(len(ct_jr)-1)*40, screen)
+                    if len(ct_crp)>2:
+                        dessin_carte(ct_crp[len(ct_crp)-1][3], 800, 300+(len(ct_crp)-1)*40, screen)
                     pygame.display.flip()
                 
                 tableau='fin_bj'
                     
             #bouton rejouer
-            elif check_clic(event.pos, (550, 850), (700, 800), ['fin_bj'])==True:
+            elif check_clic(event.pos, (375, 575), (810, 880), ['fin_bj'])==True:
                 tableau='pari_bj'
                 somme=''
-    
-                screen.fill(white)
-                affichage_image(screen, mas_somme, (0, 0))
-                affichage_image(screen, mas_rectangle_somme, mas_rectangle_somme_pos)
-                affichage_image(screen, curseur_bj, (510, 610))
+
+                #Affichage du pari
+                affichage_image(screen, fond_blackjack, (0, 0))
+                affichage_image(screen, mas_rectangle_somme, (250, 750))
+                affichage_image(screen, curseur_bj, (260, 760))
+                afficher = font2.render('Combien voulez-vous parier ?', 1, (0, 0, 0))
+                longueur_afficher = afficher.get_rect().width
+                screen.blit(afficher, ((1100-longueur_afficher)/2, 680))
+                
+                argent = font2.render(str(compte[2])+'$', 1, (0, 0, 0))
+                screen.blit(argent, (30, 30))
                 
                 pygame.display.flip()
+                
+                pygame.display.flip()
+
+            #Bouton quitter
+            elif check_clic(event.pos, (775, 975), (810, 880), ['fin_bj'])==True:
+                tableau='menu'
+
+                #Affiche le menu
+                dessine_menu(screen)
+                pygame.display.flip()
+
+                somme=''
                     
         #On vérifie si on clique sur une touche lors de la connexion
         if event.type == KEYDOWN and (tableau=='conn_entrer_uti' or tableau=='conn_entrer_mdp' or tableau=='inscr_entrer_uti' or tableau=='inscr_entrer_mdp'):
             liste_touches=liste_nb+liste_lettres
             for el in liste_touches:
+                #On vérifie si on écrit dans le rectangle utilisateur et et réaffiche l'utilisateur
                 if tableau=='conn_entrer_uti' or tableau=='inscr_entrer_uti':
                     if el==event.key:
                         if len(str_uti)<12:
-                            affichage_image(screen, rectangle, (300, 250))
+                            affichage_image(screen, rectangle, (290, 240))
 
                             str_uti=str_uti+str(dico_touches[el])
                             afficher = taper_font.render(str_uti, 1, (0, 0, 0))
@@ -605,10 +697,11 @@ while jouer==1:
                             affichage_image(screen, curseur, (300+long_uti+10,260))
                         
                             pygame.display.flip()
+                        #Si l'utilisateur est de 12 caractères, on remplace le dernier par la touche pressée
                         else:
                             str_uti=str_uti[0:11]+dico_touches[el]
                             
-                            affichage_image(screen, rectangle, (300, 250))
+                            affichage_image(screen, rectangle, (290, 240))
                             
                             afficher = taper_font.render(str_uti, 1, (0, 0, 0))
                             screen.blit(afficher, (300, 250))
@@ -617,10 +710,11 @@ while jouer==1:
                             affichage_image(screen, curseur, (300+long_uti+10,260))
                             
                             pygame.display.flip()
+                #Même principe que pour l'utilisateur
                 elif tableau=='conn_entrer_mdp' or tableau=='inscr_entrer_mdp':
                     if el==event.key:
                         if len(str_mdp)<12:
-                            affichage_image(screen, rectangle, (300, 650))
+                            affichage_image(screen, rectangle, (290, 640))
 
                             str_mdp=str_mdp+str(dico_touches[el])
                             str_mdp_cache+='*'
@@ -643,7 +737,7 @@ while jouer==1:
                         else:
                             str_mdp=str_mdp[0:11]+dico_touches[el]
                             
-                            affichage_image(screen, rectangle, (300, 650))
+                            affichage_image(screen, rectangle, (290, 640))
 
                             afficher_cache = taper_font.render(str_mdp_cache, 1, (0, 0, 0))
                             long_mdp_cache=afficher_cache.get_rect().width
@@ -660,10 +754,11 @@ while jouer==1:
                             long_mdp=afficher.get_rect().width
                             
                             pygame.display.flip()
-                        
+
+            #Si on appuie sur retour, on efface le dernier caractère et on réaffiche le mot de passe/utilisateur
             if event.key == K_BACKSPACE:
                 if tableau=='conn_entrer_uti' or tableau=='inscr_entrer_uti':
-                    affichage_image(screen, rectangle, (300, 250))
+                    affichage_image(screen, rectangle, (290, 240))
                     
                     str_uti=str_uti[0:len(str_uti)-1]
                     afficher = taper_font.render(str_uti, 1, (0, 0, 0))
@@ -674,7 +769,7 @@ while jouer==1:
                     
                     pygame.display.flip()
                 elif tableau=='conn_entrer_mdp' or tableau=='inscr_entrer_mdp':
-                    affichage_image(screen, rectangle, (300, 650))
+                    affichage_image(screen, rectangle, (290, 640))
                     
                     str_mdp=str_mdp[0:len(str_mdp)-1]
                     str_mdp_cache=str_mdp_cache[0:len(str_mdp_cache)-1]
@@ -691,10 +786,13 @@ while jouer==1:
                     
                     pygame.display.flip()
 
+            #On vérifie si on appuie sur Entrée
             if event.key == K_RETURN:
+                #On vérifie si on se connecte
                 if tableau=='conn_entrer_uti' or tableau=='conn_entrer_mdp':
                     sing_id=(str_uti,)
                     sing_mdp=(str_mdp,)
+                    #On vérifie que l'identifiant existe et qu'il correspond au mot de passe
                     if check_identifiant_existe(sing_id)==True and check_mdp(str_uti)==str_mdp:
                         cur.execute("SELECT argent FROM membres WHERE identifiant = ?",(str_uti,))
                         argent_sing=cur.fetchone()
@@ -703,17 +801,21 @@ while jouer==1:
 
                         tableau='menu'
 
+                        #On affiche le menu
                         screen.fill(black)
                         dessine_menu(screen)
                         pygame.display.flip()
 
+                    #Sinon on affiche un message d'alerte
                     else:
                         affichage_image(screen, alerte, (300, 800))
+                #On vérifie si on s'inscrit
                 elif tableau=='inscr_entrer_uti' or tableau=='inscr_entrer_mdp':
                     sing_id=(str_uti,)
                     sing_mdp=(str_mdp,)
-                    
-                    if (len(str_uti)>3 or len(str_uti)<21) and check_identifiant_existe(sing_id)==False:
+
+                    #On vérifie que le mot de passe est bien supérieur à 3 caractères
+                    if len(str_uti)>3 and check_identifiant_existe(sing_id)==False:
                         var =[(str_uti, str_mdp, 10000)]
                         for i in var:
                             cur.execute("INSERT INTO membres(identifiant, mdp, argent) VALUES(?,?,?)", i)
@@ -727,6 +829,7 @@ while jouer==1:
                         dessine_menu(screen)
                         pygame.display.flip()
 
+                    #Sinon on affiche un message d'alerte
                     else:
                         affichage_image(screen, alerte, (300, 800))
                     
@@ -738,41 +841,69 @@ while jouer==1:
                     #On vérifie si la taille du nombre parié est inférieur à 8 (la taille maximum)
                     if len(somme)<8:
                         #Si oui, on affiche le nombre parié avec le nouveau chiffre et on l'ajoute à la variable 'somme'
-                        affichage_image(screen, mas_rectangle_somme, mas_rectangle_somme_pos)
+                        if tableau=='pari_bj':
+                            affichage_image(screen, mas_rectangle_somme, (250, 750))
+                        else:
+                            affichage_image(screen, mas_rectangle_somme, mas_rectangle_somme_pos)
                     
                         somme=somme+dico_nb[el]
                         afficher = taper_font.render(somme, 1, (0, 0, 0))
-                        screen.blit(afficher, (500,600))
+                        if tableau=='pari_bj':
+                            screen.blit(afficher, (250,750))
+                        else:
+                            screen.blit(afficher, (500,600))
 
                         long_somme=afficher.get_rect().width
-                        affichage_image(screen, curseur_bj, (500+long_somme+10,610))
+                        
+                        if tableau=='pari_bj':
+                            affichage_image(screen, curseur_bj, (250+long_somme+10,760))
+                        else:
+                            affichage_image(screen, curseur_bj, (500+long_somme+10,610))
                         
                         pygame.display.flip()
                     else:
                         #Si elle égale à 8, on supprime le dernier chiffre et on ajoute le nouveau
                         somme=somme[0:7]+dico_nb[el]
 
-                        affichage_image(screen, mas_rectangle_somme, mas_rectangle_somme_pos)
+                        if tableau=='pari_bj':
+                            affichage_image(screen, mas_rectangle_somme, (250, 750))
+                        else:
+                            affichage_image(screen, mas_rectangle_somme, mas_rectangle_somme_pos)
                         
                         afficher = taper_font.render(somme, 1, (0, 0, 0))
-                        screen.blit(afficher, (500,600))
+                        if tableau=='pari_bj':
+                            screen.blit(afficher, (250,750))
+                        else:
+                            screen.blit(afficher, (500,600))
 
                         long_somme=afficher.get_rect().width
-                        affichage_image(screen, curseur_bj, (500+long_somme+10,610))
+                        if tableau=='pari_bj':
+                            affichage_image(screen, curseur_bj, (250+long_somme+10,760))
+                        else:
+                            affichage_image(screen, curseur_bj, (500+long_somme+10,610))
                         
                         pygame.display.flip()
 
             #On vérifie si la touche cliquée est 'Retour'
             if event.key == K_BACKSPACE:
                 #On supprime le dernier chiffre de l'affichage et de la variable 'somme'
-                affichage_image(screen, mas_rectangle_somme, mas_rectangle_somme_pos)
+                if tableau=='pari_bj':
+                    affichage_image(screen, mas_rectangle_somme, (250, 750))
+                else:
+                    affichage_image(screen, mas_rectangle_somme, mas_rectangle_somme_pos)
                 
                 somme=somme[0:len(somme)-1]
                 afficher = taper_font.render(somme, 1, (0, 0, 0))
-                screen.blit(afficher, (500,600))
+                if tableau=='pari_bj':
+                    screen.blit(afficher, (250,750))
+                else:
+                    screen.blit(afficher, (500,600))
 
                 long_somme=afficher.get_rect().width
-                affichage_image(screen, curseur_bj, (500+long_somme+10,610))
+                if tableau=='pari_bj':
+                    affichage_image(screen, curseur_bj, (250+long_somme+10,760))
+                else:
+                    affichage_image(screen, curseur_bj, (500+long_somme+10,610))
 
                 pygame.display.flip()
 
@@ -792,7 +923,7 @@ while jouer==1:
                         #On appelle la fonction roulette qui retourne les gains ou 0 si on perd
                         gains=slot_partie(int(somme))
                         animation_machine(screen, gains[1], [bar, bar_2, bar_3, cherry, scatter, symb_7, cloche])
-                        time.sleep(1)
+                        time.sleep(0.25)
 
                         #Si les gains sont supérieurs à 0, le joueur à gagné
                         if gains[0] > 0 :
@@ -832,22 +963,25 @@ while jouer==1:
                         infos=play_blackjack(int(somme), screen)
                         ct_jr=infos[1]
                         ct_crp=infos[2]
-                        
+
+                        #Si le joueur gagne du premier coup (blackjack avec une tête/10 et un as), on affiche ses gains
                         if infos[0]>0:
                             tableau='fin_bj'
 
-                            compte[2]=compte[2]-int(somme)+infos[0]
+                            compte[2]=compte[2]+int(somme)
 
                             cur.execute("UPDATE membres SET argent = ? WHERE identifiant = ?", (compte[2], compte[0]))
                             conn.commit()
 
-                            affichage_image(screen, mas_gains, mas_gains_pos)
-                            afficher = font2.render('Vous avez gagné '+str(infos[0])+' dollars', 1, (0, 0, 0))
-                            screen.blit(afficher, (500,400))
-                            affichage_image(screen, mas_rejouer, mas_rejouer_pos)
-                            affichage_image(screen, mas_quitter, mas_quitter_pos)
+                            affichage_image(screen, rectangle_bj, (310, 610))
+                            afficher = font2.render('Blackjack ! Vous avez gagné '+str(somme)+' dollars', 1, (0, 0, 0))
+                            longueur_afficher = afficher.get_rect().width
+                            screen.blit(afficher, ((1100-longueur_afficher)/2, 750))
+                            affichage_image(screen, mas_rejouer, (375, 810))
+                            affichage_image(screen, mas_quitter, (775, 810))
                             pygame.display.flip()
 
+                        #Sinon le jeu continue
                         else:
                             tableau='jeu_bj'
                     elif tableau=='roulette_miser':
@@ -903,17 +1037,15 @@ while jouer==1:
                             print(gains, mises_perdues)
                                     
                             if gains+mises_perdues>=0:
-                                screen.fill(white)
-                                phrase = font2.render('Vous avez gagné '+str(gains), 1, (0, 0, 0))
+                                phrase = font2.render('Vous avez gagné '+str(gains)+'$', 1, (255, 255, 255))
                                 longueur_phrase = phrase.get_rect().width
-                                screen.blit(phrase, ((1600-longueur_phrase)/2, 420))
+                                screen.blit(phrase, ((1600-longueur_phrase)/2, 600))
                                 pygame.display.flip()
                                 
                             else:
-                                screen.fill(white)
-                                phrase = font2.render('Vous avez perdu '+str((mises_perdues-gains)*(-1)), 1, (0, 0, 0))
+                                phrase = font2.render('Vous avez perdu '+str((mises_perdues-gains)*(-1))+'$', 1, (255, 255, 255))
                                 longueur_phrase = phrase.get_rect().width
-                                screen.blit(phrase, ((1600-longueur_phrase)/2, 420))
+                                screen.blit(phrase, ((1600-longueur_phrase)/2, 600))
                                 pygame.display.flip()
                                 
                             compte[2]=compte[2]+gains
@@ -930,11 +1062,39 @@ while jouer==1:
                 #Sinon, on affiche que la somme misée est invalide
                 else:
                     somme=''
-                    
-                    affichage_image(screen, mas_somme_non_valide, (0, 0))
-                    affichage_image(screen, mas_rectangle_somme, mas_rectangle_somme_pos)
-                    affichage_image(screen, curseur_bj, (510, 610))
-                    pygame.display.flip()
+
+                    if tableau=='pari_bj':
+                        affichage_image(screen, rectangle_bj, (310, 610))
+                        affichage_image(screen, mas_rectangle_somme, (250, 750))
+                        affichage_image(screen, curseur_bj, (260, 760))
+                        afficher = font2.render('Pari invalide. Combien voulez-vous parier ?', 1, (0, 0, 0))
+                        longueur_afficher = afficher.get_rect().width
+                        screen.blit(afficher, ((1100-longueur_afficher)/2, 680))
+                    elif tableau=="roulette_miser":
+                        affichage_image(screen, fond_roulette, (0, 0))
+                        affichage_image(screen, mas_rectangle_somme, mas_rectangle_somme_pos)
+                        affichage_image(screen, curseur_bj, (510, 610))
+                        
+                        afficher = font2.render('Pari invalide. Combien voulez-vous parier ?', 1, (255, 255, 255))
+                        longueur_afficher = afficher.get_rect().width
+                        screen.blit(afficher, ((1600-longueur_afficher)/2, 420))
+                        
+                        argent = font2.render(str(compte[2])+'$', 1, (255, 255, 255))
+                        screen.blit(argent, (30, 30))
+                        pygame.display.flip()
+                    elif tableau=='mas_entrer_somme':
+                        affichage_image(screen, mas_fond, (0, 0))
+                        
+                        afficher = font2.render('Pari invalide. Combien voulez-vous parier ?', 1, (0, 0, 0))
+                        longueur_afficher = afficher.get_rect().width
+                        screen.blit(afficher, ((1600-longueur_afficher)/2, 400))
+
+                        argent = font2.render(str(compte[2])+'$', 1, (0, 0, 0))
+                        screen.blit(argent, (30, 30))
+                
+                        affichage_image(screen, mas_rectangle_somme, mas_rectangle_somme_pos)
+                        affichage_image(screen, curseur_bj, (510, 610))
+                        pygame.display.flip()
                 
                         
         #On vérifie si on clique sur une touche lors du choix des paris sur le tapis de la roulette
