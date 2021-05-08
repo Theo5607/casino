@@ -133,11 +133,11 @@ def ecran_de_demarrage(screen):
 def conn_inscr(screen, n):
     """Permet d'afficher le formulaire d'inscription/connexion"""
     screen.blit(hall_casino_vierge, (0,0))
-    utilisateur = font2.render("Nom d'utilisateur:", 1, (255, 255, 255))
+    utilisateur = font2.render("Nom d'utilisateur: (min 4 caractères)", 1, (255, 255, 255))
     longueur_utilisateur = utilisateur.get_rect().width
     screen.blit(utilisateur, ((1600-longueur_utilisateur)/2, 100))
 
-    mdp = font2.render("Mot de passe:", 1, (255, 255, 255))
+    mdp = font2.render("Mot de passe (min 4 caractères):", 1, (255, 255, 255))
     longueur_mdp = mdp.get_rect().width
     screen.blit(mdp, ((1600-longueur_mdp)/2, 500))
 
