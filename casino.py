@@ -339,7 +339,6 @@ while jouer==1:
             #boutons profil
             #Bouton oeil pour cacher ou montrer le mot de passe
             elif check_clic(event.pos, (pos_oeil_gauche, pos_oeil_gauche+100), (360, 410), ['profil'])==True:
-                affichage_image(screen, rect_blanc, rect_blanc_pos)
 
                 #La variable booléenne 'mdp_cache_verif' nous dit si le mot de passe est caché ou pas
                 if mdp_cache_verif==True:
